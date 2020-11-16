@@ -1,9 +1,9 @@
 package pt.ulusofona.lp2.theWalkingDEISIGame;
 
 public class Equipamento {
-    int id;
-    int tipo;
-    int x, y;
+    private int id;
+    private int tipo;
+    private int x, y;
 
     Equipamento( int id, int tipo, int x, int y ) {
         this.id = id;

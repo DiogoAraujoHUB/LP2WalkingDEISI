@@ -1,11 +1,13 @@
 package pt.ulusofona.lp2.theWalkingDEISIGame;
 
 public class Mapa {
-    int sizeX;
-    int sizeY;
-    int[][] map;
+    private int sizeX;
+    private int sizeY;
+    private int[][] map;
 
     Mapa() {
+        this.sizeX = 0;
+        this.sizeY = 0;
     }
 
     public void setSizeX( int sizeX ) {

@@ -4,12 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Humano {
-    int id;
-    int tipo;
-    String nome;
-    int x, y;
-    List<Equipamento> equipamentosApanhados = new ArrayList<>();
-    boolean alive;
+    private int id;
+    private int tipo;
+    private int x, y;
+    private boolean alive;
+
+    private String nome;
+    private List<Equipamento> equipamentosApanhados;
 
     Humano(int id, int tipo, String nome, int x, int y) {
         this.id = id;
@@ -18,6 +19,7 @@ public class Humano {
         this.x = x;
         this.y = y;
         this.alive = true;
+        equipamentosApanhados = new ArrayList<>();
     }
 
     public String getImagePNG() {

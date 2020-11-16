@@ -4,12 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Zombie {
-    int id;
-    int tipo;
-    String nome;
-    List<Equipamento> equipamentosDestruidos;
-    int x, y;
-    boolean alive;
+    private int id;
+    private int tipo;
+    private int x, y;
+    private boolean alive;
+
+    private String nome;
+    private List<Equipamento> equipamentosDestruidos;
 
     Zombie( int id, int tipo, String nome, int x, int y ) {
         this.id = id;
