@@ -1,15 +1,14 @@
 package pt.ulusofona.lp2.theWalkingDEISIGame;
 
-public class Zombie {
+public class Equipamento {
     int id;
-    String nome;
+    int tipo;
     int x, y;
 
-    Zombie( int id, String nome, int x, int y ) {
+    Equipamento( int id, int tipo, int x, int y ) {
         this.id = id;
-        this.nome = nome;
+        this.tipo = tipo;
         this.x = x;
         this.y = y;
     }
-
 }
