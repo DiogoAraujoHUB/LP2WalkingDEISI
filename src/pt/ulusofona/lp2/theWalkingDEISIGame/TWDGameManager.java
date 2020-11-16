@@ -9,15 +9,31 @@ import java.util.List;
 import java.util.Scanner;
 
 public class TWDGameManager {
-    List<Humano> humanos = new ArrayList<>();
-    List<Zombie> zombies = new ArrayList<>();
-    List<Equipamento> equipment = new ArrayList<>();
-    int linesSize = 0;
-    int columnsSize = 0;
-    int initialTeam = 0;
 
-    //Construtor vazio
+    //0 -> day and 1 -> night
+    private int dayNightCycle;
+
+    private int initialTeamId;
+    private int currentTeamId;
+    private boolean fairPlay;
+
+    private List<Humano> humanos;
+    private List<Zombie> zombies;
+    private List<String> currentSurvivors;
+    private List<Equipamento> equipment;
+
+    private Mapa gameMap;
+
     public TWDGameManager() {
+        dayNightCycle = 0;
+        humanos = new ArrayList<>();
+        zombies = new ArrayList<>();
+        currentSurvivors = new ArrayList<>();
+        equipment = new ArrayList<>();
+        gameMap = new Mapa();
+        initialTeamId = 0;
+        currentTeamId = 0;
+        fairPlay = false;
     }
 
     //passar os dois fors para uma função
@@ -45,12 +61,13 @@ public class TWDGameManager {
                         case 1:
                             String[] splitNumLinesColumns = lineRead.split(" ", 2);
 
-                            linesSize = Integer.parseInt( splitNumLinesColumns[0].trim() );
-                            columnsSize = Integer.parseInt( splitNumLinesColumns[1].trim() );
+                            gameMap.setSizeX( Integer.parseInt( splitNumLinesColumns[0].trim() ) );
+                            gameMap.setSizeY( Integer.parseInt( splitNumLinesColumns[1].trim() ) );
+                            gameMap.createMap();
                             break;
 
                         case 2:
-                            initialTeam = Integer.parseInt( lineRead.trim() );
+                            initialTeamId = Integer.parseInt( lineRead.trim() );
                             break;
 
                         case 3:
@@ -70,10 +87,10 @@ public class TWDGameManager {
                                 int spawnY = Integer.parseInt( splitCreatures[4].trim() );
 
                                 if ( typeID == 0 ) {
-                                    Zombie zombieCriado = new Zombie( creatureID, creatureName, spawnX, spawnY );
+                                    Zombie zombieCriado = new Zombie( creatureID, typeID, creatureName, spawnX, spawnY );
                                     zombies.add( zombieCriado );
                                 } else if ( typeID == 1 ) {
-                                    Humano humanoCriado = new Humano( creatureID, creatureName, spawnX, spawnY );
+                                    Humano humanoCriado = new Humano( creatureID, typeID, creatureName, spawnX, spawnY );
                                     humanos.add( humanoCriado );
                                 } else {
                                     System.out.println("Erro no tipo de criatura");
@@ -137,18 +154,18 @@ public class TWDGameManager {
     //e na posição 1 o número de colunas
     public int[] getWorldSize() {
         int[] worldSize = new int[2];
-        if ( linesSize == 0 || columnsSize == 0 ) {
+        if ( gameMap.getSizeX() == 0 || gameMap.getSizeY() == 0 ) {
             return null;
         }
 
-        worldSize[0] = linesSize;
-        worldSize[1] = columnsSize;
+        worldSize[0] = gameMap.getSizeX();
+        worldSize[1] = gameMap.getSizeY();
         return worldSize;
     }
 
     //Devolve o ID da equipa que vai jogar no primeiro turno
     public int getInitialTeam() {
-        return this.initialTeam;
+        return this.initialTeamId;
     }
 
     //Devolve uma lista com todos os objetos "Humano" no jogo
@@ -161,23 +178,81 @@ public class TWDGameManager {
         return this.zombies;
     }
 
+    public List<String> getAuthors() {
+        List<String> authors = new ArrayList<>();
+
+        String primeiroAutor = "Diogo Araújo - a21905661";
+        String segundoAutor = "Miguel Pereira - a21902726";
+
+        authors.add( primeiroAutor );
+        authors.add( segundoAutor );
+        return authors;
+    }
+
+    //devolve o id da equipa que está ativa no turno atual
+    public int getCurrentTeamId() {
+        return this.currentTeamId;
+    }
+
+    //devolve o id do objeto/elemento que se encontra na posição indicada pelas
+    //coordenadas (x,y) passadas no argumento
+    public int getElementId( int x, int y ) {
+        if ( x > gameMap.getSizeX() || y > gameMap.getSizeY() || x < 0 || y < 0 ) {
+            return 0;
+        }
+
+        return gameMap.getMapId(x, y);
+    }
+
     //deve tentar executar uma jogada
     //xO, yO é uma origem
     //xD, yD é o destino
     public boolean move( int xO, int yO, int xD, int yD ) {
-        if ( xD > linesSize || yD > columnsSize || xD < 0 || yD < 0 ) {
+        if ( xD > gameMap.getSizeX() || yD > gameMap.getSizeY() || xD < 0 || yD < 0 ) {
             return false;
         }
-        if ( xO > linesSize || yO > columnsSize || xO < 0 || yO < 0 ) {
+        if ( xO > gameMap.getSizeX() || yO > gameMap.getSizeY() || xO < 0 || yO < 0 ) {
             return false;
         }
 
+        if ( dayNightCycle == 0 ) {
+            dayNightCycle = 1;
+        } else {
+            dayNightCycle = 0;
+        }
+        fairPlay = true;
         return true;
     }
 
     //se uma das condições de paragem ja tenha sido alcançada
     //então retorna true
     public boolean gameIsOver() {
-        return true;
+        if ( fairPlay ) {
+            return true;
+        }
+
+        return false;
+    }
+
+    public List<String> getSurvivors() {
+        return this.currentSurvivors;
+    }
+
+    public boolean isDay() {
+        if ( dayNightCycle == 0 ) {
+            return true;
+        }
+
+        return false;
+    }
+
+    public boolean hasEquipment( int creatureId, int equipmentTypeId ) {
+        if ( creatureId == 0 ) {
+            return true;
+        } else if ( creatureId == 1 ) {
+            return true;
+        }
+
+        return false;
     }
 }
