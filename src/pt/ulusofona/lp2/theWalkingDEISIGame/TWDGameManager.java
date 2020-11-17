@@ -83,13 +83,11 @@ public class TWDGameManager {
                                 int creatureID = Integer.parseInt( splitCreatures[0].trim() );
                                 int typeID = Integer.parseInt( splitCreatures[1].trim() );
                                 String creatureName = splitCreatures[2];
-                                int spawnX = Integer.parseInt( splitCreatures[3].trim() ) - 1;
-                                int spawnY = Integer.parseInt( splitCreatures[4].trim() ) - 1;
+                                int spawnX = Integer.parseInt( splitCreatures[3].trim() );
+                                int spawnY = Integer.parseInt( splitCreatures[4].trim() );
 
                                 if ( typeID == 0 ) {
                                     Zombie zombieCriado = new Zombie( creatureID, typeID, creatureName, spawnX, spawnY);
-
-                                    System.out.println("Zombie == " + zombieCriado );
                                     zombies.add( zombieCriado );
                                 } else if ( typeID == 1 ) {
                                     Humano humanoCriado = new Humano( creatureID, typeID, creatureName, spawnX, spawnY);
@@ -207,10 +205,10 @@ public class TWDGameManager {
     //devolve o id do objeto/elemento que se encontra na posição indicada pelas
     //coordenadas (x,y) passadas no argumento
     public int getElementId( int x, int y ) {
-        if ( x > gameMap.getSizeX() || y > gameMap.getSizeY() || x < 0 || y < 0 ) {
+        if ( x >= gameMap.getSizeX() || y >= gameMap.getSizeY() || x < 0 || y < 0 ) {
             return 0;
         }
-        if (gameMap == null ) {
+        if ( gameMap == null ) {
             return 0;
         }
 
@@ -221,10 +219,10 @@ public class TWDGameManager {
     //xO, yO é uma origem
     //xD, yD é o destino
     public boolean move( int xO, int yO, int xD, int yD ) {
-        if ( xD > gameMap.getSizeX() || yD > gameMap.getSizeY() || xD < 0 || yD < 0 ) {
+        if ( xD >= gameMap.getSizeX() || yD >= gameMap.getSizeY() || xD < 0 || yD < 0 ) {
             return false;
         }
-        if ( xO > gameMap.getSizeX() || yO > gameMap.getSizeY() || xO < 0 || yO < 0 ) {
+        if ( xO >= gameMap.getSizeX() || yO >= gameMap.getSizeY() || xO < 0 || yO < 0 ) {
             return false;
         }
 
