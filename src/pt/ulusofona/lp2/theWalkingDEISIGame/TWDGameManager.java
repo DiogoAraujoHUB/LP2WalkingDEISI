@@ -4,10 +4,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 public class TWDGameManager {
 
@@ -15,11 +12,10 @@ public class TWDGameManager {
     private int dayNightCycle;
     private int initialTeamId;
     private int currentTeamId;
-    private boolean fairPlay;
+    private int numberOfTurns;
 
     private List<Humano> humanos;
     private List<Zombie> zombies;
-    private List<String> currentSurvivors;
     private List<Equipamento> equipment;
 
     private Mapa gameMap;
@@ -28,12 +24,11 @@ public class TWDGameManager {
         dayNightCycle = 0;
         humanos = new ArrayList<>();
         zombies = new ArrayList<>();
-        currentSurvivors = new ArrayList<>();
         equipment = new ArrayList<>();
         gameMap = new Mapa();
         initialTeamId = 0;
         currentTeamId = 0;
-        fairPlay = false;
+        numberOfTurns = 0;
     }
 
     //passar os dois fors para uma função
@@ -68,12 +63,11 @@ public class TWDGameManager {
 
                         case 2:
                             initialTeamId = Integer.parseInt( lineRead.trim() );
+                            currentTeamId = initialTeamId;
                             break;
 
                         case 3:
-                            lineRead = lineRead.trim();
-
-                            numCreatures = Integer.parseInt( lineRead );
+                            numCreatures = Integer.parseInt( lineRead.trim() );
                             break;
 
                         case 4:
@@ -92,7 +86,6 @@ public class TWDGameManager {
                                 } else if ( typeID == 1 ) {
                                     Humano humanoCriado = new Humano( creatureID, typeID, creatureName, spawnX, spawnY);
                                     humanos.add( humanoCriado );
-                                    currentSurvivors.add( humanoCriado.getNome() );
                                 } else {
                                     System.out.println("Erro no tipo de criatura");
                                     return false;
@@ -226,19 +219,78 @@ public class TWDGameManager {
             return false;
         }
 
-        if ( dayNightCycle == 0 ) {
+        if ( currentTeamId == 1 ) {
+            boolean zombieMovement = moveZombie();
+
+            if ( !zombieMovement ) {
+                return false;
+            } else {
+                return true;
+            }
+        }
+
+        //verifica se tamos a tentar mover nada
+        if ( gameMap.getMapId(xO,yO) == 0 ) {
+            return false;
+        }
+        //verifica se tamos a tentar mover um zombie, ou um equipamento
+        if ( gameMap.getMapId(xO, yO) == 3 || gameMap.getMapId(xO, yO) == -1 ) {
+            return false;
+        }
+
+        int tipoMovido = gameMap.getMapId( xO, yO );
+        gameMap.setPosition( xO, yO, 0 );
+        gameMap.setPosition( xD, yD, tipoMovido );
+
+        if ( currentTeamId == initialTeamId ) {
+            currentTeamId++;
+        } else {
+            currentTeamId--;
+        }
+        numberOfTurns++;
+        if ( dayNightCycle == 0 && numberOfTurns % 2 == 0 ) {
             dayNightCycle = 1;
         } else {
             dayNightCycle = 0;
         }
-        fairPlay = true;
+        return true;
+    }
+
+    public boolean moveZombie() {
+        for ( Zombie zombie : zombies ) {
+            Random randomNum = new Random();
+            int randomChoice = randomNum.nextInt( 4 );
+            System.out.println("Random == " + randomChoice );
+
+            switch ( randomChoice ) {
+                default:
+            }
+        }
+
+        if ( currentTeamId == initialTeamId ) {
+            currentTeamId++;
+        } else {
+            currentTeamId--;
+        }
+        numberOfTurns++;
+        if ( dayNightCycle == 0 && numberOfTurns % 2 == 0 ) {
+            dayNightCycle = 1;
+        } else {
+            dayNightCycle = 0;
+        }
         return true;
     }
 
     //se uma das condições de paragem ja tenha sido alcançada
     //então retorna true
     public boolean gameIsOver() {
-        if ( fairPlay ) {
+        if ( numberOfTurns == 12 ) {
+            return true;
+        }
+        if ( humanos.size() == 0 ) {
+            return true;
+        }
+        if ( zombies.size() == 0 ) {
             return true;
         }
 
@@ -246,7 +298,29 @@ public class TWDGameManager {
     }
 
     public List<String> getSurvivors() {
-        return this.currentSurvivors;
+        List<String> listOfSurvivors = new ArrayList<>();
+        String text = "Nr. de turnos terminados:\n";
+        listOfSurvivors.add( text );
+        text = "" + numberOfTurns + "\n\n";
+        listOfSurvivors.add( text );
+
+        text = "OS VIVOS\n";
+        listOfSurvivors.add( text );
+        text = "";
+        for ( Humano humano: humanos ) {
+            text += "" + humano.getId() + " " + humano.getNome() + "\n";
+        }
+        text += "\n";
+        listOfSurvivors.add( text );
+
+        text = "OS OUTROS\n";
+        listOfSurvivors.add( text );
+        for ( Zombie zombie: zombies ) {
+            text += zombie.getId() + " " + zombie.getNome() + "\n";
+        }
+        listOfSurvivors.add( text );
+
+        return listOfSurvivors;
     }
 
     public boolean isDay() {

@@ -37,7 +37,10 @@ public class Mapa {
             int xFound = human.getX();
             int yFound = human.getY();
 
-            map[xFound][yFound] = human.getTipo();
+            if ( map[xFound][yFound] != 0 ) {
+                continue;
+            }
+            map[xFound][yFound] = 2;    //1 is human with equipment
         }
     }
 
@@ -46,7 +49,10 @@ public class Mapa {
             int xFound = zombie.getX();
             int yFound = zombie.getY();
 
-            map[xFound][yFound] = zombie.getTipo();
+            if ( map[xFound][yFound] != 0 ) {
+                continue;
+            }
+            map[xFound][yFound] = 3;
         }
     }
 
@@ -55,11 +61,18 @@ public class Mapa {
             int xFound = equipamento.getX();
             int yFound = equipamento.getY();
 
-            map[xFound][yFound] = equipamento.getTipo();
+            if ( map[xFound][yFound] != 0 ) {
+                continue;
+            }
+            map[xFound][yFound] = -1;
         }
     }
 
     public int getMapId( int x, int y ) {
         return map[x][y];
+    }
+
+    public void setPosition( int x, int y, int type ) {
+        map[x][y] = type;
     }
 }
