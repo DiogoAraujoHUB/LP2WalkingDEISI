@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
@@ -61,7 +62,7 @@ public class TWDGameManager {
                             String[] splitNumLinesColumns = lineRead.split(" ", 2);
 
                             gameMap.setSizeX( Integer.parseInt( splitNumLinesColumns[0].trim() ) );
-                            gameMap.setSizeY( Integer.parseInt( splitNumLinesColumns[1].trim() ) );
+                            gameMap.setSizeY( Integer.parseInt( splitNumLinesColumns[1].trim()   ) );
                             gameMap.createMap();
                             break;
 
@@ -77,19 +78,21 @@ public class TWDGameManager {
 
                         case 4:
                             for ( int pos = 0; pos < numCreatures; pos++ ) {
-                                String[] splitCreatures = lineRead.split(":", 5 );
+                                String[] splitCreatures = lineRead.split(":" );
 
                                 int creatureID = Integer.parseInt( splitCreatures[0].trim() );
                                 int typeID = Integer.parseInt( splitCreatures[1].trim() );
                                 String creatureName = splitCreatures[2];
-                                int spawnX = Integer.parseInt( splitCreatures[3].trim() );
-                                int spawnY = Integer.parseInt( splitCreatures[4].trim() );
+                                int spawnX = Integer.parseInt( splitCreatures[3].trim() ) - 1;
+                                int spawnY = Integer.parseInt( splitCreatures[4].trim() ) - 1;
 
                                 if ( typeID == 0 ) {
-                                    Zombie zombieCriado = new Zombie( creatureID, typeID, creatureName, spawnX, spawnY );
+                                    Zombie zombieCriado = new Zombie( creatureID, typeID, creatureName, spawnX, spawnY);
+
+                                    System.out.println("Zombie == " + zombieCriado );
                                     zombies.add( zombieCriado );
                                 } else if ( typeID == 1 ) {
-                                    Humano humanoCriado = new Humano( creatureID, typeID, creatureName, spawnX, spawnY );
+                                    Humano humanoCriado = new Humano( creatureID, typeID, creatureName, spawnX, spawnY);
                                     humanos.add( humanoCriado );
                                     currentSurvivors.add( humanoCriado.getNome() );
                                 } else {
@@ -138,7 +141,7 @@ public class TWDGameManager {
                             break;
 
                         default:
-
+                            return true;
                     }
                     numFileLine++;
 

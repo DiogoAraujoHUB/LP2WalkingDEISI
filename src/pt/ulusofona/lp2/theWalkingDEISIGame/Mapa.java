@@ -30,6 +30,8 @@ public class Mapa {
 
     public void createMap() {
         map = new int[sizeX][sizeY];
+        System.out.println("Size X == " + sizeX );
+        System.out.println("Size Y == " + sizeY );
     }
 
     public void addHumans( List<Humano> humans ) {

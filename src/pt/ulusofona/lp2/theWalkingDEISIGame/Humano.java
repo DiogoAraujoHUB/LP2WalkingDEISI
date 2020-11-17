@@ -47,7 +47,7 @@ public class Humano {
     }
 
     public String toString() {
-        String texto = id + " | Humano | Os Vivos | " + nome + " ";
+        String texto = id + " | Humano | Os Vivos |" + nome + "";
         if ( equipamentosApanhados == null ) {
             texto += "@ (" + x + ", " + y + ")";
         } else {
