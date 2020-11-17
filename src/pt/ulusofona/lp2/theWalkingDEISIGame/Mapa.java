@@ -1,5 +1,7 @@
 package pt.ulusofona.lp2.theWalkingDEISIGame;
 
+import java.util.List;
+
 public class Mapa {
     private int sizeX;
     private int sizeY;
@@ -30,7 +32,7 @@ public class Mapa {
         map = new int[sizeX][sizeY];
     }
 
-    public int getMapId( int x, int y ) {
+    public int getMapId(int x, int y, List<Humano> humans, List<Zombie> zombies, List<Equipamento> equipment ) {
         return map[x][y];
     }
 }

@@ -31,11 +31,11 @@ public class Zombie {
     }
 
     public String toString() {
-        String texto = id + " | " + tipo + " | Zombies | " + nome + " ";
+        String texto = id + " | Zombie | Zombies | " + nome + " ";
         if ( equipamentosDestruidos == null || equipamentosDestruidos.size() == 0 ) {
-            texto += "@ (" + x + "," + y + ")";
+            texto += "@ (" + x + ", " + y + ")";
         } else {
-            texto += equipamentosDestruidos.size() + " @ (" + x + "," + y + ")";
+            texto += equipamentosDestruidos.size() + " @ (" + x + ", " + y + ")";
         }
 
         return texto;

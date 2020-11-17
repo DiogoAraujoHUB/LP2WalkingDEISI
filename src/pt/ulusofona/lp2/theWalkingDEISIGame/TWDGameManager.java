@@ -199,6 +199,9 @@ public class TWDGameManager {
         if ( x > gameMap.getSizeX() || y > gameMap.getSizeY() || x < 0 || y < 0 ) {
             return 0;
         }
+        if (gameMap == null ) {
+            return 0;
+        }
 
         return gameMap.getMapId(x, y);
     }
