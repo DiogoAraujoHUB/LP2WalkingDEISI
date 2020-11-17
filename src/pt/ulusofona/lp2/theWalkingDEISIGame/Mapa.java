@@ -40,7 +40,7 @@ public class Mapa {
             if ( map[xFound][yFound] != 0 ) {
                 continue;
             }
-            map[xFound][yFound] = 2;    //1 is human with equipment
+            map[xFound][yFound] = 1;    //1 is human with equipment //previously 2
         }
     }
 
@@ -64,7 +64,7 @@ public class Mapa {
             if ( map[xFound][yFound] != 0 ) {
                 continue;
             }
-            map[xFound][yFound] = -1;
+            map[xFound][yFound] = -2;   //previously -1
         }
     }
 
