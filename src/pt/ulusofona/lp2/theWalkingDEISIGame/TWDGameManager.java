@@ -12,7 +12,6 @@ public class TWDGameManager {
 
     //0 -> day and 1 -> night
     private int dayNightCycle;
-
     private int initialTeamId;
     private int currentTeamId;
     private boolean fairPlay;
