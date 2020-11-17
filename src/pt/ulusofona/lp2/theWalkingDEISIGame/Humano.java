@@ -30,6 +30,18 @@ public class Humano {
         return this.id;
     }
 
+    public int getTipo() {
+        return this.tipo;
+    }
+
+    public int getX() {
+        return this.x;
+    }
+
+    public int getY() {
+        return this.y;
+    }
+
     public String toString() {
         String texto = id + " | Humano | Os Vivos | " + nome + " ";
         if ( equipamentosApanhados == null || equipamentosApanhados.size() == 0 ) {

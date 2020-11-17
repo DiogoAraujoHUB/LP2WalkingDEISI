@@ -11,4 +11,16 @@ public class Equipamento {
         this.x = x;
         this.y = y;
     }
+
+    public int getTipo() {
+        return this.tipo;
+    }
+
+    public int getX() {
+        return this.x;
+    }
+
+    public int getY() {
+        return this.y;
+    }
 }

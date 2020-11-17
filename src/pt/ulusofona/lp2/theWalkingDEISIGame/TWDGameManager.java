@@ -62,7 +62,7 @@ public class TWDGameManager {
 
                             gameMap.setSizeX( Integer.parseInt( splitNumLinesColumns[0].trim() ) );
                             gameMap.setSizeY( Integer.parseInt( splitNumLinesColumns[1].trim() ) );
-                            gameMap.createMap();
+                            gameMap.createMap( humanos, zombies, equipment );
                             break;
 
                         case 2:

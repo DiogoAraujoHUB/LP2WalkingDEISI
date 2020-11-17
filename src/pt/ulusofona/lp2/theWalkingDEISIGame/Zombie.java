@@ -30,6 +30,18 @@ public class Zombie {
         return "Zombie.png";
     }
 
+    public int getX() {
+        return this.x;
+    }
+
+    public int getY() {
+        return this.y;
+    }
+
+    public int getTipo() {
+        return this.tipo;
+    }
+
     public String toString() {
         String texto = id + " | Zombie | Zombies | " + nome + " ";
         if ( equipamentosDestruidos == null || equipamentosDestruidos.size() == 0 ) {
