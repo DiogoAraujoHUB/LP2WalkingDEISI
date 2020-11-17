@@ -260,7 +260,7 @@ public class TWDGameManager {
         for ( Zombie zombie : zombies ) {
             Random randomNum = new Random();
             int randomChoice = randomNum.nextInt( 4 );
-            System.out.println("Random == " + randomChoice );
+            //System.out.println("Random == " + randomChoice );
 
             switch ( randomChoice ) {
                 default:
