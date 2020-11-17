@@ -48,7 +48,7 @@ public class Zombie {
 
     public String toString() {
         String texto = id + " | Zombie | Zombies | " + nome + " ";
-        if ( equipamentosDestruidos == null || equipamentosDestruidos.size() == 0 ) {
+        if ( equipamentosDestruidos == null ) {
             texto += "@ (" + x + ", " + y + ")";
         } else {
             texto += equipamentosDestruidos.size() + " @ (" + x + ", " + y + ")";
