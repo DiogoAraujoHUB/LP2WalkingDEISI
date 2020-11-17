@@ -62,7 +62,7 @@ public class TWDGameManager {
 
                             gameMap.setSizeX( Integer.parseInt( splitNumLinesColumns[0].trim() ) );
                             gameMap.setSizeY( Integer.parseInt( splitNumLinesColumns[1].trim() ) );
-                            gameMap.createMap( humanos, zombies, equipment );
+                            gameMap.createMap();
                             break;
 
                         case 2:
@@ -91,6 +91,7 @@ public class TWDGameManager {
                                 } else if ( typeID == 1 ) {
                                     Humano humanoCriado = new Humano( creatureID, typeID, creatureName, spawnX, spawnY );
                                     humanos.add( humanoCriado );
+                                    currentSurvivors.add( humanoCriado.getNome() );
                                 } else {
                                     System.out.println("Erro no tipo de criatura");
                                     return false;
@@ -104,6 +105,9 @@ public class TWDGameManager {
                                     return false;
                                 }
                             }
+
+                            gameMap.addHumans( humanos );
+                            gameMap.addZombies( zombies );
                             break;
 
                         case 5:
@@ -129,6 +133,10 @@ public class TWDGameManager {
                                     return false;
                                 }
                             }
+
+                            gameMap.addEquipment( equipment );
+                            break;
+
                         default:
 
                     }

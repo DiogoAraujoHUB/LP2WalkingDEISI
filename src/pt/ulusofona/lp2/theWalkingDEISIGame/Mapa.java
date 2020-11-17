@@ -28,21 +28,29 @@ public class Mapa {
         return this.sizeY;
     }
 
-    public void createMap(List<Humano> humans, List<Zombie> zombies, List<Equipamento> equipment ) {
+    public void createMap() {
         map = new int[sizeX][sizeY];
+    }
 
+    public void addHumans( List<Humano> humans ) {
         for ( Humano human: humans ) {
             int xFound = human.getX();
             int yFound = human.getY();
 
             map[xFound][yFound] = human.getTipo();
         }
+    }
+
+    public void addZombies( List<Zombie> zombies ) {
         for ( Zombie zombie: zombies ) {
             int xFound = zombie.getX();
             int yFound = zombie.getY();
 
             map[xFound][yFound] = zombie.getTipo();
         }
+    }
+
+    public void addEquipment( List<Equipamento> equipment ) {
         for ( Equipamento equipamento: equipment ) {
             int xFound = equipamento.getX();
             int yFound = equipamento.getY();

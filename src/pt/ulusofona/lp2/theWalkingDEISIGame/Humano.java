@@ -42,6 +42,10 @@ public class Humano {
         return this.y;
     }
 
+    public String getNome() {
+        return this.nome;
+    }
+
     public String toString() {
         String texto = id + " | Humano | Os Vivos | " + nome + " ";
         if ( equipamentosApanhados == null || equipamentosApanhados.size() == 0 ) {

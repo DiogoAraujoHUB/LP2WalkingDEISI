@@ -42,6 +42,10 @@ public class Zombie {
         return this.tipo;
     }
 
+    public String getNome() {
+        return this.nome;
+    }
+
     public String toString() {
         String texto = id + " | Zombie | Zombies | " + nome + " ";
         if ( equipamentosDestruidos == null || equipamentosDestruidos.size() == 0 ) {
