@@ -51,6 +51,7 @@ public class TWDGameManager {
         int numCreatures = 0;
         int numEquipment = 0;
 
+        //os dias estão a ser lidos mal
         try {
             BufferedReader reader = new BufferedReader( new FileReader( ficheiroInicial ) );
             String lineRead = null;
@@ -535,10 +536,12 @@ public class TWDGameManager {
             currentTeamId--;
         }
         numberOfTurns++;
-        if ( dayNightCycle == 0 && numberOfTurns % 2 == 0 ) {
-            dayNightCycle = 1;
-        } else {
-            dayNightCycle = 0;
+        if ( numberOfTurns % 2 == 0 ) {
+            if ( dayNightCycle == 0 ) {
+                dayNightCycle = 1;
+            } else {
+                dayNightCycle = 0;
+            }
         }
     }
 
@@ -560,7 +563,7 @@ public class TWDGameManager {
 
     public List<String> getSurvivors() {
         List<String> listOfSurvivors = new ArrayList<>();
-        String text = "Nr. de turnos terminados:\n";
+        String text = "Nr. de turnos terminados:";
         listOfSurvivors.add( text );
         text = "" + numberOfTurns + "\n\n\n";
         listOfSurvivors.add( text );
