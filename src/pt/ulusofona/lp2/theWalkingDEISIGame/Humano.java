@@ -4,20 +4,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Humano {
+    private int twoHanded;
     private int id;
     private int x, y;
-    private boolean alive;
+    private int numEquipamentosApanhados;
 
     private String nome;
-    private List<Equipamento> equipamentosApanhados;
+    private List<Equipamento> equipamentoApanhado;
 
     Humano(int id, String nome, int x, int y) {
         this.id = id;
         this.nome = nome;
         this.x = x;
         this.y = y;
-        this.alive = true;
-        equipamentosApanhados = new ArrayList<>();
+        this.equipamentoApanhado = new ArrayList<Equipamento>();
+        this.numEquipamentosApanhados = 0;
     }
 
     public String getImagePNG() {
@@ -42,12 +43,28 @@ public class Humano {
 
     public String toString() {
         String texto = id + " | Humano | Os Vivos |" + nome + "";
-        if ( equipamentosApanhados == null ) {
-            texto += "@ (" + x + ", " + y + ")";
-        } else {
-            texto += equipamentosApanhados.size() + " @ (" + x + ", " + y + ")";
-        }
+        texto += numEquipamentosApanhados + " @ (" + x + ", " + y + ")";
 
         return texto;
+    }
+
+    public List<Equipamento> getEquipamentoApanhado() {
+        return this.equipamentoApanhado;
+    }
+
+    public int getNumEquipamentoApanhado() {
+        return this.numEquipamentosApanhados;
+    }
+
+    public void apanharEquipamento() {
+        numEquipamentosApanhados++;
+    }
+
+    public int getTwoHanded() {
+        return twoHanded;
+    }
+
+    public void setTwoHanded( int twoHanded ) {
+        this.twoHanded = twoHanded;
     }
 }

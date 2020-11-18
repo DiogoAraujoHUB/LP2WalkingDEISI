@@ -6,16 +6,16 @@ import java.util.List;
 public class Zombie {
     private int id;
     private int x, y;
+    private int numEquipamentosDestruidos;
 
     private String nome;
-    private List<Equipamento> equipamentosDestruidos;
 
     Zombie( int id, String nome, int x, int y ) {
         this.id = id;
         this.nome = nome;
         this.x = x;
         this.y = y;
-        equipamentosDestruidos = new ArrayList<>();
+        this.numEquipamentosDestruidos = 0;
     }
 
     public int getId() {
@@ -40,13 +40,17 @@ public class Zombie {
 
     public String toString() {
         String texto = id + " | Zombie | Os Outros |" + nome + "";
-        if ( equipamentosDestruidos == null ) {
-            texto += "@ (" + x + ", " + y + ")";
-        } else {
-            texto += equipamentosDestruidos.size() + " @ (" + x + ", " + y + ")";
-        }
+        texto += numEquipamentosDestruidos + " @ (" + x + ", " + y + ")";
 
         return texto;
+    }
+
+    public int getNumEquipamentosDestruidos() {
+        return this.numEquipamentosDestruidos;
+    }
+
+    public void destroiEquipamento() {
+        numEquipamentosDestruidos++;
     }
 
     public void setX( int x ) {

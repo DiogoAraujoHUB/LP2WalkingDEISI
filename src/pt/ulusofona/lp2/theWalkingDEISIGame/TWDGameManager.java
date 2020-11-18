@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.sql.SQLOutput;
 import java.util.*;
 
 public class TWDGameManager {
@@ -255,8 +256,52 @@ public class TWDGameManager {
         }
 
         //ocorre o movimento
-        //ainda tenho que fazer que tmb mude no humano
+        //tenho que fazer para a arma
+        Humano humanFound = gameMap.getPosition(xO,yO).getHuman();
         int tipoMovido = gameMap.getMapId( xO, yO );
+
+            //erro está a acontecer aqui
+        if ( humanFound.getTwoHanded() == 1 ) {
+            gameMap.getPosition(xO,yO).setEquipamento(humanFound.getEquipamentoApanhado().get(0));
+            humanFound.getEquipamentoApanhado().remove(0);
+            humanFound.setTwoHanded(0);
+            gameMap.setPosition( xO, yO, -1 );
+            gameMap.setPosition( xD, yD, tipoMovido );
+            gameMap.getPosition(xD,yD).setHuman( humanFound );
+            gameMap.getPosition(xO,yO).setHuman(null);
+
+            incrementaTempo();
+            return true;
+        }
+
+        if ( gameMap.getMapId( xD, yD ) == -1 ) {
+            tipoMovido = 1;
+            if ( humanFound.getEquipamentoApanhado().size() == 0 ) {
+                humanFound.getEquipamentoApanhado().add( gameMap.getPosition(xD,yD).getEquipamento() );
+                gameMap.getPosition(xD,yD).setEquipamento(null);
+                humanFound.apanharEquipamento();
+                gameMap.setPosition( xO, yO, 0 );
+                gameMap.setPosition( xD, yD, tipoMovido );
+                gameMap.getPosition(xD,yD).setHuman( humanFound );
+                gameMap.getPosition(xO,yO).setHuman(null);
+
+                incrementaTempo();
+                return true;
+            }
+
+            humanFound.getEquipamentoApanhado().add( gameMap.getPosition(xD,yD).getEquipamento() );
+            gameMap.getPosition(xD,yD).setEquipamento(null);
+            humanFound.apanharEquipamento();
+            humanFound.setTwoHanded(1);
+            gameMap.setPosition( xO, yO, 0 );
+            gameMap.setPosition( xD, yD, tipoMovido );
+            gameMap.getPosition(xD,yD).setHuman( humanFound );
+            gameMap.getPosition(xO,yO).setHuman(null);
+
+            incrementaTempo();
+            return true;
+        }
+
         gameMap.setPosition( xO, yO, 0 );
         gameMap.setPosition( xD, yD, tipoMovido );
         gameMap.getPosition(xD,yD).setHuman( gameMap.getPosition(xO,yO).getHuman() );
@@ -305,6 +350,10 @@ public class TWDGameManager {
     public boolean moveZombie() {
         Random randomNum = new Random();
         int zombieSize = zombies.size();
+        if ( zombieSize == 0 ) {
+            return false;
+        }
+
         Zombie zombie;
         while ( true ) {
             int randomZombie = randomNum.nextInt( zombieSize );
@@ -333,6 +382,10 @@ public class TWDGameManager {
                         break;
                     }
 
+                    if ( gameMap.getMapId( zombie.getX(), zombie.getY() - 1 )  == -1 ) {
+                        zombie.destroiEquipamento();
+                        gameMap.getPosition(zombie.getX(),zombie.getY() - 1).setEquipamento(null);
+                    }
                     incrementaTempo();
                     gameMap.setPosition( zombie.getX(), zombie.getY(), 0 );
                     gameMap.setPosition( zombie.getX(), zombie.getY() - 1, 3 );
@@ -431,7 +484,7 @@ public class TWDGameManager {
     //se uma das condições de paragem ja tenha sido alcançada
     //então retorna true
     public boolean gameIsOver() {
-        if ( numberOfTurns == 12 ) {
+        if ( numberOfTurns == 16 ) {    //é suposto ser 12
             return true;
         }
         if ( humanos.size() == 0 ) {
@@ -448,7 +501,7 @@ public class TWDGameManager {
         List<String> listOfSurvivors = new ArrayList<>();
         String text = "Nr. de turnos terminados:\n";
         listOfSurvivors.add( text );
-        text = "" + numberOfTurns + "\n\n";
+        text = "" + numberOfTurns + "\n\n\n";
         listOfSurvivors.add( text );
 
         text = "OS VIVOS\n";
@@ -479,10 +532,21 @@ public class TWDGameManager {
     }
 
     public boolean hasEquipment( int creatureId, int equipmentTypeId ) {
-        if ( creatureId == 0 ) {
-            return true;
-        } else if ( creatureId == 1 ) {
-            return true;
+        for ( Humano humano: humanos ) {
+            if ( humano.getId() == creatureId ) {
+                if ( humano.getEquipamentoApanhado() == null ) {
+                    return false;
+                }
+                if ( humano.getEquipamentoApanhado().size() == 0 ) {
+                    return false;
+                }
+
+                if ( humano.getEquipamentoApanhado().get(0).getTipo() == equipmentTypeId ) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
         }
 
         return false;
