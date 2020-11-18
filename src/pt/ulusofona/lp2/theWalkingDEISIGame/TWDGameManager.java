@@ -222,11 +222,35 @@ public class TWDGameManager {
         if ( currentTeamId == 1 ) {
             boolean zombieMovement = moveZombie();
 
-            if ( !zombieMovement ) {
+            if ( zombieMovement== false ) {
                 return false;
             } else {
                 return true;
             }
+        }
+
+        if ( verificaCondicoes( xO, yO, xD, yD ) == false ) {
+            return false;
+        }
+
+        //ocorre o movimento
+        //ainda tenho que fazer que tmb mude no humano
+        int tipoMovido = gameMap.getMapId( xO, yO );
+        gameMap.setPosition( xO, yO, 0 );
+        gameMap.setPosition( xD, yD, tipoMovido );
+
+        incrementaTempo();
+        return true;
+    }
+
+    public boolean verificaCondicoes( int xO, int yO, int xD, int yD ) {
+        //verifica se tamos a tentar mover para cima de um humano
+        if ( gameMap.getMapId(xD,yD) == 2 ) {
+            return false;
+        }
+        //verifica se tentamos mover para cima de um zombie
+        if ( gameMap.getMapId(xD,yD) == 3 ) {
+            return false;
         }
 
         //verifica se tamos a tentar mover nada
@@ -238,35 +262,112 @@ public class TWDGameManager {
             return false;
         }
 
-        int tipoMovido = gameMap.getMapId( xO, yO );
-        gameMap.setPosition( xO, yO, 0 );
-        gameMap.setPosition( xD, yD, tipoMovido );
+        //verifica se tenta mover mais que uma posição
+        if ( xO + 1 == xD && yO == xD ) {
+            return true;
+        }
+        if( xO - 1 == xD && yO == yD ) {
+            return true;
+        }
+        if ( xO == xD && yO + 1 == yD ) {
+            return true;
+        }
+        if ( xO == xD && yO - 1 == yD ) {
+            return true;
+        }
 
-        if ( currentTeamId == initialTeamId ) {
-            currentTeamId++;
-        } else {
-            currentTeamId--;
-        }
-        numberOfTurns++;
-        if ( dayNightCycle == 0 && numberOfTurns % 2 == 0 ) {
-            dayNightCycle = 1;
-        } else {
-            dayNightCycle = 0;
-        }
-        return true;
+        return false;
     }
 
     public boolean moveZombie() {
-        for ( Zombie zombie : zombies ) {
-            Random randomNum = new Random();
-            int randomChoice = randomNum.nextInt( 4 );
-            //System.out.println("Random == " + randomChoice );
+        Random randomNum = new Random();
 
-            switch ( randomChoice ) {
-                default:
+        for ( Zombie zombie : zombies ) {
+            int count = 0;
+
+            while ( count <= 8 ) {
+                count++;
+                int random = randomNum.nextInt( 4 );
+                System.out.println("Random == " + random );
+                switch ( random ) {
+                    case 0:
+                        if ( zombie.getY() - 1 < 0 ) {
+                            break;
+                        }
+                        if ( gameMap.getMapId( zombie.getX(), zombie.getY() - 1 ) == 2 ) {
+                            break;
+                        }
+                        if ( gameMap.getMapId( zombie.getX(), zombie.getY() - 1 ) == 3 ) {
+                            break;
+                        }
+
+                        System.out.println("0");
+                        incrementaTempo();
+                        gameMap.setPosition( zombie.getX(), zombie.getY(), 0 );
+                        gameMap.setPosition( zombie.getX(), zombie.getY() - 1, 3 );
+                        return true;
+
+                    case 1:
+                        if ( zombie.getY() + 1 > gameMap.getSizeY() - 1 ) {
+                            break;
+                        }
+                        if ( gameMap.getMapId( zombie.getX(), zombie.getY() + 1 ) == 2 ) {
+                            break;
+                        }
+                        if ( gameMap.getMapId( zombie.getX(), zombie.getY() + 1) == 3 ) {
+                            break;
+                        }
+
+                        System.out.println("1");
+                        incrementaTempo();
+                        gameMap.setPosition( zombie.getX(), zombie.getY(), 0 );
+                        gameMap.setPosition( zombie.getX(), zombie.getY() + 1, 3 );
+                        return true;
+
+                    case 2:
+                        if ( zombie.getX() - 1 < 0 ) {
+                            break;
+                        }
+                        if ( gameMap.getMapId( zombie.getX() - 1, zombie.getY() ) == 2 ) {
+                            break;
+                        }
+                        if ( gameMap.getMapId( zombie.getX()  - 1, zombie.getY() ) == 3 ) {
+                            break;
+                        }
+
+                        System.out.println("2");
+                        incrementaTempo();
+                        gameMap.setPosition( zombie.getX(), zombie.getY(), 0 );
+                        gameMap.setPosition( zombie.getX() - 1, zombie.getY(), 3 );
+                        return true;
+
+                    case 3:
+                        if ( zombie.getX() + 1 > gameMap.getSizeX() - 1 ) {
+                            break;
+                        }
+                        if ( gameMap.getMapId( zombie.getX() + 1, zombie.getY() ) == 2 ) {
+                            break;
+                        }
+                        if ( gameMap.getMapId( zombie.getX() + 1, zombie.getY() ) == 3 ) {
+                            break;
+                        }
+
+                        System.out.println("3");
+                        incrementaTempo();
+                        gameMap.setPosition( zombie.getX(), zombie.getY(), 0 );
+                        gameMap.setPosition( zombie.getX() + 1, zombie.getY(), 3 );
+                        return true;
+
+                    default:
+                }
+
             }
         }
 
+        return false;
+    }
+
+    public void incrementaTempo() {
         if ( currentTeamId == initialTeamId ) {
             currentTeamId++;
         } else {
@@ -278,7 +379,6 @@ public class TWDGameManager {
         } else {
             dayNightCycle = 0;
         }
-        return true;
     }
 
     //se uma das condições de paragem ja tenha sido alcançada
