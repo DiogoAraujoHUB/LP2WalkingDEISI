@@ -42,4 +42,13 @@ public class Testes {
         game.startGame( new File("valoresWalkingDEISI.txt") );
         assertEquals( game.verificaCondicoes(2,2, 5, 5), false );
     }
+
+    @Test
+    public void testIncrementaTempo() {
+        TWDGameManager game = new TWDGameManager();
+
+        game.startGame( new File("valoresWalkingDEISI.txt") );
+        game.incrementaTempo();
+        assertEquals( game.isDay(), true );
+    }
 }
