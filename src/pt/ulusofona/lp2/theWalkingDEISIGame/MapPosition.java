@@ -47,6 +47,7 @@ public class MapPosition {
     }
 
     public String toString() {
-        return "Tipo == " + tipo + " and Human == " + human + " and Zombie == " + zombie;
+        return "Tipo == " + tipo + " and Human == " + human + " and Zombie == "
+                + zombie + " and equipment == " + equipamento;
     }
 }

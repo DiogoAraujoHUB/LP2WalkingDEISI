@@ -83,7 +83,7 @@ public class Mapa {
         return map[x][y].getTipo();
     }
 
-    public void setPosition( int x, int y, int type ) {
+    public void setPositionType( int x, int y, int type ) {
         map[x][y].setTipo(type);
     }
 

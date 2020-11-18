@@ -273,8 +273,8 @@ public class TWDGameManager {
             gameMap.getPosition(xO,yO).setEquipamento(humanFound.getEquipamentoApanhado().get(0));
             humanFound.getEquipamentoApanhado().remove(0);
             humanFound.setTwoHanded(0);
-            gameMap.setPosition( xO, yO, -1 );
-            gameMap.setPosition( xD, yD, tipoMovido );
+            gameMap.setPositionType( xO, yO, -1 );
+            gameMap.setPositionType( xD, yD, tipoMovido );
             gameMap.getPosition(xD,yD).setHuman( humanFound );
             gameMap.getPosition(xO,yO).setHuman(null);
 
@@ -288,8 +288,8 @@ public class TWDGameManager {
                 humanFound.getEquipamentoApanhado().add( gameMap.getPosition(xD,yD).getEquipamento() );
                 gameMap.getPosition(xD,yD).setEquipamento(null);
                 humanFound.apanharEquipamento();
-                gameMap.setPosition( xO, yO, 0 );
-                gameMap.setPosition( xD, yD, tipoMovido );
+                gameMap.setPositionType( xO, yO, 0 );
+                gameMap.setPositionType( xD, yD, tipoMovido );
                 gameMap.getPosition(xD,yD).setHuman( humanFound );
                 gameMap.getPosition(xO,yO).setHuman(null);
 
@@ -301,8 +301,8 @@ public class TWDGameManager {
             gameMap.getPosition(xD,yD).setEquipamento(null);
             humanFound.apanharEquipamento();
             humanFound.setTwoHanded(1);
-            gameMap.setPosition( xO, yO, 0 );
-            gameMap.setPosition( xD, yD, tipoMovido );
+            gameMap.setPositionType( xO, yO, 0 );
+            gameMap.setPositionType( xD, yD, tipoMovido );
             gameMap.getPosition(xD,yD).setHuman( humanFound );
             gameMap.getPosition(xO,yO).setHuman(null);
 
@@ -310,8 +310,8 @@ public class TWDGameManager {
             return true;
         }
 
-        gameMap.setPosition( xO, yO, 0 );
-        gameMap.setPosition( xD, yD, tipoMovido );
+        gameMap.setPositionType( xO, yO, 0 );
+        gameMap.setPositionType( xD, yD, tipoMovido );
         gameMap.getPosition(xD,yD).setHuman( gameMap.getPosition(xO,yO).getHuman() );
         gameMap.getPosition(xO,yO).setHuman(null);
 
@@ -343,7 +343,7 @@ public class TWDGameManager {
         }
 
         //verifica se tenta mover mais que uma posição
-        if ( xO + 1 == xD && yO == xD ) {
+        if ( xO + 1 == xD && yO == yD ) {
             return true;
         }
         if( xO - 1 == xD && yO == yD ) {
@@ -361,6 +361,9 @@ public class TWDGameManager {
 
     public boolean moveZombie() {
         Random randomNum = new Random();
+        if ( zombies == null ) {
+            return false;
+        }
         int zombieSize = zombies.size();
         if ( zombieSize == 0 ) {
             return false;
@@ -400,11 +403,11 @@ public class TWDGameManager {
                     if ( gameMap.getMapId( zombie.getX(), zombie.getY() - 1 )  == -1 ) {
                         zombie.destroiEquipamento();
                         gameMap.getPosition(zombie.getX(),zombie.getY() - 1).setEquipamento(null);
-                        gameMap.setPosition(zombie.getX(), zombie.getY() - 1, 0);
+                        gameMap.setPositionType(zombie.getX(), zombie.getY() - 1, 0);
                     }
                     incrementaTempo();
-                    gameMap.setPosition( zombie.getX(), zombie.getY(), 0 );
-                    gameMap.setPosition( zombie.getX(), zombie.getY() - 1, 3 );
+                    gameMap.setPositionType( zombie.getX(), zombie.getY(), 0 );
+                    gameMap.setPositionType( zombie.getX(), zombie.getY() - 1, 3 );
                     gameMap.getPosition(zombie.getX(), zombie.getY() - 1)
                             .setZombie( gameMap.getPosition(zombie.getX(),zombie.getY() ).getZombie() );
                     gameMap.getPosition(zombie.getX(), zombie.getY() ).setZombie( null );
@@ -429,12 +432,12 @@ public class TWDGameManager {
                     if ( gameMap.getMapId( zombie.getX(), zombie.getY() + 1 )  == -1 ) {
                         zombie.destroiEquipamento();
                         gameMap.getPosition(zombie.getX(),zombie.getY() + 1).setEquipamento(null);
-                        gameMap.setPosition(zombie.getX(), zombie.getY() + 1, 0);
+                        gameMap.setPositionType(zombie.getX(), zombie.getY() + 1, 0);
                     }
 
                     incrementaTempo();
-                    gameMap.setPosition( zombie.getX(), zombie.getY(), 0 );
-                    gameMap.setPosition( zombie.getX(), zombie.getY() + 1, 3 );
+                    gameMap.setPositionType( zombie.getX(), zombie.getY(), 0 );
+                    gameMap.setPositionType( zombie.getX(), zombie.getY() + 1, 3 );
                     gameMap.getPosition(zombie.getX(), zombie.getY() + 1)
                             .setZombie( gameMap.getPosition(zombie.getX(),zombie.getY() ).getZombie() );
                     gameMap.getPosition(zombie.getX(), zombie.getY() ).setZombie( null );
@@ -459,12 +462,12 @@ public class TWDGameManager {
                     if ( gameMap.getMapId( zombie.getX() - 1, zombie.getY() )  == -1 ) {
                         zombie.destroiEquipamento();
                         gameMap.getPosition(zombie.getX() - 1,zombie.getY() ).setEquipamento(null);
-                        gameMap.setPosition(zombie.getX() - 1, zombie.getY(), 0);
+                        gameMap.setPositionType(zombie.getX() - 1, zombie.getY(), 0);
                     }
 
                     incrementaTempo();
-                    gameMap.setPosition( zombie.getX(), zombie.getY(), 0 );
-                    gameMap.setPosition( zombie.getX() - 1, zombie.getY(), 3 );
+                    gameMap.setPositionType( zombie.getX(), zombie.getY(), 0 );
+                    gameMap.setPositionType( zombie.getX() - 1, zombie.getY(), 3 );
                     gameMap.getPosition(zombie.getX() - 1, zombie.getY())
                             .setZombie( gameMap.getPosition(zombie.getX(),zombie.getY() ).getZombie() );
                     gameMap.getPosition(zombie.getX(), zombie.getY() ).setZombie( null );
@@ -489,12 +492,12 @@ public class TWDGameManager {
                     if ( gameMap.getMapId( zombie.getX() + 1, zombie.getY() )  == -1 ) {
                         zombie.destroiEquipamento();
                         gameMap.getPosition(zombie.getX() + 1,zombie.getY() ).setEquipamento(null);
-                        gameMap.setPosition(zombie.getX() + 1, zombie.getY(), 0);
+                        gameMap.setPositionType(zombie.getX() + 1, zombie.getY(), 0);
                     }
 
                     incrementaTempo();
-                    gameMap.setPosition( zombie.getX(), zombie.getY(), 0 );
-                    gameMap.setPosition( zombie.getX() + 1, zombie.getY(), 3 );
+                    gameMap.setPositionType( zombie.getX(), zombie.getY(), 0 );
+                    gameMap.setPositionType( zombie.getX() + 1, zombie.getY(), 3 );
                     gameMap.getPosition(zombie.getX() + 1, zombie.getY())
                             .setZombie( gameMap.getPosition(zombie.getX(),zombie.getY() ).getZombie() );
                     gameMap.getPosition(zombie.getX(), zombie.getY() ).setZombie( null );
