@@ -257,7 +257,6 @@ public class TWDGameManager {
         //ocorre o movimento
         //ainda tenho que fazer que tmb mude no humano
         int tipoMovido = gameMap.getMapId( xO, yO );
-        System.out.println("Tipo movido == " + tipoMovido );
         gameMap.setPosition( xO, yO, 0 );
         gameMap.setPosition( xD, yD, tipoMovido );
         gameMap.getPosition(xD,yD).setHuman( gameMap.getPosition(xO,yO).getHuman() );
