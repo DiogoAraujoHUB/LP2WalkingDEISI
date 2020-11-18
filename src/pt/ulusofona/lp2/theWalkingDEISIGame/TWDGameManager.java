@@ -37,6 +37,10 @@ public class TWDGameManager {
     //leitura do ficheiro texto
     //e carregar para a memória a informação relevante
     public boolean startGame( File ficheiroInicial ) {
+        humanos.clear();
+        zombies.clear();
+        equipment.clear();
+
         int numFileLine = 1;
         int numCreatures = 0;
         int numEquipment = 0;
@@ -228,7 +232,7 @@ public class TWDGameManager {
                 mapId = 0;
         }
 
-        return mapId;
+        return tipo;
     }
 
     //deve tentar executar uma jogada
@@ -243,13 +247,7 @@ public class TWDGameManager {
         }
 
         if ( currentTeamId == 1 ) {
-            boolean zombieMovement = moveZombie();
-
-            if ( zombieMovement== false ) {
-                return false;
-            } else {
-                return true;
-            }
+            return moveZombie();
         }
 
         if ( verificaCondicoes( xO, yO, xD, yD ) == false ) {
