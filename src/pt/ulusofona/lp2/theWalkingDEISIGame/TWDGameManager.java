@@ -324,11 +324,15 @@ public class TWDGameManager {
         gameMap.getPosition(xO,yO).setHuman(null);
 
         incrementaTempo();
-        System.out.println("Human Map Position == " + gameMap.getPosition(xD,yD) );
         return true;
     }
 
     public boolean verificaCondicoes( int xO, int yO, int xD, int yD ) {
+        //verifica se a equipa é a correta, ou seja, a dos humanos
+        if ( currentTeamId != 0 ) {
+            return false;
+        }
+
         //verifica se tamos a tentar mover para cima de um humano
         if ( gameMap.getMapId(xD,yD) == 2 || gameMap.getMapId(xD,yD) == 1) {
             return false;
@@ -519,7 +523,7 @@ public class TWDGameManager {
 
         }
 
-        return false;
+        return true;
     }
 
     public void incrementaTempo() {
