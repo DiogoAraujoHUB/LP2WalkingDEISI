@@ -232,7 +232,7 @@ public class TWDGameManager {
                 mapId = 0;
         }
 
-        return tipo;
+        return mapId;
     }
 
     //deve tentar executar uma jogada
