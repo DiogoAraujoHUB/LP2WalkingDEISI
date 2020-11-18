@@ -73,7 +73,11 @@ public class TWDGameManager {
 
                         case 2:
                             initialTeamId = Integer.parseInt( lineRead.trim() );
-                            currentTeamId = initialTeamId;
+                            if ( initialTeamId == 0 || initialTeamId == 1 ) {
+                                currentTeamId = initialTeamId;
+                            } else {
+                                return false;
+                            }
                             break;
 
                         case 3:
@@ -264,9 +268,7 @@ public class TWDGameManager {
         //tenho que fazer para a arma
         Humano humanFound = gameMap.getPosition(xO,yO).getHuman();
         int tipoMovido = gameMap.getMapId( xO, yO );
-        System.out.println("Human == " + humanFound );
 
-            //erro está a acontecer aqui
         if ( humanFound.getTwoHanded() == 1 ) {
             gameMap.getPosition(xO,yO).setEquipamento(humanFound.getEquipamentoApanhado().get(0));
             humanFound.getEquipamentoApanhado().remove(0);
@@ -385,7 +387,10 @@ public class TWDGameManager {
                     if ( zombie.getY() - 1 < 0 ) {
                         break;
                     }
-                    if ( gameMap.getMapId( zombie.getX(), zombie.getY() - 1 ) == 2 ) {
+                    if ( gameMap.getMapId( zombie.getX(), zombie.getY() - 1 ) == 2  ) {
+                        break;
+                    }
+                    if ( gameMap.getMapId( zombie.getX(), zombie.getY() - 1 ) == 1 ) {
                         break;
                     }
                     if ( gameMap.getMapId( zombie.getX(), zombie.getY() - 1 ) == 3 ) {
@@ -412,6 +417,9 @@ public class TWDGameManager {
                         break;
                     }
                     if ( gameMap.getMapId( zombie.getX(), zombie.getY() + 1 ) == 2 ) {
+                        break;
+                    }
+                    if ( gameMap.getMapId( zombie.getX(), zombie.getY() + 1 ) == 1 ) {
                         break;
                     }
                     if ( gameMap.getMapId( zombie.getX(), zombie.getY() + 1) == 3 ) {
@@ -441,6 +449,9 @@ public class TWDGameManager {
                     if ( gameMap.getMapId( zombie.getX() - 1, zombie.getY() ) == 2 ) {
                         break;
                     }
+                    if ( gameMap.getMapId( zombie.getX() - 1, zombie.getY()  ) == 1 ) {
+                        break;
+                    }
                     if ( gameMap.getMapId( zombie.getX()  - 1, zombie.getY() ) == 3 ) {
                         break;
                     }
@@ -466,6 +477,9 @@ public class TWDGameManager {
                         break;
                     }
                     if ( gameMap.getMapId( zombie.getX() + 1, zombie.getY() ) == 2 ) {
+                        break;
+                    }
+                    if ( gameMap.getMapId( zombie.getX() + 1, zombie.getY() ) == 1 ) {
                         break;
                     }
                     if ( gameMap.getMapId( zombie.getX() + 1, zombie.getY() ) == 3 ) {
