@@ -41,6 +41,11 @@ public class TWDGameManager {
         humanos.clear();
         zombies.clear();
         equipment.clear();
+        initialTeamId = 0;
+        currentTeamId = 0;
+        numberOfTurns = 0;
+        gameMap = new Mapa();
+        dayNightCycle = 0;
 
         int numFileLine = 1;
         int numCreatures = 0;
@@ -259,6 +264,7 @@ public class TWDGameManager {
         //tenho que fazer para a arma
         Humano humanFound = gameMap.getPosition(xO,yO).getHuman();
         int tipoMovido = gameMap.getMapId( xO, yO );
+        System.out.println("Human == " + humanFound );
 
             //erro está a acontecer aqui
         if ( humanFound.getTwoHanded() == 1 ) {
@@ -313,7 +319,7 @@ public class TWDGameManager {
 
     public boolean verificaCondicoes( int xO, int yO, int xD, int yD ) {
         //verifica se tamos a tentar mover para cima de um humano
-        if ( gameMap.getMapId(xD,yD) == 2 ) {
+        if ( gameMap.getMapId(xD,yD) == 2 || gameMap.getMapId(xD,yD) == 1) {
             return false;
         }
         //verifica se tentamos mover para cima de um zombie
@@ -327,6 +333,10 @@ public class TWDGameManager {
         }
         //verifica se tamos a tentar mover um zombie, ou um equipamento
         if ( gameMap.getMapId(xO, yO) == 3 || gameMap.getMapId(xO, yO) == -1 ) {
+            return false;
+        }
+        //verifica se tentamos mover um zombie
+        if ( gameMap.getMapId(xO,yO) == 3 ) {
             return false;
         }
 
@@ -385,6 +395,7 @@ public class TWDGameManager {
                     if ( gameMap.getMapId( zombie.getX(), zombie.getY() - 1 )  == -1 ) {
                         zombie.destroiEquipamento();
                         gameMap.getPosition(zombie.getX(),zombie.getY() - 1).setEquipamento(null);
+                        gameMap.setPosition(zombie.getX(), zombie.getY() - 1, 0);
                     }
                     incrementaTempo();
                     gameMap.setPosition( zombie.getX(), zombie.getY(), 0 );
@@ -405,6 +416,12 @@ public class TWDGameManager {
                     }
                     if ( gameMap.getMapId( zombie.getX(), zombie.getY() + 1) == 3 ) {
                         break;
+                    }
+
+                    if ( gameMap.getMapId( zombie.getX(), zombie.getY() + 1 )  == -1 ) {
+                        zombie.destroiEquipamento();
+                        gameMap.getPosition(zombie.getX(),zombie.getY() + 1).setEquipamento(null);
+                        gameMap.setPosition(zombie.getX(), zombie.getY() + 1, 0);
                     }
 
                     incrementaTempo();
@@ -428,6 +445,12 @@ public class TWDGameManager {
                         break;
                     }
 
+                    if ( gameMap.getMapId( zombie.getX() - 1, zombie.getY() )  == -1 ) {
+                        zombie.destroiEquipamento();
+                        gameMap.getPosition(zombie.getX() - 1,zombie.getY() ).setEquipamento(null);
+                        gameMap.setPosition(zombie.getX() - 1, zombie.getY(), 0);
+                    }
+
                     incrementaTempo();
                     gameMap.setPosition( zombie.getX(), zombie.getY(), 0 );
                     gameMap.setPosition( zombie.getX() - 1, zombie.getY(), 3 );
@@ -447,6 +470,12 @@ public class TWDGameManager {
                     }
                     if ( gameMap.getMapId( zombie.getX() + 1, zombie.getY() ) == 3 ) {
                         break;
+                    }
+
+                    if ( gameMap.getMapId( zombie.getX() + 1, zombie.getY() )  == -1 ) {
+                        zombie.destroiEquipamento();
+                        gameMap.getPosition(zombie.getX() + 1,zombie.getY() ).setEquipamento(null);
+                        gameMap.setPosition(zombie.getX() + 1, zombie.getY(), 0);
                     }
 
                     incrementaTempo();
@@ -484,7 +513,7 @@ public class TWDGameManager {
     //se uma das condições de paragem ja tenha sido alcançada
     //então retorna true
     public boolean gameIsOver() {
-        if ( numberOfTurns == 16 ) {    //é suposto ser 12
+        if ( numberOfTurns == 12 ) {    //é suposto ser 12
             return true;
         }
         if ( humanos.size() == 0 ) {
