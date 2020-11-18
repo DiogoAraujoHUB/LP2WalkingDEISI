@@ -51,7 +51,6 @@ public class TWDGameManager {
         int numCreatures = 0;
         int numEquipment = 0;
 
-        //os dias estão a ser lidos mal
         try {
             BufferedReader reader = new BufferedReader( new FileReader( ficheiroInicial ) );
             String lineRead = null;
@@ -244,7 +243,7 @@ public class TWDGameManager {
                 mapId = 0;
         }
 
-        return mapId;
+        return tipo;
     }
 
     //deve tentar executar uma jogada
@@ -401,6 +400,7 @@ public class TWDGameManager {
             int random = randomNum.nextInt( 4 );
 
             switch ( random ) {
+                //move para cima
                 case 0:
                     if ( zombie.getY() - 1 < 0 ) {
                         break;
@@ -563,7 +563,7 @@ public class TWDGameManager {
 
     public List<String> getSurvivors() {
         List<String> listOfSurvivors = new ArrayList<>();
-        String text = "Nr. de turnos terminados:";
+        String text = "Nr. de turnos terminados:\n";
         listOfSurvivors.add( text );
         text = "" + numberOfTurns + "\n\n\n";
         listOfSurvivors.add( text );
