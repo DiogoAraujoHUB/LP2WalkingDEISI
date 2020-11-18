@@ -101,7 +101,6 @@ public class TWDGameManager {
                                     Humano humanoCriado = new Humano( creatureID, creatureName, spawnX, spawnY);
                                     humanos.add( humanoCriado );
                                 } else {
-                                    System.out.println("Erro no tipo de criatura");
                                     return false;
                                 }
 
@@ -152,12 +151,14 @@ public class TWDGameManager {
 
                 } catch ( Exception e ) {
                     System.out.println("Error -> " + e.getMessage() );
+                    return false;
                 }
 
             } while ( lineRead != null );
 
         } catch ( FileNotFoundException e ) {
             System.out.println("No file was found with that name");
+            return false;
         }
 
         return true;
@@ -523,6 +524,7 @@ public class TWDGameManager {
 
         }
 
+        incrementaTempo();
         return true;
     }
 
