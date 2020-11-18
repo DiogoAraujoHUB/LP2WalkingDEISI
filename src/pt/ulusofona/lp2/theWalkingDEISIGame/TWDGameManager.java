@@ -276,6 +276,8 @@ public class TWDGameManager {
             gameMap.setPositionType( xO, yO, -1 );
             gameMap.setPositionType( xD, yD, tipoMovido );
             gameMap.getPosition(xD,yD).setHuman( humanFound );
+            gameMap.getPosition(xD,yD).getHuman().setX(xD);
+            gameMap.getPosition(xD,yD).getHuman().setY(yD);
             gameMap.getPosition(xO,yO).setHuman(null);
 
             incrementaTempo();
@@ -291,6 +293,8 @@ public class TWDGameManager {
                 gameMap.setPositionType( xO, yO, 0 );
                 gameMap.setPositionType( xD, yD, tipoMovido );
                 gameMap.getPosition(xD,yD).setHuman( humanFound );
+                gameMap.getPosition(xD,yD).getHuman().setX(xD);
+                gameMap.getPosition(xD,yD).getHuman().setY(yD);
                 gameMap.getPosition(xO,yO).setHuman(null);
 
                 incrementaTempo();
@@ -304,6 +308,8 @@ public class TWDGameManager {
             gameMap.setPositionType( xO, yO, 0 );
             gameMap.setPositionType( xD, yD, tipoMovido );
             gameMap.getPosition(xD,yD).setHuman( humanFound );
+            gameMap.getPosition(xD,yD).getHuman().setX(xD);
+            gameMap.getPosition(xD,yD).getHuman().setY(yD);
             gameMap.getPosition(xO,yO).setHuman(null);
 
             incrementaTempo();
@@ -313,9 +319,12 @@ public class TWDGameManager {
         gameMap.setPositionType( xO, yO, 0 );
         gameMap.setPositionType( xD, yD, tipoMovido );
         gameMap.getPosition(xD,yD).setHuman( gameMap.getPosition(xO,yO).getHuman() );
+        gameMap.getPosition(xD,yD).getHuman().setX(xD);
+        gameMap.getPosition(xD,yD).getHuman().setY(yD);
         gameMap.getPosition(xO,yO).setHuman(null);
 
         incrementaTempo();
+        System.out.println("Human Map Position == " + gameMap.getPosition(xD,yD) );
         return true;
     }
 
