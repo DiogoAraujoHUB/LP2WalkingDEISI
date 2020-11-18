@@ -5,16 +5,14 @@ import java.util.List;
 
 public class Humano {
     private int id;
-    private int tipo;
     private int x, y;
     private boolean alive;
 
     private String nome;
     private List<Equipamento> equipamentosApanhados;
 
-    Humano(int id, int tipo, String nome, int x, int y) {
+    Humano(int id, String nome, int x, int y) {
         this.id = id;
-        this.tipo = tipo;
         this.nome = nome;
         this.x = x;
         this.y = y;
@@ -28,10 +26,6 @@ public class Humano {
 
     public int getId() {
         return this.id;
-    }
-
-    public int getTipo() {
-        return this.tipo;
     }
 
     public int getX() {

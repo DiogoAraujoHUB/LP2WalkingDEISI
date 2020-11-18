@@ -81,10 +81,10 @@ public class TWDGameManager {
                                 int spawnY = Integer.parseInt( splitCreatures[4].trim() );
 
                                 if ( typeID == 0 ) {
-                                    Zombie zombieCriado = new Zombie( creatureID, typeID, creatureName, spawnX, spawnY);
+                                    Zombie zombieCriado = new Zombie( creatureID, creatureName, spawnX, spawnY);
                                     zombies.add( zombieCriado );
                                 } else if ( typeID == 1 ) {
-                                    Humano humanoCriado = new Humano( creatureID, typeID, creatureName, spawnX, spawnY);
+                                    Humano humanoCriado = new Humano( creatureID, creatureName, spawnX, spawnY);
                                     humanos.add( humanoCriado );
                                 } else {
                                     System.out.println("Erro no tipo de criatura");
@@ -204,8 +204,31 @@ public class TWDGameManager {
         if ( gameMap == null ) {
             return 0;
         }
+        int tipo = gameMap.getMapId(x,y);
+        int mapId;
 
-        return gameMap.getMapId(x, y);
+        switch( tipo ) {
+            case -1:
+                Equipamento equipamento = gameMap.getPosition(x,y).getEquipamento();
+                mapId = equipamento.getId();
+                break;
+
+            case 1:
+            case 2:
+                Humano human = gameMap.getPosition(x,y).getHuman();
+                mapId = human.getId();
+                break;
+
+            case 3:
+                Zombie zombie = gameMap.getPosition(x,y).getZombie();
+                mapId = zombie.getId();
+                break;
+
+            default:
+                mapId = 0;
+        }
+
+        return mapId;
     }
 
     //deve tentar executar uma jogada
@@ -236,8 +259,11 @@ public class TWDGameManager {
         //ocorre o movimento
         //ainda tenho que fazer que tmb mude no humano
         int tipoMovido = gameMap.getMapId( xO, yO );
+        System.out.println("Tipo movido == " + tipoMovido );
         gameMap.setPosition( xO, yO, 0 );
         gameMap.setPosition( xD, yD, tipoMovido );
+        gameMap.getPosition(xD,yD).setHuman( gameMap.getPosition(xO,yO).getHuman() );
+        gameMap.getPosition(xO,yO).setHuman(null);
 
         incrementaTempo();
         return true;
@@ -281,87 +307,111 @@ public class TWDGameManager {
 
     public boolean moveZombie() {
         Random randomNum = new Random();
-
-        for ( Zombie zombie : zombies ) {
-            int count = 0;
-
-            while ( count <= 8 ) {
-                count++;
-                int random = randomNum.nextInt( 4 );
-                System.out.println("Random == " + random );
-                switch ( random ) {
-                    case 0:
-                        if ( zombie.getY() - 1 < 0 ) {
-                            break;
-                        }
-                        if ( gameMap.getMapId( zombie.getX(), zombie.getY() - 1 ) == 2 ) {
-                            break;
-                        }
-                        if ( gameMap.getMapId( zombie.getX(), zombie.getY() - 1 ) == 3 ) {
-                            break;
-                        }
-
-                        System.out.println("0");
-                        incrementaTempo();
-                        gameMap.setPosition( zombie.getX(), zombie.getY(), 0 );
-                        gameMap.setPosition( zombie.getX(), zombie.getY() - 1, 3 );
-                        return true;
-
-                    case 1:
-                        if ( zombie.getY() + 1 > gameMap.getSizeY() - 1 ) {
-                            break;
-                        }
-                        if ( gameMap.getMapId( zombie.getX(), zombie.getY() + 1 ) == 2 ) {
-                            break;
-                        }
-                        if ( gameMap.getMapId( zombie.getX(), zombie.getY() + 1) == 3 ) {
-                            break;
-                        }
-
-                        System.out.println("1");
-                        incrementaTempo();
-                        gameMap.setPosition( zombie.getX(), zombie.getY(), 0 );
-                        gameMap.setPosition( zombie.getX(), zombie.getY() + 1, 3 );
-                        return true;
-
-                    case 2:
-                        if ( zombie.getX() - 1 < 0 ) {
-                            break;
-                        }
-                        if ( gameMap.getMapId( zombie.getX() - 1, zombie.getY() ) == 2 ) {
-                            break;
-                        }
-                        if ( gameMap.getMapId( zombie.getX()  - 1, zombie.getY() ) == 3 ) {
-                            break;
-                        }
-
-                        System.out.println("2");
-                        incrementaTempo();
-                        gameMap.setPosition( zombie.getX(), zombie.getY(), 0 );
-                        gameMap.setPosition( zombie.getX() - 1, zombie.getY(), 3 );
-                        return true;
-
-                    case 3:
-                        if ( zombie.getX() + 1 > gameMap.getSizeX() - 1 ) {
-                            break;
-                        }
-                        if ( gameMap.getMapId( zombie.getX() + 1, zombie.getY() ) == 2 ) {
-                            break;
-                        }
-                        if ( gameMap.getMapId( zombie.getX() + 1, zombie.getY() ) == 3 ) {
-                            break;
-                        }
-
-                        System.out.println("3");
-                        incrementaTempo();
-                        gameMap.setPosition( zombie.getX(), zombie.getY(), 0 );
-                        gameMap.setPosition( zombie.getX() + 1, zombie.getY(), 3 );
-                        return true;
-
-                    default:
-                }
-
+        int zombieSize = zombies.size();
+        Zombie zombie;
+        while ( true ) {
+            int randomZombie = randomNum.nextInt( zombieSize );
+            if ( randomZombie == zombieSize ) {
+                continue;
             }
+
+            zombie = zombies.get( randomZombie );
+            break;
+        }
+        int count = 0;
+
+        while ( count <= 16 ) {
+            count++;
+            int random = randomNum.nextInt( 4 );
+
+            switch ( random ) {
+                case 0:
+                    if ( zombie.getY() - 1 < 0 ) {
+                        break;
+                    }
+                    if ( gameMap.getMapId( zombie.getX(), zombie.getY() - 1 ) == 2 ) {
+                        break;
+                    }
+                    if ( gameMap.getMapId( zombie.getX(), zombie.getY() - 1 ) == 3 ) {
+                        break;
+                    }
+
+                    incrementaTempo();
+                    gameMap.setPosition( zombie.getX(), zombie.getY(), 0 );
+                    gameMap.setPosition( zombie.getX(), zombie.getY() - 1, 3 );
+                    gameMap.getPosition(zombie.getX(), zombie.getY() - 1)
+                            .setZombie( gameMap.getPosition(zombie.getX(),zombie.getY() ).getZombie() );
+                    gameMap.getPosition(zombie.getX(), zombie.getY() ).setZombie( null );
+                    zombie.setX( zombie.getX() );
+                    zombie.setY( zombie.getY() - 1);
+                    return true;
+
+                case 1:
+                    if ( zombie.getY() + 1 > gameMap.getSizeY() - 1 ) {
+                        break;
+                    }
+                    if ( gameMap.getMapId( zombie.getX(), zombie.getY() + 1 ) == 2 ) {
+                        break;
+                    }
+                    if ( gameMap.getMapId( zombie.getX(), zombie.getY() + 1) == 3 ) {
+                        break;
+                    }
+
+                    incrementaTempo();
+                    gameMap.setPosition( zombie.getX(), zombie.getY(), 0 );
+                    gameMap.setPosition( zombie.getX(), zombie.getY() + 1, 3 );
+                    gameMap.getPosition(zombie.getX(), zombie.getY() + 1)
+                            .setZombie( gameMap.getPosition(zombie.getX(),zombie.getY() ).getZombie() );
+                    gameMap.getPosition(zombie.getX(), zombie.getY() ).setZombie( null );
+                    zombie.setX( zombie.getX() );
+                    zombie.setY( zombie.getY() + 1);
+                    return true;
+
+                case 2:
+                    if ( zombie.getX() - 1 < 0 ) {
+                        break;
+                    }
+                    if ( gameMap.getMapId( zombie.getX() - 1, zombie.getY() ) == 2 ) {
+                        break;
+                    }
+                    if ( gameMap.getMapId( zombie.getX()  - 1, zombie.getY() ) == 3 ) {
+                        break;
+                    }
+
+                    incrementaTempo();
+                    gameMap.setPosition( zombie.getX(), zombie.getY(), 0 );
+                    gameMap.setPosition( zombie.getX() - 1, zombie.getY(), 3 );
+                    gameMap.getPosition(zombie.getX() - 1, zombie.getY())
+                            .setZombie( gameMap.getPosition(zombie.getX(),zombie.getY() ).getZombie() );
+                    gameMap.getPosition(zombie.getX(), zombie.getY() ).setZombie( null );
+                    zombie.setX( zombie.getX() - 1 );
+                    zombie.setY( zombie.getY() );
+                    return true;
+
+                case 3:
+                    if ( zombie.getX() + 1 > gameMap.getSizeX() - 1 ) {
+                        break;
+                    }
+                    if ( gameMap.getMapId( zombie.getX() + 1, zombie.getY() ) == 2 ) {
+                        break;
+                    }
+                    if ( gameMap.getMapId( zombie.getX() + 1, zombie.getY() ) == 3 ) {
+                        break;
+                    }
+
+                    incrementaTempo();
+                    gameMap.setPosition( zombie.getX(), zombie.getY(), 0 );
+                    gameMap.setPosition( zombie.getX() + 1, zombie.getY(), 3 );
+                    gameMap.getPosition(zombie.getX() + 1, zombie.getY())
+                            .setZombie( gameMap.getPosition(zombie.getX(),zombie.getY() ).getZombie() );
+                    gameMap.getPosition(zombie.getX(), zombie.getY() ).setZombie( null );
+                    zombie.setX( zombie.getX() + 1 );
+                    zombie.setY( zombie.getY() );
+                    return true;
+
+                default:
+            }
+
         }
 
         return false;

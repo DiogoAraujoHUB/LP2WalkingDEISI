@@ -1,11 +1,12 @@
 package pt.ulusofona.lp2.theWalkingDEISIGame;
 
+import java.util.Arrays;
 import java.util.List;
 
 public class Mapa {
     private int sizeX;
     private int sizeY;
-    private int[][] map;
+    private MapPosition[][] map;
 
     Mapa() {
         this.sizeX = 0;
@@ -29,7 +30,13 @@ public class Mapa {
     }
 
     public void createMap() {
-        map = new int[sizeX][sizeY];
+        map = new MapPosition[sizeX][sizeY];
+
+        for ( int posX = 0; posX < sizeX; posX++ ) {
+            for ( int posY = 0; posY < sizeY; posY++ ) {
+                map[posX][posY] = new MapPosition();
+            }
+        }
     }
 
     public void addHumans( List<Humano> humans ) {
@@ -37,10 +44,11 @@ public class Mapa {
             int xFound = human.getX();
             int yFound = human.getY();
 
-            if ( map[xFound][yFound] != 0 ) {
+            if ( map[xFound][yFound].getTipo() != 0 ) {
                 continue;
             }
-            map[xFound][yFound] = 2;    //1 is human with equipment //i think this method might be wrong
+            map[xFound][yFound].setTipo(2);    //1 is human with equipment //2 is human without equipment
+            map[xFound][yFound].setHuman(human);
         }
     }
 
@@ -49,10 +57,11 @@ public class Mapa {
             int xFound = zombie.getX();
             int yFound = zombie.getY();
 
-            if ( map[xFound][yFound] != 0 ) {
+            if ( map[xFound][yFound].getTipo() != 0 ) {
                 continue;
             }
-            map[xFound][yFound] = 3;
+            map[xFound][yFound].setTipo(3); //3 is a zombie
+            map[xFound][yFound].setZombie(zombie);
         }
     }
 
@@ -61,18 +70,24 @@ public class Mapa {
             int xFound = equipamento.getX();
             int yFound = equipamento.getY();
 
-            if ( map[xFound][yFound] != 0 ) {
+            if ( map[xFound][yFound].getTipo() != 0 ) {
                 continue;
             }
-            map[xFound][yFound] = -1;   //previously -1
+            map[xFound][yFound].setTipo(-1);    //everything below 0 is equipment
+            map[xFound][yFound].setEquipamento(equipamento);
         }
     }
 
+    //deve estar correto
     public int getMapId( int x, int y ) {
-        return map[x][y];
+        return map[x][y].getTipo();
     }
 
     public void setPosition( int x, int y, int type ) {
-        map[x][y] = type;
+        map[x][y].setTipo(type);
+    }
+
+    public MapPosition getPosition( int x, int y ) {
+        return map[x][y];
     }
 }

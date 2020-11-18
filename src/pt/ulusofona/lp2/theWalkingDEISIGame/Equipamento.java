@@ -1,7 +1,6 @@
 package pt.ulusofona.lp2.theWalkingDEISIGame;
 
 public class Equipamento {
-    static final int imageType = -1;
     private int id;
     private int tipo;
     private int x, y;

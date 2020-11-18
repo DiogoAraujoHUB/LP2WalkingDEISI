@@ -5,20 +5,16 @@ import java.util.List;
 
 public class Zombie {
     private int id;
-    private int tipo;
     private int x, y;
-    private boolean alive;
 
     private String nome;
     private List<Equipamento> equipamentosDestruidos;
 
-    Zombie( int id, int tipo, String nome, int x, int y ) {
+    Zombie( int id, String nome, int x, int y ) {
         this.id = id;
-        this.tipo = tipo;
         this.nome = nome;
         this.x = x;
         this.y = y;
-        this.alive = true;
         equipamentosDestruidos = new ArrayList<>();
     }
 
@@ -38,10 +34,6 @@ public class Zombie {
         return this.y;
     }
 
-    public int getTipo() {
-        return this.tipo;
-    }
-
     public String getNome() {
         return this.nome;
     }
@@ -55,6 +47,14 @@ public class Zombie {
         }
 
         return texto;
+    }
+
+    public void setX( int x ) {
+        this.x = x;
+    }
+
+    public void setY( int y ) {
+        this.y = y;
     }
 
 }
