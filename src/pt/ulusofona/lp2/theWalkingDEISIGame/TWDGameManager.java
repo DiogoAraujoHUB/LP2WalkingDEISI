@@ -151,7 +151,7 @@ public class TWDGameManager {
 
                 } catch ( Exception e ) {
                     System.out.println("Error -> " + e.getMessage() );
-                    return false;
+                    //return false;
                 }
 
             } while ( lineRead != null );
