@@ -70,6 +70,13 @@ public class Humano {
             map.getPosition(x,y).setEquipamento( equipamentoApanhado.get(0) );
             equipamentoApanhado.remove(0);
             twoHanded = 0;
+
+            map.setPositionType(x,y,-1);
+            map.setPositionType( destinoX, destinoY, tipoMovido );
+            map.getPosition(destinoX,destinoY).setHuman( map.getPosition(x,y).getHuman() );
+            map.getPosition(x,y).setHuman(null);
+            x = destinoX;
+            y = destinoY;
             return;
         }
 

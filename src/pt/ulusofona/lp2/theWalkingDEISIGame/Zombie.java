@@ -59,7 +59,6 @@ public class Zombie {
             destroiEquipamento();
             map.getPosition( destinoX, destinoY ).setEquipamento(null);
             map.setPositionType( destinoX, destinoY, 0);
-            System.out.println("Espaço arma == " + map.getPosition(destinoX,destinoY) );
         }
 
         //move normalmente

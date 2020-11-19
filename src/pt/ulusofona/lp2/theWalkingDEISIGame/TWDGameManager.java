@@ -269,8 +269,7 @@ public class TWDGameManager {
         //se estiver no mesmo espaço que uma arma, ja estando equipado
         if ( humanFound.getTwoHanded() == 1 ) {
             //deixa o equipamento no chão
-            humanFound.move( gameMap, xD, yD, tipoMovido );
-            //depois anda normalmente
+            //e depois anda normalmente
             humanFound.move( gameMap, xD, yD, tipoMovido );
             incrementaTempo();
             return true;
@@ -294,10 +293,10 @@ public class TWDGameManager {
 
     public boolean verificaCondicoes( int xO, int yO, int xD, int yD ) {
         //verifica se os parametros introduzidos estáo corretos para o mapa
-        if ( xD >= gameMap.getSizeX() || yD > gameMap.getSizeY() || xD < 0 || yD < 0 ) {
+        if ( xD > gameMap.getSizeX() || yD > gameMap.getSizeY() || xD < 0 || yD < 0 ) {
             return false;
         }
-        if ( xO >= gameMap.getSizeX() || yO > gameMap.getSizeY() || xO < 0 || yO < 0 ) {
+        if ( xO > gameMap.getSizeX() || yO > gameMap.getSizeY() || xO < 0 || yO < 0 ) {
             return false;
         }
         //tentar so com maiores
@@ -426,8 +425,8 @@ public class TWDGameManager {
 
         }
 
-        //incrementaTempo();
-        return false;   //antes estava true
+        incrementaTempo();
+        return true;   //se true, quando o zombie esta preso, não se move
     }
 
     public boolean verificaCondicoes( int destinoX, int destinoY ) {
@@ -451,12 +450,6 @@ public class TWDGameManager {
             currentTeamId--;
         }
         numberOfTurns++;
-        if ( dayNightCycle == 0 && numberOfTurns % 2 == 0 ) {
-            dayNightCycle = 1;
-        } else {
-            dayNightCycle = 0;
-        }
-        /*
         if ( numberOfTurns % 2 == 0 ) {
             if ( dayNightCycle == 0 ) {
                 dayNightCycle = 1;
@@ -464,7 +457,6 @@ public class TWDGameManager {
                 dayNightCycle = 0;
             }
         }
-        */
     }
 
     //se uma das condições de paragem ja tenha sido alcançada
