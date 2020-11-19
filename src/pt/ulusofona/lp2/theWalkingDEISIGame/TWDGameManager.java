@@ -480,9 +480,11 @@ public class TWDGameManager {
 
     public boolean verificaCondicoes( int destinoX, int destinoY ) {
         //mudei este agora
+        /*  //retirei este
         if ( destinoX >= gameMap.getSizeX() || destinoY >= gameMap.getSizeY() || destinoX < 0 || destinoY < 0 ) {
             return false;
         }
+         */
 
         if ( gameMap.getMapId( destinoX, destinoY ) == 2 ) {
             return false;
