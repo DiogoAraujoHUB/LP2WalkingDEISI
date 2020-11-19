@@ -400,7 +400,6 @@ public class TWDGameManager {
             int random = randomNum.nextInt( 4 );
 
             switch ( random ) {
-                //move para cima
                 case 0:
                     if ( zombie.getY() - 1 < 0 ) {
                         break;
@@ -536,6 +535,13 @@ public class TWDGameManager {
             currentTeamId--;
         }
         numberOfTurns++;
+        /*
+        if ( dayNightCycle == 0 && numberOfTurns % 2 == 0 ) {
+            dayNightCycle = 1;
+        } else {
+            dayNightCycle = 0;
+        }
+        */
         if ( numberOfTurns % 2 == 0 ) {
             if ( dayNightCycle == 0 ) {
                 dayNightCycle = 1;
