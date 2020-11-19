@@ -53,15 +53,23 @@ public class Zombie {
         numEquipamentosDestruidos++;
     }
 
-    /*
-    public void moveCima( int x, int y ) {
+    public void move( int destinoX, int destinoY, Mapa map ) {
+        //parte o equipamento na posição que move para
+        if ( map.getMapId( destinoX, destinoY )  == -1 ) {
+            destroiEquipamento();
+            map.getPosition( destinoX, destinoY ).setEquipamento(null);
+            map.setPositionType( destinoX, destinoY, 0);
+            System.out.println("Espaço arma == " + map.getPosition(destinoX,destinoY) );
+        }
 
+        //move normalmente
+        map.setPositionType( x, y, 0 );
+        map.setPositionType( destinoX, destinoY, 3 );
+        map.getPosition(destinoX, destinoY ).setZombie( map.getPosition(x,y).getZombie() );
+        map.getPosition( x, y ).setZombie( null );
+        x = destinoX;
+        y = destinoY;
     }
-
-    public void verificaCondicoes() {
-
-    }
-     */
 
     public void setX( int x ) {
         this.x = x;

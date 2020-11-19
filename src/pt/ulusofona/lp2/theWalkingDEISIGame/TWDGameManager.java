@@ -254,13 +254,6 @@ public class TWDGameManager {
     //xO, yO é uma origem
     //xD, yD é o destino
     public boolean move( int xO, int yO, int xD, int yD ) {
-        if ( xD > gameMap.getSizeX() || yD > gameMap.getSizeY() || xD < 0 || yD < 0 ) {
-            return false;
-        }
-        if ( xO > gameMap.getSizeX() || yO > gameMap.getSizeY() || xO < 0 || yO < 0 ) {
-            return false;
-        }
-
         if ( currentTeamId == 1 ) {
             return moveZombie();
         }
@@ -270,71 +263,45 @@ public class TWDGameManager {
         }
 
         //ocorre o movimento
-        //tenho que fazer para a arma
         Humano humanFound = gameMap.getPosition(xO,yO).getHuman();
         int tipoMovido = gameMap.getMapId( xO, yO );
 
         //se estiver no mesmo espaço que uma arma, ja estando equipado
         if ( humanFound.getTwoHanded() == 1 ) {
-            gameMap.getPosition(xO,yO).setEquipamento(humanFound.getEquipamentoApanhado().get(0));
-            humanFound.getEquipamentoApanhado().remove(0);
-            humanFound.setTwoHanded(0);
-            gameMap.setPositionType( xO, yO, -1 );
-            gameMap.setPositionType( xD, yD, tipoMovido );
-            gameMap.getPosition(xD,yD).setHuman( humanFound );
-            gameMap.getPosition(xD,yD).getHuman().setX(xD);
-            gameMap.getPosition(xD,yD).getHuman().setY(yD);
-            gameMap.getPosition(xO,yO).setHuman(null);
-
-            //System.out.println("Espaço arma == " + gameMap.getPosition(xO,yO) );
+            //deixa o equipamento no chão
+            humanFound.move( gameMap, xD, yD, tipoMovido );
+            //depois anda normalmente
+            humanFound.move( gameMap, xD, yD, tipoMovido );
             incrementaTempo();
             return true;
         }
 
+        //ve se estamos a mover para cima de uma arma
         if ( gameMap.getMapId( xD, yD ) == -1 ) {
             tipoMovido = 1;
-            if ( humanFound.getEquipamentoApanhado().size() == 0 ) {
-                humanFound.getEquipamentoApanhado().add( gameMap.getPosition(xD,yD).getEquipamento() );
-                gameMap.getPosition(xD,yD).setEquipamento(null);
-                humanFound.apanharEquipamento();
-                gameMap.setPositionType( xO, yO, 0 );
-                gameMap.setPositionType( xD, yD, tipoMovido );
-                gameMap.getPosition(xD,yD).setHuman( humanFound );
-                gameMap.getPosition(xD,yD).getHuman().setX(xD);
-                gameMap.getPosition(xD,yD).getHuman().setY(yD);
-                gameMap.getPosition(xO,yO).setHuman(null);
 
-                incrementaTempo();
-                return true;
-            }
-
-            humanFound.getEquipamentoApanhado().add( gameMap.getPosition(xD,yD).getEquipamento() );
-            gameMap.getPosition(xD,yD).setEquipamento(null);
-            humanFound.apanharEquipamento();
-            humanFound.setTwoHanded(1);
-            gameMap.setPositionType( xO, yO, 0 );
-            gameMap.setPositionType( xD, yD, tipoMovido );
-            gameMap.getPosition(xD,yD).setHuman( humanFound );
-            gameMap.getPosition(xD,yD).getHuman().setX(xD);
-            gameMap.getPosition(xD,yD).getHuman().setY(yD);
-            gameMap.getPosition(xO,yO).setHuman(null);
-
+            //neste caso, vai apanhar a arma e verificar se ja tinha uma arma antes
+            humanFound.move( gameMap, xD, yD, tipoMovido );
             incrementaTempo();
             return true;
         }
 
-        gameMap.setPositionType( xO, yO, 0 );
-        gameMap.setPositionType( xD, yD, tipoMovido );
-        gameMap.getPosition(xD,yD).setHuman( gameMap.getPosition(xO,yO).getHuman() );
-        gameMap.getPosition(xD,yD).getHuman().setX(xD);
-        gameMap.getPosition(xD,yD).getHuman().setY(yD);
-        gameMap.getPosition(xO,yO).setHuman(null);
-
+        //move normalmente
+        humanFound.move( gameMap, xD, yD, tipoMovido );
         incrementaTempo();
         return true;
     }
 
     public boolean verificaCondicoes( int xO, int yO, int xD, int yD ) {
+        //verifica se os parametros introduzidos estáo corretos para o mapa
+        if ( xD >= gameMap.getSizeX() || yD > gameMap.getSizeY() || xD < 0 || yD < 0 ) {
+            return false;
+        }
+        if ( xO >= gameMap.getSizeX() || yO > gameMap.getSizeY() || xO < 0 || yO < 0 ) {
+            return false;
+        }
+        //tentar so com maiores
+
         //verifica se a equipa é a correta, ou seja, a dos humanos
         if ( currentTeamId != 0 ) {
             return false;
@@ -410,119 +377,48 @@ public class TWDGameManager {
                     if ( zombie.getY() - 1 < 0 ) {
                         break;
                     }
-                    if ( gameMap.getMapId( zombie.getX(), zombie.getY() - 1 ) == 2  ) {
-                        break;
-                    }
-                    if ( gameMap.getMapId( zombie.getX(), zombie.getY() - 1 ) == 1 ) {
-                        break;
-                    }
-                    if ( gameMap.getMapId( zombie.getX(), zombie.getY() - 1 ) == 3 ) {
+                    if ( !verificaCondicoes(zombie.getX(), zombie.getY() - 1 ) ) {
                         break;
                     }
 
-                    if ( gameMap.getMapId( zombie.getX(), zombie.getY() - 1 )  == -1 ) {
-                        zombie.destroiEquipamento();
-                        gameMap.getPosition(zombie.getX(),zombie.getY() - 1).setEquipamento(null);
-                        gameMap.setPositionType(zombie.getX(), zombie.getY() - 1, 0);
-                    }
                     incrementaTempo();
-                    gameMap.setPositionType( zombie.getX(), zombie.getY(), 0 );
-                    gameMap.setPositionType( zombie.getX(), zombie.getY() - 1, 3 );
-                    gameMap.getPosition(zombie.getX(), zombie.getY() - 1)
-                            .setZombie( gameMap.getPosition(zombie.getX(),zombie.getY() ).getZombie() );
-                    gameMap.getPosition(zombie.getX(), zombie.getY() ).setZombie( null );
-                    zombie.setX( zombie.getX() );
-                    zombie.setY( zombie.getY() - 1);
+                    zombie.move( zombie.getX(), zombie.getY() - 1, gameMap );
                     return true;
 
                 case 1:
                     if ( zombie.getY() + 1 > gameMap.getSizeY() - 1 ) {
                         break;
                     }
-                    if ( gameMap.getMapId( zombie.getX(), zombie.getY() + 1 ) == 2 ) {
+                    if ( !verificaCondicoes(zombie.getX(), zombie.getY() + 1 ) ) {
                         break;
-                    }
-                    if ( gameMap.getMapId( zombie.getX(), zombie.getY() + 1 ) == 1 ) {
-                        break;
-                    }
-                    if ( gameMap.getMapId( zombie.getX(), zombie.getY() + 1) == 3 ) {
-                        break;
-                    }
-
-                    if ( gameMap.getMapId( zombie.getX(), zombie.getY() + 1 )  == -1 ) {
-                        zombie.destroiEquipamento();
-                        gameMap.getPosition(zombie.getX(),zombie.getY() + 1).setEquipamento(null);
-                        gameMap.setPositionType(zombie.getX(), zombie.getY() + 1, 0);
                     }
 
                     incrementaTempo();
-                    gameMap.setPositionType( zombie.getX(), zombie.getY(), 0 );
-                    gameMap.setPositionType( zombie.getX(), zombie.getY() + 1, 3 );
-                    gameMap.getPosition(zombie.getX(), zombie.getY() + 1)
-                            .setZombie( gameMap.getPosition(zombie.getX(),zombie.getY() ).getZombie() );
-                    gameMap.getPosition(zombie.getX(), zombie.getY() ).setZombie( null );
-                    zombie.setX( zombie.getX() );
-                    zombie.setY( zombie.getY() + 1);
+                    zombie.move( zombie.getX(), zombie.getY() + 1, gameMap );
                     return true;
 
                 case 2:
                     if ( zombie.getX() - 1 < 0 ) {
                         break;
                     }
-                    if ( gameMap.getMapId( zombie.getX() - 1, zombie.getY() ) == 2 ) {
+                    if ( !verificaCondicoes(zombie.getX() - 1, zombie.getY() ) ) {
                         break;
-                    }
-                    if ( gameMap.getMapId( zombie.getX() - 1, zombie.getY()  ) == 1 ) {
-                        break;
-                    }
-                    if ( gameMap.getMapId( zombie.getX()  - 1, zombie.getY() ) == 3 ) {
-                        break;
-                    }
-
-                    if ( gameMap.getMapId( zombie.getX() - 1, zombie.getY() )  == -1 ) {
-                        zombie.destroiEquipamento();
-                        gameMap.getPosition(zombie.getX() - 1,zombie.getY() ).setEquipamento(null);
-                        gameMap.setPositionType(zombie.getX() - 1, zombie.getY(), 0);
                     }
 
                     incrementaTempo();
-                    gameMap.setPositionType( zombie.getX(), zombie.getY(), 0 );
-                    gameMap.setPositionType( zombie.getX() - 1, zombie.getY(), 3 );
-                    gameMap.getPosition(zombie.getX() - 1, zombie.getY())
-                            .setZombie( gameMap.getPosition(zombie.getX(),zombie.getY() ).getZombie() );
-                    gameMap.getPosition(zombie.getX(), zombie.getY() ).setZombie( null );
-                    zombie.setX( zombie.getX() - 1 );
-                    zombie.setY( zombie.getY() );
+                    zombie.move( zombie.getX() - 1, zombie.getY(), gameMap );
                     return true;
 
                 case 3:
                     if ( zombie.getX() + 1 > gameMap.getSizeX() - 1 ) {
                         break;
                     }
-                    if ( gameMap.getMapId( zombie.getX() + 1, zombie.getY() ) == 2 ) {
+                    if ( !verificaCondicoes(zombie.getX() + 1, zombie.getY() ) ) {
                         break;
-                    }
-                    if ( gameMap.getMapId( zombie.getX() + 1, zombie.getY() ) == 1 ) {
-                        break;
-                    }
-                    if ( gameMap.getMapId( zombie.getX() + 1, zombie.getY() ) == 3 ) {
-                        break;
-                    }
-
-                    if ( gameMap.getMapId( zombie.getX() + 1, zombie.getY() )  == -1 ) {
-                        zombie.destroiEquipamento();
-                        gameMap.getPosition(zombie.getX() + 1,zombie.getY() ).setEquipamento(null);
-                        gameMap.setPositionType(zombie.getX() + 1, zombie.getY(), 0);
                     }
 
                     incrementaTempo();
-                    gameMap.setPositionType( zombie.getX(), zombie.getY(), 0 );
-                    gameMap.setPositionType( zombie.getX() + 1, zombie.getY(), 3 );
-                    gameMap.getPosition(zombie.getX() + 1, zombie.getY())
-                            .setZombie( gameMap.getPosition(zombie.getX(),zombie.getY() ).getZombie() );
-                    gameMap.getPosition(zombie.getX(), zombie.getY() ).setZombie( null );
-                    zombie.setX( zombie.getX() + 1 );
-                    zombie.setY( zombie.getY() );
+                    zombie.move(zombie.getX() + 1, zombie.getY(), gameMap );
                     return true;
 
                 default:
@@ -530,7 +426,21 @@ public class TWDGameManager {
 
         }
 
-        incrementaTempo();
+        //incrementaTempo();
+        return false;   //antes estava true
+    }
+
+    public boolean verificaCondicoes( int destinoX, int destinoY ) {
+        if ( gameMap.getMapId( destinoX, destinoY ) == 2 ) {
+            return false;
+        }
+        if ( gameMap.getMapId( destinoX, destinoY ) == 1 ) {
+            return false;
+        }
+        if ( gameMap.getMapId( destinoX, destinoY ) == 3 ) {
+            return false;
+        }
+
         return true;
     }
 
