@@ -382,14 +382,6 @@ public class TWDGameManager {
             count++;
             int random = randomNum.nextInt( 4 );
 
-            //adicionei este para este teste
-            if ( zombie.getX() >= gameMap.getSizeX() || zombie.getX() < 0 ) {
-                return false;
-            }
-            if ( zombie.getY() >= gameMap.getSizeY() || zombie.getY() < 0 ) {
-                return false;
-            }
-
             switch ( random ) {
                 //move para cima (y - 1)
                 case 0:
@@ -487,11 +479,10 @@ public class TWDGameManager {
 
     public boolean verificaCondicoes( int destinoX, int destinoY ) {
         //mudei este agora
-        /*  //retirei este e funcionou
+        //retirei este e funcionou
         if ( destinoX >= gameMap.getSizeX() || destinoY >= gameMap.getSizeY() || destinoX < 0 || destinoY < 0 ) {
             return false;
         }
-         */
 
         if ( gameMap.getMapId( destinoX, destinoY ) == 2 ) {
             return false;
