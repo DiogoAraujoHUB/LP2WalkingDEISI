@@ -93,6 +93,9 @@ public class TWDGameManager {
                                 String creatureName = splitCreatures[2];
                                 int spawnX = Integer.parseInt( splitCreatures[3].trim() );
                                 int spawnY = Integer.parseInt( splitCreatures[4].trim() );
+                                if ( spawnX >= gameMap.getSizeX() || spawnY >= gameMap.getSizeY() ) {  //adicionei isto
+                                    return false;
+                                }
 
                                 if ( typeID == 0 ) {
                                     Zombie zombieCriado = new Zombie( creatureID, creatureName, spawnX, spawnY);
@@ -126,9 +129,12 @@ public class TWDGameManager {
                                 int typeID = Integer.parseInt( splitEquipment[1].trim() );
                                 int spawnX = Integer.parseInt( splitEquipment[2].trim() );
                                 int spawnY = Integer.parseInt( splitEquipment[3].trim() );
+                                if ( spawnX >= gameMap.getSizeX() || spawnY >= gameMap.getSizeY() ) {  //adicionei isto
+                                    return false;
+                                }
 
                                 if ( typeID == 0 || typeID == 1 ) {
-                                    Equipamento currentEquipment = new Equipamento( equipmentID, typeID, spawnX, spawnY );
+                                    Equipamento currentEquipment = new Equipamento(equipmentID,typeID,spawnX,spawnY);
                                     equipment.add( currentEquipment );
                                 } else {
                                     return false;
