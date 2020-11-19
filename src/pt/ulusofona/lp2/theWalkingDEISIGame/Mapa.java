@@ -98,6 +98,11 @@ public class Mapa {
 
     //deve estar correto
     public int getMapId( int x, int y ) {
+        //adicionei este para ver se sai fora do maoa
+        if ( x >= sizeX || y >= sizeY ) {
+            return 0;
+        }
+
         return map[x][y].getTipo();
     }
 
