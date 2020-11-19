@@ -294,10 +294,10 @@ public class TWDGameManager {
 
     public boolean verificaCondicoes( int xO, int yO, int xD, int yD ) {
         //verifica se os parametros introduzidos estáo corretos para o mapa
-        if ( xD > gameMap.getSizeX() || yD > gameMap.getSizeY() || xD < 0 || yD < 0 ) {
+        if ( xD >= gameMap.getSizeX() || yD >= gameMap.getSizeY() || xD < 0 || yD < 0 ) {
             return false;
         }
-        if ( xO > gameMap.getSizeX() || yO > gameMap.getSizeY() || xO < 0 || yO < 0 ) {
+        if ( xO >= gameMap.getSizeX() || yO >= gameMap.getSizeY() || xO < 0 || yO < 0 ) {
             return false;
         }
         //tentar so com maiores
@@ -459,10 +459,12 @@ public class TWDGameManager {
         int pos = 0;
         for ( Equipamento equipamento: equipment ) {
             if ( equipamento.getId() == idEquipamento ) {
-                equipment.remove(pos);
+                break;
             }
             pos++;
         }
+
+        equipment.remove(pos);
     }
 
     public boolean verificaCondicoes( int destinoX, int destinoY ) {
