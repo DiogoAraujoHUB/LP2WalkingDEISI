@@ -40,8 +40,10 @@ public class Zombie {
 
     public String toString() {
         String texto = id + " | Zombie | Os Outros |" + nome + "";
-        texto += numEquipamentosDestruidos + " @ (" + x + ", " + y + ")";
+        //texto += numEquipamentosDestruidos + " @ (" + x + ", " + y + ")";   //este é o correto
+                                                                            //vou so mudar para um teste
 
+        texto += numEquipamentosDestruidos + " @ (" + x + ", " + y + ")" + TWDGameManager.gameMap.getPosition(x,y);
         return texto;
     }
 
@@ -68,6 +70,9 @@ public class Zombie {
         map.getPosition( x, y ).setZombie( null );
         x = destinoX;
         y = destinoY;
+
+        System.out.println("X and Y == " + x + " and " + y );
+        System.out.println("Position == " + map.getPosition(x,y) );
     }
 
     public void setX( int x ) {

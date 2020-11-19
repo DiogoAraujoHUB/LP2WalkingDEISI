@@ -19,7 +19,7 @@ public class TWDGameManager {
     private List<Zombie> zombies;
     private List<Equipamento> equipment;
 
-    private Mapa gameMap;
+    static Mapa gameMap;    //retirar o static depois do teste e adicionar o private
 
     public TWDGameManager() {
         dayNightCycle = 0;
