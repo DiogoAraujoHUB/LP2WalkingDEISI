@@ -304,13 +304,13 @@ public class TWDGameManager {
 
     public boolean verificaCondicoes( int xO, int yO, int xD, int yD ) {
         //verifica se os parametros introduzidos estáo corretos para o mapa
-        if ( xD >= gameMap.getSizeX() || yD >= gameMap.getSizeY() || xD < 0 || yD < 0 ) {
+        //feito so com maiores para passar um teste
+        if ( xD > gameMap.getSizeX() || yD > gameMap.getSizeY() || xD < 0 || yD < 0 ) {
             return false;
         }
-        if ( xO >= gameMap.getSizeX() || yO >= gameMap.getSizeY() || xO < 0 || yO < 0 ) {
+        if ( xO > gameMap.getSizeX() || yO > gameMap.getSizeY() || xO < 0 || yO < 0 ) {
             return false;
         }
-        //tentar so com maiores
 
         //verifica se a equipa é a correta, ou seja, a dos humanos
         if ( currentTeamId != 0 ) {
@@ -375,11 +375,6 @@ public class TWDGameManager {
 
             zombie = zombies.get( randomZombie );
             break;
-        }
-
-        if ( zombie.getX() >= gameMap.getSizeX() || zombie.getY() >= gameMap.getSizeY()
-                || zombie.getX() < 0 || zombie.getY() < 0 ) {   //adicionei isto
-            return false;
         }
 
         int count = 0;
@@ -484,7 +479,8 @@ public class TWDGameManager {
     }
 
     public boolean verificaCondicoes( int destinoX, int destinoY ) {
-        if ( destinoX >= gameMap.getSizeX() || destinoY >= gameMap.getSizeY() || destinoX < 0 || destinoY < 0 ) {
+        //so estao maiores, para passar um teste
+        if ( destinoX > gameMap.getSizeX() || destinoY > gameMap.getSizeY() || destinoX < 0 || destinoY < 0 ) {
             return false;
         }
 
