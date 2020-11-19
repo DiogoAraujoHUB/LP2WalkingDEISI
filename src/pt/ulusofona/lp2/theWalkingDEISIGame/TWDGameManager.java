@@ -535,13 +535,12 @@ public class TWDGameManager {
             currentTeamId--;
         }
         numberOfTurns++;
-        /*
         if ( dayNightCycle == 0 && numberOfTurns % 2 == 0 ) {
             dayNightCycle = 1;
         } else {
             dayNightCycle = 0;
         }
-        */
+        /*
         if ( numberOfTurns % 2 == 0 ) {
             if ( dayNightCycle == 0 ) {
                 dayNightCycle = 1;
@@ -549,6 +548,7 @@ public class TWDGameManager {
                 dayNightCycle = 0;
             }
         }
+        */
     }
 
     //se uma das condições de paragem ja tenha sido alcançada
