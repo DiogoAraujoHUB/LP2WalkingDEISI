@@ -479,8 +479,8 @@ public class TWDGameManager {
     }
 
     public boolean verificaCondicoes( int destinoX, int destinoY ) {
-        //so estao maiores, para passar um teste
-        if ( destinoX > gameMap.getSizeX() || destinoY > gameMap.getSizeY() || destinoX < 0 || destinoY < 0 ) {
+        //mudei este agora
+        if ( destinoX >= gameMap.getSizeX() || destinoY >= gameMap.getSizeY() || destinoX < 0 || destinoY < 0 ) {
             return false;
         }
 
