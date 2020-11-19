@@ -377,6 +377,49 @@ public class TWDGameManager {
             break;
         }
 
+        //novo movimento, pior que o anterior mas pode passar nos testes, tenho que testar
+        if ( verificaCondicoes( zombie.getX(), zombie.getY() - 1 ) ) {
+            //se for para uma posição do tipo -1, então retira o equipamento da lista
+            if ( gameMap.getPosition(zombie.getX(), zombie.getY() - 1).getTipo() == -1 ) {
+                retiraEquipamento( zombie.getX(), zombie.getY() - 1 );
+            }
+
+            incrementaTempo();
+            zombie.move( zombie.getX(), zombie.getY() - 1, gameMap );
+            return true;
+
+        } else if ( verificaCondicoes( zombie.getX() + 1, zombie.getY() ) ) {
+            //se for para uma posição do tipo -1, então retira o equipamento da lista
+            if ( gameMap.getPosition(zombie.getX() + 1, zombie.getY() ).getTipo() == -1 ) {
+                retiraEquipamento( zombie.getX() + 1, zombie.getY()  );
+            }
+
+            incrementaTempo();
+            zombie.move( zombie.getX() + 1, zombie.getY(), gameMap );
+            return true;
+
+        } else if ( verificaCondicoes( zombie.getX(), zombie.getY() + 1 ) ) {
+            //se for para uma posição do tipo -1, então retira o equipamento da lista
+            if ( gameMap.getPosition(zombie.getX(), zombie.getY() + 1).getTipo() == -1 ) {
+                retiraEquipamento( zombie.getX(), zombie.getY() + 1 );
+            }
+
+            incrementaTempo();
+            zombie.move( zombie.getX(), zombie.getY() + 1, gameMap );
+            return true;
+
+        } else if ( verificaCondicoes( zombie.getX() - 1, zombie.getY() ) ) {
+            //se for para uma posição do tipo -1, então retira o equipamento da lista
+            if ( gameMap.getPosition(zombie.getX() - 1, zombie.getY()).getTipo() == -1 ) {
+                retiraEquipamento( zombie.getX() - 1, zombie.getY() );
+            }
+
+            incrementaTempo();
+            zombie.move( zombie.getX() - 1, zombie.getY(), gameMap );
+            return true;
+        }
+
+        /*
         int count = 0;
         while ( count <= 16 ) {
             count++;
@@ -457,6 +500,7 @@ public class TWDGameManager {
             }
 
         }
+         */
 
         incrementaTempo();
         return true;   //se true, quando o zombie esta preso, não se move
