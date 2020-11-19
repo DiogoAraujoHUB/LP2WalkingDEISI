@@ -266,10 +266,14 @@ public class TWDGameManager {
     //xD, yD é o destino
     public boolean move( int xO, int yO, int xD, int yD ) {
         if ( currentTeamId == 1 ) {
-            return moveZombie();
+            return moveZombie(xO, yO, xD, yD);
         }
 
-        if ( verificaCondicoes( xO, yO, xD, yD ) == false ) {
+        if ( !verificaCondicoes(xO, yO, xD, yD) ) {
+            return false;
+        }
+        //verifica se tentamos mover um zombie
+        if ( gameMap.getMapId(xO,yO) == 3 ) {
             return false;
         }
 
@@ -312,11 +316,6 @@ public class TWDGameManager {
             return false;
         }
 
-        //verifica se a equipa é a correta, ou seja, a dos humanos
-        if ( currentTeamId != 0 ) {
-            return false;
-        }
-
         //verifica se tamos a tentar mover para cima de um humano
         if ( gameMap.getMapId(xD,yD) == 2 || gameMap.getMapId(xD,yD) == 1) {
             return false;
@@ -330,12 +329,8 @@ public class TWDGameManager {
         if ( gameMap.getMapId(xO,yO) == 0 ) {
             return false;
         }
-        //verifica se tamos a tentar mover um zombie, ou um equipamento
-        if ( gameMap.getMapId(xO, yO) == 3 || gameMap.getMapId(xO, yO) == -1 ) {
-            return false;
-        }
-        //verifica se tentamos mover um zombie
-        if ( gameMap.getMapId(xO,yO) == 3 ) {
+        //verifica se tamos a tentar mover um equipamento
+        if ( gameMap.getMapId(xO, yO) == -1 ) {
             return false;
         }
 
@@ -356,6 +351,25 @@ public class TWDGameManager {
         return false;
     }
 
+    public boolean moveZombie( int xO, int yO, int xD, int yD ) {
+        if ( !verificaCondicoes(xO, yO, xD, yD) ) {
+            return false;
+        }
+        //verifica se tentamos mover um humano
+        if ( gameMap.getMapId(xO,yO) == 2 || gameMap.getMapId(xO,yO) == 1 ) {
+            return false;
+        }
+
+        if ( gameMap.getPosition(xD, yD).getTipo() == -1 ) {
+            retiraEquipamento( xD, yD );
+        }
+
+        incrementaTempo();
+        gameMap.getPosition(xO, yO).getZombie().move( xD, yD, gameMap );
+        return true;
+    }
+
+    //este movimento é automático
     public boolean moveZombie() {
         Random randomNum = new Random();
         if ( zombies == null ) {
@@ -377,49 +391,6 @@ public class TWDGameManager {
             break;
         }
 
-        //novo movimento, pior que o anterior mas pode passar nos testes, tenho que testar
-        if ( verificaCondicoes( zombie.getX(), zombie.getY() - 1 ) ) {
-            //se for para uma posição do tipo -1, então retira o equipamento da lista
-            if ( gameMap.getPosition(zombie.getX(), zombie.getY() - 1).getTipo() == -1 ) {
-                retiraEquipamento( zombie.getX(), zombie.getY() - 1 );
-            }
-
-            incrementaTempo();
-            zombie.move( zombie.getX(), zombie.getY() - 1, gameMap );
-            return true;
-
-        } else if ( verificaCondicoes( zombie.getX() + 1, zombie.getY() ) ) {
-            //se for para uma posição do tipo -1, então retira o equipamento da lista
-            if ( gameMap.getPosition(zombie.getX() + 1, zombie.getY() ).getTipo() == -1 ) {
-                retiraEquipamento( zombie.getX() + 1, zombie.getY()  );
-            }
-
-            incrementaTempo();
-            zombie.move( zombie.getX() + 1, zombie.getY(), gameMap );
-            return true;
-
-        } else if ( verificaCondicoes( zombie.getX(), zombie.getY() + 1 ) ) {
-            //se for para uma posição do tipo -1, então retira o equipamento da lista
-            if ( gameMap.getPosition(zombie.getX(), zombie.getY() + 1).getTipo() == -1 ) {
-                retiraEquipamento( zombie.getX(), zombie.getY() + 1 );
-            }
-
-            incrementaTempo();
-            zombie.move( zombie.getX(), zombie.getY() + 1, gameMap );
-            return true;
-
-        } else if ( verificaCondicoes( zombie.getX() - 1, zombie.getY() ) ) {
-            //se for para uma posição do tipo -1, então retira o equipamento da lista
-            if ( gameMap.getPosition(zombie.getX() - 1, zombie.getY()).getTipo() == -1 ) {
-                retiraEquipamento( zombie.getX() - 1, zombie.getY() );
-            }
-
-            incrementaTempo();
-            zombie.move( zombie.getX() - 1, zombie.getY(), gameMap );
-            return true;
-        }
-
-        /*
         int count = 0;
         while ( count <= 16 ) {
             count++;
@@ -500,7 +471,6 @@ public class TWDGameManager {
             }
 
         }
-         */
 
         incrementaTempo();
         return true;   //se true, quando o zombie esta preso, não se move
