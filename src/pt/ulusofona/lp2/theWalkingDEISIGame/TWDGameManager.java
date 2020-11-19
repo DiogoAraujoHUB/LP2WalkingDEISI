@@ -227,6 +227,7 @@ public class TWDGameManager {
         int mapId;
 
         switch( tipo ) {
+            case -2:
             case -1:
                 Equipamento equipamento = gameMap.getPosition(x,y).getEquipamento();
                 mapId = equipamento.getId();
