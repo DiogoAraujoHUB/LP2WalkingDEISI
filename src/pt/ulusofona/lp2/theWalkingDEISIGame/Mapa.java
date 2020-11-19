@@ -96,7 +96,6 @@ public class Mapa {
         }
     }
 
-    //está correto assim
     public int getMapId( int x, int y ) {
         return map[x][y].getTipo();
     }

@@ -1,13 +1,11 @@
 package pt.ulusofona.lp2.theWalkingDEISIGame;
 
-/*
+import org.junit.Test;
 
-import org.junit.jupiter.api.*;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import java.io.File;
+import static org.junit.Assert.assertEquals;
 
-public class Testes {
-
+public class TestTWDGameManager {
+    /*
     @Test
     public void testMove() {
         TWDGameManager game = new TWDGameManager();
@@ -51,6 +49,5 @@ public class Testes {
         game.incrementaTempo();
         assertEquals( game.isDay(), true );
     }
+     */
 }
-
- */
