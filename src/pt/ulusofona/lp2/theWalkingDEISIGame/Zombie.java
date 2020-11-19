@@ -40,10 +40,8 @@ public class Zombie {
 
     public String toString() {
         String texto = id + " | Zombie | Os Outros |" + nome + "";
-        //texto += numEquipamentosDestruidos + " @ (" + x + ", " + y + ")";   //este é o correto
-                                                                            //vou so mudar para um teste
+        texto += numEquipamentosDestruidos + " @ (" + x + ", " + y + ")";
 
-        texto += numEquipamentosDestruidos + " @ (" + x + ", " + y + ")" + TWDGameManager.gameMap.getPosition(x,y);
         return texto;
     }
 
