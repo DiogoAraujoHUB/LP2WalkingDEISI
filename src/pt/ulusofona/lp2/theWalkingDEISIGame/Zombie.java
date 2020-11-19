@@ -53,6 +53,16 @@ public class Zombie {
         numEquipamentosDestruidos++;
     }
 
+    /*
+    public void moveCima( int x, int y ) {
+
+    }
+
+    public void verificaCondicoes() {
+
+    }
+     */
+
     public void setX( int x ) {
         this.x = x;
     }

@@ -129,8 +129,12 @@ public class TWDGameManager {
                                 int spawnX = Integer.parseInt( splitEquipment[2].trim() );
                                 int spawnY = Integer.parseInt( splitEquipment[3].trim() );
 
-                                Equipamento currentEquipment = new Equipamento( equipmentID, typeID, spawnX, spawnY );
-                                equipment.add( currentEquipment );
+                                if ( typeID == 0 || typeID == 1 ) {
+                                    Equipamento currentEquipment = new Equipamento( equipmentID, typeID, spawnX, spawnY );
+                                    equipment.add( currentEquipment );
+                                } else {
+                                    return false;
+                                }
 
                                 if ( pos == numEquipment - 1 ) {
                                     break;
@@ -250,10 +254,10 @@ public class TWDGameManager {
     //xO, yO é uma origem
     //xD, yD é o destino
     public boolean move( int xO, int yO, int xD, int yD ) {
-        if ( xD >= gameMap.getSizeX() || yD >= gameMap.getSizeY() || xD < 0 || yD < 0 ) {
+        if ( xD > gameMap.getSizeX() || yD > gameMap.getSizeY() || xD < 0 || yD < 0 ) {
             return false;
         }
-        if ( xO >= gameMap.getSizeX() || yO >= gameMap.getSizeY() || xO < 0 || yO < 0 ) {
+        if ( xO > gameMap.getSizeX() || yO > gameMap.getSizeY() || xO < 0 || yO < 0 ) {
             return false;
         }
 
@@ -270,6 +274,7 @@ public class TWDGameManager {
         Humano humanFound = gameMap.getPosition(xO,yO).getHuman();
         int tipoMovido = gameMap.getMapId( xO, yO );
 
+        //se estiver no mesmo espaço que uma arma, ja estando equipado
         if ( humanFound.getTwoHanded() == 1 ) {
             gameMap.getPosition(xO,yO).setEquipamento(humanFound.getEquipamentoApanhado().get(0));
             humanFound.getEquipamentoApanhado().remove(0);
@@ -281,6 +286,7 @@ public class TWDGameManager {
             gameMap.getPosition(xD,yD).getHuman().setY(yD);
             gameMap.getPosition(xO,yO).setHuman(null);
 
+            //System.out.println("Espaço arma == " + gameMap.getPosition(xO,yO) );
             incrementaTempo();
             return true;
         }

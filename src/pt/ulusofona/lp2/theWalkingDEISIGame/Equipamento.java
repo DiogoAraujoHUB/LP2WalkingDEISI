@@ -27,4 +27,8 @@ public class Equipamento {
     public int getY() {
         return this.y;
     }
+
+    public String toString() {
+        return id + " | " + tipo + " | @ (" + x + ", " + y + ")";
+    }
 }
