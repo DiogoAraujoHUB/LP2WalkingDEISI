@@ -265,15 +265,6 @@ public class TWDGameManager {
     //xO, yO é uma origem
     //xD, yD é o destino
     public boolean move( int xO, int yO, int xD, int yD ) {
-        //verifica se os parametros introduzidos estáo corretos para o mapa
-        //feito so com maiores para passar um teste
-        if ( xD >= gameMap.getSizeX() || yD >= gameMap.getSizeY() || xD < 0 || yD < 0 ) {
-            return false;
-        }
-        if ( xO >= gameMap.getSizeX() || yO >= gameMap.getSizeY() || xO < 0 || yO < 0 ) {
-            return false;
-        }
-
         if ( currentTeamId == 1 ) {
             return moveZombie();
         }
@@ -312,6 +303,15 @@ public class TWDGameManager {
     }
 
     public boolean verificaCondicoes( int xO, int yO, int xD, int yD ) {
+        //verifica se os parametros introduzidos estáo corretos para o mapa
+        //feito so com maiores para passar um teste
+        if ( xD >= gameMap.getSizeX() || yD >= gameMap.getSizeY() || xD < 0 || yD < 0 ) {
+            return false;
+        }
+        if ( xO >= gameMap.getSizeX() || yO >= gameMap.getSizeY() || xO < 0 || yO < 0 ) {
+            return false;
+        }
+
         //verifica se a equipa é a correta, ou seja, a dos humanos
         if ( currentTeamId != 0 ) {
             return false;
