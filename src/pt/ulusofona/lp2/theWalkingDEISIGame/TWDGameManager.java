@@ -376,11 +376,17 @@ public class TWDGameManager {
             zombie = zombies.get( randomZombie );
             break;
         }
-        int count = 0;
 
+        if ( zombie.getX() >= gameMap.getSizeX() || zombie.getY() >= gameMap.getSizeY()
+                || zombie.getX() < 0 || zombie.getY() < 0 ) {   //adicionei isto
+            return false;
+        }
+
+        int count = 0;
         while ( count <= 16 ) {
             count++;
             int random = randomNum.nextInt( 4 );
+
 
             switch ( random ) {
                 //move para cima (y - 1)
