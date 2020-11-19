@@ -44,11 +44,21 @@ public class Mapa {
             int xFound = human.getX();
             int yFound = human.getY();
 
-            if ( map[xFound][yFound].getTipo() != 0 ) {
+            if ( map[xFound][yFound].getTipo() == 1 || map[xFound][yFound].getTipo() == 2 ) {
                 continue;
             }
-            map[xFound][yFound].setTipo(2);    //1 is human with equipment //2 is human without equipment
-            map[xFound][yFound].setHuman(human);
+
+            if ( map[xFound][yFound].getTipo() == 0 ) {
+                map[xFound][yFound].setTipo(2);    //1 is human with equipment //2 is human without equipment
+                map[xFound][yFound].setHuman(human);
+            } else if ( map[xFound][yFound].getTipo() == -1 ) {
+                human.getEquipamentoApanhado().add( map[xFound][yFound].getEquipamento() );
+                map[xFound][yFound].setEquipamento(null);
+                human.apanharEquipamento();
+
+                map[xFound][yFound].setTipo(1);
+                map[xFound][yFound].setHuman(human);
+            }
         }
     }
 
@@ -57,8 +67,16 @@ public class Mapa {
             int xFound = zombie.getX();
             int yFound = zombie.getY();
 
-            if ( map[xFound][yFound].getTipo() != 0 ) {
+            if ( map[xFound][yFound].getTipo() == 1 || map[xFound][yFound].getTipo() == 2 ) {
                 continue;
+            }
+            if ( map[xFound][yFound].getTipo() == 3 ) {
+                continue;
+            }
+
+            if ( map[xFound][yFound].getTipo() == -1 ) {
+                map[xFound][yFound].setEquipamento(null);
+                zombie.destroiEquipamento();
             }
             map[xFound][yFound].setTipo(3); //3 is a zombie
             map[xFound][yFound].setZombie(zombie);

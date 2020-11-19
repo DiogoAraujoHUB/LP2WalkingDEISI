@@ -113,8 +113,6 @@ public class TWDGameManager {
                                 }
                             }
 
-                            gameMap.addHumans( humanos );
-                            gameMap.addZombies( zombies );
                             break;
 
                         case 5:
@@ -146,6 +144,8 @@ public class TWDGameManager {
                             }
 
                             gameMap.addEquipment( equipment );
+                            gameMap.addHumans( humanos );
+                            gameMap.addZombies( zombies );
                             break;
 
                         default:
@@ -373,6 +373,7 @@ public class TWDGameManager {
             int random = randomNum.nextInt( 4 );
 
             switch ( random ) {
+                //move para cima (y - 1)
                 case 0:
                     if ( zombie.getY() - 1 < 0 ) {
                         break;
@@ -381,16 +382,27 @@ public class TWDGameManager {
                         break;
                     }
 
+                    //se for para uma posição do tipo -1, então retira o equipamento da lista
+                    if ( gameMap.getPosition(zombie.getX(), zombie.getY() - 1).getTipo() == -1 ) {
+                        retiraEquipamento( zombie.getX(), zombie.getY() - 1 );
+                    }
+
                     incrementaTempo();
                     zombie.move( zombie.getX(), zombie.getY() - 1, gameMap );
                     return true;
 
+                //move para baixo (y + 1)
                 case 1:
                     if ( zombie.getY() + 1 > gameMap.getSizeY() - 1 ) {
                         break;
                     }
                     if ( !verificaCondicoes(zombie.getX(), zombie.getY() + 1 ) ) {
                         break;
+                    }
+
+                    //se for para uma posição do tipo -1, então retira o equipamento da lista
+                    if ( gameMap.getPosition(zombie.getX(), zombie.getY() + 1).getTipo() == -1 ) {
+                        retiraEquipamento( zombie.getX(), zombie.getY() + 1 );
                     }
 
                     incrementaTempo();
@@ -405,6 +417,11 @@ public class TWDGameManager {
                         break;
                     }
 
+                    //se for para uma posição do tipo -1, então retira o equipamento da lista
+                    if ( gameMap.getPosition(zombie.getX() - 1, zombie.getY()).getTipo() == -1 ) {
+                        retiraEquipamento( zombie.getX() - 1, zombie.getY() );
+                    }
+
                     incrementaTempo();
                     zombie.move( zombie.getX() - 1, zombie.getY(), gameMap );
                     return true;
@@ -415,6 +432,11 @@ public class TWDGameManager {
                     }
                     if ( !verificaCondicoes(zombie.getX() + 1, zombie.getY() ) ) {
                         break;
+                    }
+
+                    //se for para uma posição do tipo -1, então retira o equipamento da lista
+                    if ( gameMap.getPosition(zombie.getX() + 1, zombie.getY()).getTipo() == -1 ) {
+                        retiraEquipamento( zombie.getX() + 1, zombie.getY());
                     }
 
                     incrementaTempo();
@@ -428,6 +450,19 @@ public class TWDGameManager {
 
         incrementaTempo();
         return true;   //se true, quando o zombie esta preso, não se move
+    }
+
+    public void retiraEquipamento( int destinoX, int destinoY ) {
+        Equipamento equipamentoDestruido = gameMap.getPosition(destinoX, destinoY).getEquipamento();
+        int idEquipamento = equipamentoDestruido.getId();
+
+        int pos = 0;
+        for ( Equipamento equipamento: equipment ) {
+            if ( equipamento.getId() == idEquipamento ) {
+                equipment.remove(pos);
+            }
+            pos++;
+        }
     }
 
     public boolean verificaCondicoes( int destinoX, int destinoY ) {
