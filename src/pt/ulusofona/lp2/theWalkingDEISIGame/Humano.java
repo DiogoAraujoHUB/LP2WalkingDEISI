@@ -33,16 +33,8 @@ public class Humano {
         return this.x;
     }
 
-    public void setX( int x ) {
-        this.x = x;
-    }
-
     public int getY() {
         return this.y;
-    }
-
-    public void setY( int y ) {
-        this.y = y;
     }
 
     public String getNome() {
@@ -58,10 +50,6 @@ public class Humano {
 
     public List<Equipamento> getEquipamentoApanhado() {
         return this.equipamentoApanhado;
-    }
-
-    public int getNumEquipamentoApanhado() {
-        return this.numEquipamentosApanhados;
     }
 
     public void move( Mapa map, int destinoX, int destinoY, int tipoMovido ) {
@@ -106,9 +94,5 @@ public class Humano {
 
     public int getTwoHanded() {
         return twoHanded;
-    }
-
-    public void setTwoHanded( int twoHanded ) {
-        this.twoHanded = twoHanded;
     }
 }
