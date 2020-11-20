@@ -14,7 +14,6 @@ public class TWDGameManager {
     private int initialTeamId;
     private int currentTeamId;
     private int numberOfTurns;
-    private boolean ficaParado;
 
     private List<Humano> humanos;
     private List<Zombie> zombies;
@@ -31,7 +30,6 @@ public class TWDGameManager {
         initialTeamId = 0;
         currentTeamId = 0;
         numberOfTurns = 0;
-        ficaParado = false;
     }
 
     //passar os dois fors para uma função
@@ -278,12 +276,6 @@ public class TWDGameManager {
         if ( gameMap.getMapId(xO,yO) == 3 ) {
             return false;
         }
-        //verifica se o humano simplesmente ficou parado
-        if ( ficaParado ) {
-            ficaParado = false;
-            incrementaTempo();
-            return true;
-        }
 
         //ocorre o movimento
         Humano humanFound = gameMap.getPosition(xO,yO).getHuman();
@@ -321,12 +313,6 @@ public class TWDGameManager {
         }
         if ( xO >= gameMap.getSizeX() || yO >= gameMap.getSizeY() || xO < 0 || yO < 0 ) {
             return false;
-        }
-
-        //adicionei este método
-        if ( xO == xD && yO == yD ) {
-            ficaParado = true;
-            return true;
         }
 
         //verifica se tamos a tentar mover para cima de um humano
@@ -371,12 +357,6 @@ public class TWDGameManager {
         //verifica se tentamos mover um humano
         if ( gameMap.getMapId(xO,yO) == 2 || gameMap.getMapId(xO,yO) == 1 ) {
             return false;
-        }
-        //verifica se o zombie simplesmente ficou parado
-        if ( ficaParado ) {
-            ficaParado = false;
-            incrementaTempo();
-            return true;
         }
 
         if ( gameMap.getPosition(xD, yD).getTipo() == -1 ) {
