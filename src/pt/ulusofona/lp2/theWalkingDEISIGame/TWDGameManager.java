@@ -309,27 +309,33 @@ public class TWDGameManager {
     public boolean verificaCondicoes( int xO, int yO, int xD, int yD ) {
         //verifica se os parametros introduzidos estáo corretos para o mapa
         if ( xD >= gameMap.getSizeX() || yD >= gameMap.getSizeY() || xD < 0 || yD < 0 ) {
+            System.out.println("Error is here! 1");
             return false;
         }
         if ( xO >= gameMap.getSizeX() || yO >= gameMap.getSizeY() || xO < 0 || yO < 0 ) {
+            System.out.println("Error is here! 2");
             return false;
         }
 
         //verifica se tamos a tentar mover para cima de um humano
         if ( gameMap.getMapId(xD,yD) == 2 || gameMap.getMapId(xD,yD) == 1) {
+            System.out.println("Error is here! 3");
             return false;
         }
         //verifica se tentamos mover para cima de um zombie
         if ( gameMap.getMapId(xD,yD) == 3 ) {
+            System.out.println("Error is here! 4");
             return false;
         }
 
         //verifica se tamos a tentar mover nada
         if ( gameMap.getMapId(xO,yO) == 0 ) {
+            System.out.println("Error is here! 5");
             return false;
         }
         //verifica se tamos a tentar mover um equipamento
         if ( gameMap.getMapId(xO, yO) == -1 ) {
+            System.out.println("Error is here! 6");
             return false;
         }
 
@@ -347,6 +353,7 @@ public class TWDGameManager {
             return true;
         }
 
+        System.out.println("Error is here! 7");
         return false;
     }
 
