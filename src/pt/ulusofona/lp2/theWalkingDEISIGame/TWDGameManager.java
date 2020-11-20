@@ -315,6 +315,11 @@ public class TWDGameManager {
             return false;
         }
 
+        //adicionei este método
+        if ( xO == xD && yO == yD ) {
+            return true;
+        }
+
         //verifica se tamos a tentar mover para cima de um humano
         if ( gameMap.getMapId(xD,yD) == 2 || gameMap.getMapId(xD,yD) == 1) {
             return false;
@@ -334,10 +339,6 @@ public class TWDGameManager {
         }
 
         //verifica se tenta mover mais que uma posição
-        //adicionei este método
-        if ( xO == xD && yO == yD ) {
-            return true;
-        }
         if ( xO + 1 == xD && yO == yD ) {
             return true;
         }
