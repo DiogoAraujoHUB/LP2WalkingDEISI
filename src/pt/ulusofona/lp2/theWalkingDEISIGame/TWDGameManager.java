@@ -334,6 +334,10 @@ public class TWDGameManager {
         }
 
         //verifica se tenta mover mais que uma posição
+        //adicionei este método
+        if ( xO == xD && yO == yD ) {
+            return true;
+        }
         if ( xO + 1 == xD && yO == yD ) {
             return true;
         }
