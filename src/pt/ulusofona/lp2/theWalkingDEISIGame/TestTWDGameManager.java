@@ -2,10 +2,11 @@ package pt.ulusofona.lp2.theWalkingDEISIGame;
 
 import org.junit.Test;
 
+import java.io.File;
+
 import static org.junit.Assert.assertEquals;
 
 public class TestTWDGameManager {
-    /*
     @Test
     public void testMove() {
         TWDGameManager game = new TWDGameManager();
@@ -20,9 +21,9 @@ public class TestTWDGameManager {
         TWDGameManager game = new TWDGameManager();
 
         game.startGame( new File("valoresWalkingDEISI.txt") );
-        game.move( 3, 3, 2, 3 );
-        game.move(0,0,0,0); //zombie move
-        assertEquals( game.getElementId(4, 3), 3 );
+        game.move( 5, 4, 4, 4 );
+        game.move(3,3,3,4); //zombie move
+        assertEquals( game.getElementId(3, 4), 3 );
     }
 
     @Test
@@ -49,5 +50,5 @@ public class TestTWDGameManager {
         game.incrementaTempo();
         assertEquals( game.isDay(), true );
     }
-     */
+
 }
