@@ -308,11 +308,10 @@ public class TWDGameManager {
 
     public boolean verificaCondicoes( int xO, int yO, int xD, int yD ) {
         //verifica se os parametros introduzidos estáo corretos para o mapa
-        //mudei so para maiores para ver se passo um teste
-        if ( xD > gameMap.getSizeX() || yD > gameMap.getSizeY() || xD < 0 || yD < 0 ) {
+        if ( xD >= gameMap.getSizeX() || yD >= gameMap.getSizeY() || xD < 0 || yD < 0 ) {
             return false;
         }
-        if ( xO > gameMap.getSizeX() || yO > gameMap.getSizeY() || xO < 0 || yO < 0 ) {
+        if ( xO >= gameMap.getSizeX() || yO >= gameMap.getSizeY() || xO < 0 || yO < 0 ) {
             return false;
         }
 
@@ -369,6 +368,7 @@ public class TWDGameManager {
         return true;
     }
 
+    /*
     //este movimento é automático
     public boolean moveZombie() {
         Random randomNum = new Random();
@@ -475,6 +475,7 @@ public class TWDGameManager {
         incrementaTempo();
         return true;   //se true, quando o zombie esta preso, não se move
     }
+     */
 
     public void retiraEquipamento( int destinoX, int destinoY ) {
         Equipamento equipamentoDestruido = gameMap.getPosition(destinoX, destinoY).getEquipamento();
@@ -491,9 +492,10 @@ public class TWDGameManager {
         equipment.remove(pos);
     }
 
+    /*
+    //este verifica condicoes foi feito para funcionar
+    //com o movimento automático do zombie
     public boolean verificaCondicoes( int destinoX, int destinoY ) {
-        //mudei este agora
-        //retirei este e funcionou
         if ( destinoX >= gameMap.getSizeX() || destinoY >= gameMap.getSizeY() || destinoX < 0 || destinoY < 0 ) {
             return false;
         }
@@ -510,6 +512,7 @@ public class TWDGameManager {
 
         return true;
     }
+     */
 
     public void incrementaTempo() {
         if ( currentTeamId == initialTeamId ) {
@@ -545,26 +548,26 @@ public class TWDGameManager {
 
     public List<String> getSurvivors() {
         List<String> listOfSurvivors = new ArrayList<>();
-        String text = "Nr. de turnos terminados:\n";
+        String text = "Nr. de turnos terminados:";
         listOfSurvivors.add( text );
-        text = "" + numberOfTurns + "\n\n\n";
+        text = "" + numberOfTurns ;
         listOfSurvivors.add( text );
+        listOfSurvivors.add(" ");
 
-        text = "OS VIVOS\n";
+        text = "OS VIVOS";
         listOfSurvivors.add( text );
-        text = "";
         for ( Humano humano: humanos ) {
-            text += "" + humano.getId() + " " + humano.getNome() + "\n";
+            text = "" + humano.getId() + " " + humano.getNome();
+            listOfSurvivors.add(text);
         }
-        text += "\n";
-        listOfSurvivors.add( text );
+        listOfSurvivors.add( " " );
 
-        text = "OS OUTROS\n";
+        text = "OS OUTROS";
         listOfSurvivors.add( text );
         for ( Zombie zombie: zombies ) {
-            text += zombie.getId() + " " + zombie.getNome() + "\n";
+            text = zombie.getId() + " " + zombie.getNome();
+            listOfSurvivors.add(text);
         }
-        listOfSurvivors.add( text );
 
         return listOfSurvivors;
     }
