@@ -66,8 +66,8 @@ public class TWDGameManager {
                         case 1:
                             String[] splitNumLinesColumns = lineRead.split(" ", 2);
 
-                            gameMap.setSizeX( Integer.parseInt( splitNumLinesColumns[0].trim() ) );
-                            gameMap.setSizeY( Integer.parseInt( splitNumLinesColumns[1].trim()   ) );
+                            gameMap.setSizeX( Integer.parseInt( splitNumLinesColumns[0].trim() ) + 1 );
+                            gameMap.setSizeY( Integer.parseInt( splitNumLinesColumns[1].trim() ) + 1 );
                             gameMap.createMap();
                             break;
 
