@@ -23,7 +23,7 @@ public class TestTWDGameManager {
         game.startGame( new File("valoresWalkingDEISI.txt") );
         game.move( 5, 4, 4, 4 );
         game.move(3,3,3,4); //zombie move
-        assertEquals( game.getElementId(3, 4), 3 );
+        assertEquals( game.getElementId(3, 4), 0 );
     }
 
     @Test
