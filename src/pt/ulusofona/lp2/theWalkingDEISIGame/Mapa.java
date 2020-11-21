@@ -52,7 +52,7 @@ public class Mapa {
                 map[xFound][yFound].setTipo(2);    //1 is human with equipment //2 is human without equipment
                 map[xFound][yFound].setHuman(human);
             } else if ( map[xFound][yFound].getTipo() == -1 ) {
-                human.getEquipamentoApanhado().add( map[xFound][yFound].getEquipamento() );
+                human.setEquipamentoApanhado( map[xFound][yFound].getEquipamento() );
                 map[xFound][yFound].setEquipamento(null);
                 human.apanharEquipamento();
 

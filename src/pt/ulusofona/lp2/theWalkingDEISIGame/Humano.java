@@ -1,23 +1,19 @@
 package pt.ulusofona.lp2.theWalkingDEISIGame;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class Humano {
-    private int twoHanded;
     private int id;
     private int x, y;
     private int numEquipamentosApanhados;
 
     private String nome;
-    private List<Equipamento> equipamentoApanhado;
+    private Equipamento equipamentoApanhado;
 
     Humano(int id, String nome, int x, int y) {
         this.id = id;
         this.nome = nome;
         this.x = x;
         this.y = y;
-        this.equipamentoApanhado = new ArrayList<Equipamento>();
+        this.equipamentoApanhado = null;
         this.numEquipamentosApanhados = 0;
     }
 
@@ -48,39 +44,32 @@ public class Humano {
         return texto;
     }
 
-    public List<Equipamento> getEquipamentoApanhado() {
+    public Equipamento getEquipamentoApanhado() {
         return this.equipamentoApanhado;
     }
 
-    public void move( Mapa map, int destinoX, int destinoY, int tipoMovido ) {
-        //no caso de tivermos a sair de cima de uma arma
-        if ( twoHanded == 1 ) {
-            map.getPosition(x,y).setEquipamento( equipamentoApanhado.get(0) );
-            equipamentoApanhado.remove(0);
-            twoHanded = 0;
+    public void setEquipamentoApanhado( Equipamento equipamentoApanhado ) {
+        this.equipamentoApanhado = equipamentoApanhado;
+    }
 
-            map.setPositionType(x,y,-1);
-            map.setPositionType( destinoX, destinoY, tipoMovido );
-            map.getPosition(destinoX,destinoY).setHuman( map.getPosition(x,y).getHuman() );
-            map.getPosition(x,y).setHuman(null);
-            x = destinoX;
-            y = destinoY;
-            return;
-        }
+    public void move( Mapa map, int destinoX, int destinoY, int tipoMovido ) {
+        int tipoDeixado = 0;
 
         //no caso de tarmos a andar para cima de uma arma
         if ( map.getMapId(destinoX,destinoY) == -1 ) {
-            equipamentoApanhado.add( map.getPosition(destinoX,destinoY).getEquipamento() );
+            //verifica se ja tem uma arma
+            if ( equipamentoApanhado != null ) {
+                tipoDeixado = - 1;
+                map.getPosition(x,y).setEquipamento( equipamentoApanhado );
+            }
+
+            equipamentoApanhado =  map.getPosition(destinoX,destinoY).getEquipamento();
             map.getPosition(destinoX,destinoY).setEquipamento(null);
             apanharEquipamento();
-
-            if ( equipamentoApanhado.size() != 1 ) {
-                twoHanded = 1;
-            }
         }
 
         //mover normalmente
-        map.setPositionType( x, y, 0 );
+        map.setPositionType( x, y, tipoDeixado );
         map.setPositionType( destinoX, destinoY, tipoMovido );
         map.getPosition(destinoX,destinoY).setHuman( map.getPosition(x,y).getHuman() );
         map.getPosition(x,y).setHuman(null);
@@ -90,9 +79,5 @@ public class Humano {
 
     public void apanharEquipamento() {
         numEquipamentosApanhados++;
-    }
-
-    public int getTwoHanded() {
-        return twoHanded;
     }
 }

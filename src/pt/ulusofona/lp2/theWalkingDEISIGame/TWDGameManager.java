@@ -271,23 +271,9 @@ public class TWDGameManager {
         Humano humanFound = gameMap.getPosition(xO,yO).getHuman();
         int tipoMovido = gameMap.getMapId( xO, yO );
 
-        //se estiver no mesmo espaço que uma arma, ja estando equipado
-        if ( humanFound.getTwoHanded() == 1 ) {
-            //deixa o equipamento no chão
-            //e depois anda normalmente
-            humanFound.move( gameMap, xD, yD, tipoMovido );
-            incrementaTempo();
-            return true;
-        }
-
         //ve se estamos a mover para cima de uma arma
         if ( gameMap.getMapId( xD, yD ) == -1 ) {
             tipoMovido = 1;
-
-            //neste caso, vai apanhar a arma e verificar se ja tinha uma arma antes
-            humanFound.move( gameMap, xD, yD, tipoMovido );
-            incrementaTempo();
-            return true;
         }
 
         //move normalmente
@@ -576,15 +562,8 @@ public class TWDGameManager {
                 if ( humano.getEquipamentoApanhado() == null ) {
                     return false;
                 }
-                if ( humano.getEquipamentoApanhado().size() == 0 ) {
-                    return false;
-                }
 
-                if ( humano.getEquipamentoApanhado().get(0).getTipo() == equipmentTypeId ) {
-                    return true;
-                } else {
-                    return false;
-                }
+                return (humano.getEquipamentoApanhado().getTipo() == equipmentTypeId);
             }
         }
 
