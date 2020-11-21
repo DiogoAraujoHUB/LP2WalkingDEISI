@@ -1,7 +1,7 @@
 package pt.ulusofona.lp2.theWalkingDEISIGame;
 
 public class MapPosition {
-    private int tipo = 0;
+    private int tipo;
 
     private Humano human;
     private Zombie zombie;

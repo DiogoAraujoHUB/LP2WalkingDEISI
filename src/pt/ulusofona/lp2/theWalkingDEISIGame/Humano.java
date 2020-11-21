@@ -48,8 +48,8 @@ public class Humano {
         return this.equipamentoApanhado;
     }
 
-    public void setEquipamentoApanhado( Equipamento equipamentoApanhado ) {
-        this.equipamentoApanhado = equipamentoApanhado;
+    public void setEquipamentoApanhado( Equipamento equipamento ) {
+        this.equipamentoApanhado = equipamento;
     }
 
     public void move( Mapa map, int destinoX, int destinoY, int tipoMovido ) {

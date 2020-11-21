@@ -18,12 +18,12 @@ public class Zombie {
         this.numEquipamentosDestruidos = 0;
     }
 
-    public int getId() {
-        return this.id;
-    }
-
     public String getImagePNG() {
         return "Zombie.png";
+    }
+
+    public int getId() {
+        return this.id;
     }
 
     public int getX() {

@@ -1,6 +1,5 @@
 package pt.ulusofona.lp2.theWalkingDEISIGame;
 
-import java.util.Arrays;
 import java.util.List;
 
 public class Mapa {

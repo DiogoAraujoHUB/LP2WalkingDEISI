@@ -32,9 +32,6 @@ public class TWDGameManager {
         numberOfTurns = 0;
     }
 
-    //passar os dois fors para uma função
-    //tornar isto mais pequeno
-
     //leitura do ficheiro texto
     //e carregar para a memória a informação relevante
     public boolean startGame( File ficheiroInicial ) {
