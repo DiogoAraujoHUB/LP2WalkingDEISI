@@ -1,47 +1,17 @@
 package pt.ulusofona.lp2.theWalkingDEISIGame;
 
-public class Humano {
-    private int id;
-    private int x, y;
-    private int numEquipamentosApanhados;
+public class Humano extends Creature {
 
-    private String nome;
     private Equipamento equipamentoApanhado;
 
-    Humano(int id, String nome, int x, int y) {
-        this.id = id;
-        this.nome = nome;
-        this.x = x;
-        this.y = y;
+    Humano(int id, String nome, int x, int y, int deslocamentoMaximo, boolean moveFree) {
+        super(id, nome, x, y, deslocamentoMaximo, moveFree);
+
         this.equipamentoApanhado = null;
-        this.numEquipamentosApanhados = 0;
     }
 
     public String getImagePNG() {
         return "Human.png";
-    }
-
-    public int getId() {
-        return this.id;
-    }
-
-    public int getX() {
-        return this.x;
-    }
-
-    public int getY() {
-        return this.y;
-    }
-
-    public String getNome() {
-        return this.nome;
-    }
-
-    public String toString() {
-        String texto = id + " | Humano | Os Vivos |" + nome + "";
-        texto += numEquipamentosApanhados + " @ (" + x + ", " + y + ")";
-
-        return texto;
     }
 
     public Equipamento getEquipamentoApanhado() {
@@ -50,6 +20,13 @@ public class Humano {
 
     public void setEquipamentoApanhado( Equipamento equipamento ) {
         this.equipamentoApanhado = equipamento;
+    }
+
+    public String toString() {
+        String texto = id + " | Humano | Os Vivos |" + nome + "";
+        texto += numEquipamentos + " @ (" + x + ", " + y + ")";
+
+        return texto;
     }
 
     public void move( Mapa map, int destinoX, int destinoY, int tipoMovido ) {
@@ -65,19 +42,15 @@ public class Humano {
 
             equipamentoApanhado =  map.getPosition(destinoX,destinoY).getEquipamento();
             map.getPosition(destinoX,destinoY).setEquipamento(null);
-            apanharEquipamento();
+            pickEquipment();
         }
 
         //mover normalmente
         map.setPositionType( x, y, tipoDeixado );
         map.setPositionType( destinoX, destinoY, tipoMovido );
-        map.getPosition(destinoX,destinoY).setHuman( map.getPosition(x,y).getHuman() );
-        map.getPosition(x,y).setHuman(null);
+        map.getPosition(destinoX,destinoY).setCreature( map.getPosition(x,y).getCreature() );
+        map.getPosition(x,y).setCreature(null);
         x = destinoX;
         y = destinoY;
-    }
-
-    public void apanharEquipamento() {
-        numEquipamentosApanhados++;
     }
 }

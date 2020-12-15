@@ -15,38 +15,43 @@ public class TWDGameManager {
     private int currentTeamId;
     private int numberOfTurns;
 
-    private List<Humano> humanos;
-    private List<Zombie> zombies;
+    private List<Creature> creatures;
     private List<Equipamento> equipment;
+    private List<SafeHaven> safeHavens;
 
     private Mapa gameMap;
 
     public TWDGameManager() {
         dayNightCycle = 0;
-        humanos = new ArrayList<>();
-        zombies = new ArrayList<>();
-        equipment = new ArrayList<>();
-        gameMap = new Mapa();
         initialTeamId = 0;
         currentTeamId = 0;
         numberOfTurns = 0;
+
+        creatures = new ArrayList<>();
+        equipment = new ArrayList<>();
+        safeHavens = new ArrayList<>();
+
+        gameMap = new Mapa();
     }
 
     //leitura do ficheiro texto
     //e carregar para a memória a informação relevante
     public boolean startGame( File ficheiroInicial ) {
-        humanos.clear();
-        zombies.clear();
+        creatures.clear();
         equipment.clear();
+        safeHavens.clear();
+
+        gameMap = new Mapa();
+
         initialTeamId = 0;
         currentTeamId = 0;
         numberOfTurns = 0;
-        gameMap = new Mapa();
         dayNightCycle = 0;
 
         int numFileLine = 1;
         int numCreatures = 0;
         int numEquipment = 0;
+        int numSafeHavens = 0;
 
         try {
             BufferedReader reader = new BufferedReader( new FileReader( ficheiroInicial ) );
@@ -70,7 +75,7 @@ public class TWDGameManager {
 
                         case 2:
                             initialTeamId = Integer.parseInt( lineRead.trim() );
-                            if ( initialTeamId == 0 || initialTeamId == 1 ) {
+                            if ( initialTeamId == 10 || initialTeamId == 20 ) {
                                 currentTeamId = initialTeamId;
                             } else {
                                 return false;
@@ -91,16 +96,70 @@ public class TWDGameManager {
                                 int spawnX = Integer.parseInt( splitCreatures[3].trim() );
                                 int spawnY = Integer.parseInt( splitCreatures[4].trim() );
 
-                                if ( typeID == 0 ) {
-                                    Zombie zombieCriado = new Zombie( creatureID, creatureName, spawnX, spawnY);
-                                    zombies.add( zombieCriado );
-                                } else if ( typeID == 1 ) {
-                                    Humano humanoCriado = new Humano( creatureID, creatureName, spawnX, spawnY);
-                                    humanos.add( humanoCriado );
-                                } else {
-                                    return false;
-                                }
+                                switch ( typeID ) {
+                                    case 0: //Criança Zombie
+                                        Creature criancaZombie = new Zombie(creatureID, creatureName, spawnX, spawnY,
+                                                1, true);
+                                        creatures.add(criancaZombie);
+                                        break;
 
+                                    case 1: //Adulto Zombie
+                                        Creature adultoZombie = new Zombie(creatureID, creatureName, spawnX, spawnY,
+                                                2, true);
+                                        creatures.add(adultoZombie);
+                                        break;
+
+                                    case 2: //Militar Zombie
+                                        Creature militarZombie = new Zombie(creatureID, creatureName, spawnX, spawnY,
+                                                3, true);
+                                        creatures.add(militarZombie);
+                                        break;
+
+                                    case 3: //Idoso Zombie
+                                        Creature idosoZombie = new Zombie(creatureID, creatureName, spawnX, spawnY,
+                                                1, false);
+                                        creatures.add(idosoZombie);
+                                        break;
+
+                                    case 4: //Zombie Vampiro
+                                        Creature vampiroZombie = new Zombie(creatureID, creatureName, spawnX, spawnY,
+                                                2, true);
+                                        creatures.add(vampiroZombie);
+                                        break;
+
+                                    case 5: //Criança Vivo
+                                        Creature criancaVivo = new Humano(creatureID, creatureName, spawnX, spawnY,
+                                                1, true);
+                                        creatures.add(criancaVivo);
+                                        break;
+
+                                    case 6: //Adulto Vivo
+                                        Creature adultoVivo = new Humano(creatureID, creatureName, spawnX, spawnY,
+                                                2, true);
+                                        creatures.add(adultoVivo);
+                                        break;
+
+                                    case 7: //Militar Vivo
+                                        Creature militarVivo = new Humano(creatureID, creatureName, spawnX, spawnY,
+                                                3, true);
+                                        creatures.add(militarVivo);
+                                        break;
+
+                                    case 8: //Idoso Vivo
+                                        Creature idosoVivo = new Humano(creatureID, creatureName, spawnX, spawnY,
+                                                1, false);
+                                        creatures.add(idosoVivo);
+                                        break;
+
+                                    case 9: //Cão
+                                        Creature cao = new Cao(creatureID, creatureName, spawnX, spawnY,
+                                                2, false);
+                                        break;
+
+                                    default:
+                                        return false;
+                                }
+                                
                                 if ( pos == numCreatures - 1 ) {
                                     break;
                                 }
@@ -139,10 +198,33 @@ public class TWDGameManager {
                                     return false;
                                 }
                             }
+                            break;
 
+                        case 7:
+                            numSafeHavens = Integer.parseInt( lineRead );
+                            break;
+
+                        case 8:
+                            for ( int pos = 0; pos < numSafeHavens; pos++ ) {
+                                String[] splitEquipment = lineRead.split(":", 2 );
+                                int spawnX = Integer.parseInt( splitEquipment[2].trim() );
+                                int spawnY = Integer.parseInt( splitEquipment[3].trim() );
+
+                                SafeHaven safeHavenDoor = new SafeHaven( spawnX, spawnY );
+                                safeHavens.add( safeHavenDoor );
+
+                                if ( pos == numEquipment - 1 ) {
+                                    break;
+                                }
+                                lineRead = reader.readLine();
+                                if ( lineRead == null ) {
+                                    return false;
+                                }
+                            }
+
+                            gameMap.addCreatures( creatures );
                             gameMap.addEquipment( equipment );
-                            gameMap.addHumans( humanos );
-                            gameMap.addZombies( zombies );
+                            gameMap.addSafeHavens( safeHavens );
                             break;
 
                         default:
@@ -185,14 +267,9 @@ public class TWDGameManager {
         return this.initialTeamId;
     }
 
-    //Devolve uma lista com todos os objetos "Humano" no jogo
-    public List<Humano> getHumans() {
-        return this.humanos;
-    }
-
-    //Devolve uma lista com todos os objetos "Zombie" no jogo
-    public List<Zombie> getZombies() {
-        return this.zombies;
+    //Devolve uma lista com todos os objetos "Creature" no jogo
+    public List<Creature> getCreatures() {
+        return this.creatures;
     }
 
     public List<String> getAuthors() {
@@ -232,13 +309,9 @@ public class TWDGameManager {
 
             case 1:
             case 2:
-                Humano human = gameMap.getPosition(x,y).getHuman();
-                mapId = human.getId();
-                break;
-
             case 3:
-                Zombie zombie = gameMap.getPosition(x,y).getZombie();
-                mapId = zombie.getId();
+                Creature creature = gameMap.getPosition(x,y).getCreature();
+                mapId = creature.getId();
                 break;
 
             default:
@@ -252,20 +325,20 @@ public class TWDGameManager {
     //xO, yO é uma origem
     //xD, yD é o destino
     public boolean move( int xO, int yO, int xD, int yD ) {
+        if ( !verificaCondicoes(xO, yO, xD, yD) ) {
+            return false;
+        }
         if ( currentTeamId == 1 ) {
             return moveZombie(xO, yO, xD, yD);
         }
 
-        if ( !verificaCondicoes(xO, yO, xD, yD) ) {
-            return false;
-        }
         //verifica se tentamos mover um zombie
         if ( gameMap.getMapId(xO,yO) == 3 ) {
             return false;
         }
 
         //ocorre o movimento
-        Humano humanFound = gameMap.getPosition(xO,yO).getHuman();
+        Creature humanFound = gameMap.getPosition(xO,yO).getCreature();
         int tipoMovido = gameMap.getMapId( xO, yO );
 
         //ve se estamos a mover para cima de uma arma
@@ -276,6 +349,23 @@ public class TWDGameManager {
         //move normalmente
         humanFound.move( gameMap, xD, yD, tipoMovido );
         incrementaTempo();
+        return true;
+    }
+
+    public boolean moveZombie( int xO, int yO, int xD, int yD ) {
+        //verifica se tentamos mover um humano
+        if ( gameMap.getMapId(xO,yO) == 2 || gameMap.getMapId(xO,yO) == 1 ) {
+            return false;
+        }
+
+        if ( gameMap.getPosition(xD, yD).getTipo() == -1 ) {
+            retiraEquipamento( xD, yD );
+        }
+
+        incrementaTempo();
+        int tipoMovido = gameMap.getMapId( xO, yO );
+
+        gameMap.getPosition(xO, yO).getCreature().move( gameMap, xD, yD, tipoMovido );
         return true;
     }
 
@@ -321,24 +411,6 @@ public class TWDGameManager {
         }
 
         return false;
-    }
-
-    public boolean moveZombie( int xO, int yO, int xD, int yD ) {
-        if ( !verificaCondicoes(xO, yO, xD, yD) ) {
-            return false;
-        }
-        //verifica se tentamos mover um humano
-        if ( gameMap.getMapId(xO,yO) == 2 || gameMap.getMapId(xO,yO) == 1 ) {
-            return false;
-        }
-
-        if ( gameMap.getPosition(xD, yD).getTipo() == -1 ) {
-            retiraEquipamento( xD, yD );
-        }
-
-        incrementaTempo();
-        gameMap.getPosition(xO, yO).getZombie().move( xD, yD, gameMap );
-        return true;
     }
 
     /*
@@ -488,10 +560,10 @@ public class TWDGameManager {
      */
 
     public void incrementaTempo() {
-        if ( currentTeamId == initialTeamId ) {
-            currentTeamId++;
+        if ( currentTeamId == 10 ) {
+            currentTeamId += 10;
         } else {
-            currentTeamId--;
+            currentTeamId -= 10;
         }
         numberOfTurns++;
         if ( numberOfTurns % 2 == 0 ) {
@@ -506,19 +578,17 @@ public class TWDGameManager {
     //se uma das condições de paragem ja tenha sido alcançada
     //então retorna true
     public boolean gameIsOver() {
-        if ( numberOfTurns == 12 ) {    //é suposto ser 12
+        if ( numberOfTurns == 12 ) {
             return true;
         }
-        if ( humanos.size() == 0 ) {
-            return true;
-        }
-        if ( zombies.size() == 0 ) {
+        if ( creatures.size() == 0 ) {
             return true;
         }
 
         return false;
     }
 
+    /*
     public List<String> getSurvivors() {
         List<String> listOfSurvivors = new ArrayList<>();
         String text = "Nr. de turnos terminados:";
@@ -529,30 +599,70 @@ public class TWDGameManager {
 
         text = "OS VIVOS";
         listOfSurvivors.add( text );
-        for ( Humano humano: humanos ) {
-            text = "" + humano.getId() + " " + humano.getNome();
+        for ( Creature creature: creatures ) {
+            if ( creature.getTipo() == 3  ) {
+                continue;   //Se estivermos a ver um zombie
+            }
+
+            text = "" + creature.getId() + " " + creature.getNome();
             listOfSurvivors.add(text);
         }
         listOfSurvivors.add( " " );
 
         text = "OS OUTROS";
         listOfSurvivors.add( text );
-        for ( Zombie zombie: zombies ) {
-            text = zombie.getId() + " " + zombie.getNome();
+        for ( Creature creature: creatures ) {
+            if ( creature.getTipo() == 1 || creature.getTipo() == 2 ) {
+                continue;   //Se estivermos a ver um humano
+            }
+
+            text = creature.getId() + " " + creature.getNome();
             listOfSurvivors.add(text);
         }
 
         return listOfSurvivors;
     }
+     */
 
     public boolean isDay() {
-        if ( dayNightCycle == 0 ) {
-            return true;
-        }
-
-        return false;
+        return (dayNightCycle == 0);
     }
 
+    public List<String> getGameResults() {
+        List<String> gameResults = new ArrayList<>();
+        String text = "Nr. de turnos terminados:";
+        gameResults.add( text );
+        text = "" + numberOfTurns ;
+        gameResults.add( text );
+        gameResults.add(" ");
+
+        text = "OS VIVOS";
+        gameResults.add( text );
+        for ( Creature creature: creatures ) {
+            if ( creature instanceof Zombie || creature instanceof Cao ) {
+                continue;   //Se estivermos a ver um zombie ou um cao
+            }
+
+            text = "" + creature.getId() + " " + creature.getNome();
+            gameResults.add(text);
+        }
+        gameResults.add( " " );
+
+        text = "OS OUTROS";
+        gameResults.add( text );
+        for ( Creature creature: creatures ) {
+            if ( creature instanceof Humano || creature instanceof Cao ) {
+                continue;   //Se estivermos a ver um humano ou um cao
+            }
+
+            text = creature.getId() + " " + creature.getNome();
+            gameResults.add(text);
+        }
+
+        return gameResults;
+    }
+
+    /*
     public boolean hasEquipment( int creatureId, int equipmentTypeId ) {
         for ( Humano humano: humanos ) {
             if ( humano.getId() == creatureId ) {
@@ -566,4 +676,19 @@ public class TWDGameManager {
 
         return false;
     }
+     */
+
+    /*
+    public int getEquipmentId( int creatureId ) {
+        if ( creatures == null || creatures.size() == 0 ) {
+            return 0;
+        }
+
+        for ( Creature creature : creatures ) {
+            if ( creature.getId() == creatureId ) {
+                //Se for humano, então consegue aguentar uma arma
+            }
+        }
+    }
+     */
 }

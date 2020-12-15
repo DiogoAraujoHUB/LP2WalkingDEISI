@@ -3,14 +3,15 @@ package pt.ulusofona.lp2.theWalkingDEISIGame;
 public class MapPosition {
     private int tipo;
 
-    private Humano human;
-    private Zombie zombie;
+    private SafeHaven safeHaven;
+    private Creature creature;
     private Equipamento equipamento;
 
     public MapPosition() {
         tipo = 0;
-        human = null;
-        zombie = null;
+        safeHaven = null;
+
+        creature = null;
         equipamento = null;
     }
 
@@ -22,20 +23,12 @@ public class MapPosition {
         this.tipo = tipo;
     }
 
-    public Humano getHuman() {
-        return this.human;
+    public Creature getCreature() {
+        return this.creature;
     }
 
-    public void setHuman( Humano human ) {
-        this.human = human;
-    }
-
-    public Zombie getZombie() {
-        return this.zombie;
-    }
-
-    public void setZombie( Zombie zombie ) {
-        this.zombie = zombie;
+    public void setCreature( Creature creature ) {
+        this.creature = creature;
     }
 
     public Equipamento getEquipamento() {
@@ -46,8 +39,15 @@ public class MapPosition {
         this.equipamento = equipamento;
     }
 
+    public SafeHaven getSafeHaven() {
+        return this.safeHaven;
+    }
+
+    public void setSafeHaven(SafeHaven safeHaven) {
+        this.safeHaven = safeHaven;
+    }
+
     public String toString() {
-        return "Tipo == " + tipo + " and Human == " + human + " and Zombie == "
-                + zombie + " and equipment == " + equipamento;
+        return "Tipo == " + tipo + " and Creature == " + creature + " and equipment == " + equipamento;
     }
 }

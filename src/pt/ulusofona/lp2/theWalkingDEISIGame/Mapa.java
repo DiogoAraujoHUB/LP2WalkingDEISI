@@ -38,47 +38,22 @@ public class Mapa {
         }
     }
 
-    public void addHumans( List<Humano> humans ) {
-        for ( Humano human: humans ) {
-            int xFound = human.getX();
-            int yFound = human.getY();
+    public void addCreatures( List<Creature> creatures ) {
+        for ( Creature creature: creatures ) {
+            int xFound = creature.getX();
+            int yFound = creature.getY();
 
+            //Já está um humano na posicão?
             if ( map[xFound][yFound].getTipo() == 1 || map[xFound][yFound].getTipo() == 2 ) {
                 continue;
             }
-
-            if ( map[xFound][yFound].getTipo() == 0 ) {
-                map[xFound][yFound].setTipo(2);    //1 is human with equipment //2 is human without equipment
-                map[xFound][yFound].setHuman(human);
-            } else if ( map[xFound][yFound].getTipo() == -1 ) {
-                human.setEquipamentoApanhado( map[xFound][yFound].getEquipamento() );
-                map[xFound][yFound].setEquipamento(null);
-                human.apanharEquipamento();
-
-                map[xFound][yFound].setTipo(1);
-                map[xFound][yFound].setHuman(human);
-            }
-        }
-    }
-
-    public void addZombies( List<Zombie> zombies ) {
-        for ( Zombie zombie: zombies ) {
-            int xFound = zombie.getX();
-            int yFound = zombie.getY();
-
-            if ( map[xFound][yFound].getTipo() == 1 || map[xFound][yFound].getTipo() == 2 ) {
-                continue;
-            }
+            //Já está um zombie na posição?
             if ( map[xFound][yFound].getTipo() == 3 ) {
                 continue;
             }
 
-            if ( map[xFound][yFound].getTipo() == -1 ) {
-                map[xFound][yFound].setEquipamento(null);
-                zombie.destroiEquipamento();
-            }
-            map[xFound][yFound].setTipo(3); //3 is a zombie
-            map[xFound][yFound].setZombie(zombie);
+            map[xFound][yFound].setTipo(2);    //1 is human with equipment //2 is human without equipment
+            map[xFound][yFound].setCreature(creature);
         }
     }
 
@@ -92,6 +67,20 @@ public class Mapa {
             }
             map[xFound][yFound].setTipo(-1);    //everything below 0 is equipment
             map[xFound][yFound].setEquipamento(equipamento);
+        }
+    }
+
+    public void addSafeHavens( List<SafeHaven> safeHavens ) {
+        for ( SafeHaven safeHaven: safeHavens ) {
+            int xFound = safeHaven.getX();
+            int yFound = safeHaven.getY();
+
+            if ( map[xFound][yFound].getTipo() != 0 ) {
+                continue;
+            }
+
+            map[xFound][yFound].setSafeHaven(safeHaven);
+            map[xFound][yFound].setTipo(0);    //O tipo 0 é um SafeHaven
         }
     }
 
