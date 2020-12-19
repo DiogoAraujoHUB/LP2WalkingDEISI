@@ -52,7 +52,16 @@ public class Mapa {
                 continue;
             }
 
-            map[xFound][yFound].setTipo(2);    //1 is human with equipment //2 is human without equipment
+            if ( creature instanceof Humano ) {
+                map[xFound][yFound].setTipo(2);    //1 is human with equipment //2 is human without equipment
+            }
+            if ( creature instanceof Zombie ) {
+                map[xFound][yFound].setTipo(3);         //3 is a zombie
+            }
+            if ( creature instanceof Cao ) {
+                map[xFound][yFound].setTipo(4);         //? is a dog
+            }
+
             map[xFound][yFound].setCreature(creature);
         }
     }
@@ -62,9 +71,27 @@ public class Mapa {
             int xFound = equipamento.getX();
             int yFound = equipamento.getY();
 
-            if ( map[xFound][yFound].getTipo() != 0 ) {
+            //Já está um equipamento na posição?
+            if ( map[xFound][yFound].getTipo() == -1 ) {
                 continue;
             }
+            //Já está um humano com equipamento ou um zombie na posição?
+            if ( map[xFound][yFound].getTipo() == 1 || map[xFound][yFound].getTipo() == 3 ) {
+                continue;
+            }
+
+            //Verificar se na posição está um humano, e logo podemos dar-lhe equipamento
+            if ( map[xFound][yFound].getTipo() == 2 ) {
+                map[xFound][yFound].setTipo(1);
+
+                Creature creature = map[xFound][yFound].getCreature();
+                if ( creature instanceof Humano ) {
+                    ((Humano) creature).setEquipamentoApanhado(equipamento);
+                }
+                continue;
+            }
+
+            //Na posição não está nada, logo pusemos o equipamento no chão
             map[xFound][yFound].setTipo(-1);    //everything below 0 is equipment
             map[xFound][yFound].setEquipamento(equipamento);
         }
@@ -75,12 +102,13 @@ public class Mapa {
             int xFound = safeHaven.getX();
             int yFound = safeHaven.getY();
 
+            //Verificar se podemos por a porta no chão
             if ( map[xFound][yFound].getTipo() != 0 ) {
                 continue;
             }
 
             map[xFound][yFound].setSafeHaven(safeHaven);
-            map[xFound][yFound].setTipo(0);    //O tipo 0 é um SafeHaven
+            map[xFound][yFound].setTipo(0);                 //O tipo 0 é um SafeHaven
         }
     }
 

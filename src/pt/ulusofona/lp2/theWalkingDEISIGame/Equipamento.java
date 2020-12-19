@@ -4,12 +4,14 @@ public class Equipamento {
     private int id;
     private int tipo;
     private int x, y;
+    private int numUses;
 
-    Equipamento( int id, int tipo, int x, int y ) {
+    public Equipamento( int id, int tipo, int x, int y, int numUses ) {
         this.id = id;
         this.tipo = tipo;
         this.x = x;
         this.y = y;
+        this.numUses = numUses; //if numUses == -1, then it has no limited amount of uses
     }
 
     public int getId() {
@@ -26,6 +28,10 @@ public class Equipamento {
 
     public int getY() {
         return this.y;
+    }
+
+    public int getNumUses() {
+        return this.numUses;
     }
 
     public String toString() {

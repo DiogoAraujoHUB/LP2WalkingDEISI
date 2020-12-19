@@ -4,8 +4,8 @@ public class Humano extends Creature {
 
     private Equipamento equipamentoApanhado;
 
-    Humano(int id, String nome, int x, int y, int deslocamentoMaximo, boolean moveFree) {
-        super(id, nome, x, y, deslocamentoMaximo, moveFree);
+    Humano(int id, int tipo, String nome, int x, int y, int deslocamentoMaximo, boolean moveFree) {
+        super(id, tipo, nome, x, y, deslocamentoMaximo, moveFree);
 
         this.equipamentoApanhado = null;
     }

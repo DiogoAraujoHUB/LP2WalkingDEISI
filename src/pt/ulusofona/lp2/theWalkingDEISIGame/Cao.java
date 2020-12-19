@@ -2,8 +2,8 @@ package pt.ulusofona.lp2.theWalkingDEISIGame;
 
 public class Cao extends Creature {
 
-    public Cao(int id, String nome, int x, int y, int deslocamentoMaximo, boolean moveFree) {
-        super(id, nome, x, y, deslocamentoMaximo, moveFree);
+    public Cao(int id, int tipo, String nome, int x, int y, int deslocamentoMaximo, boolean moveFree) {
+        super(id, tipo, nome, x, y, deslocamentoMaximo, moveFree);
     }
 
     public void move( Mapa map, int destinoX, int destinoY, int tipoMovido ) {
@@ -26,7 +26,7 @@ public class Cao extends Creature {
     }
 
     public String getImagePNG() {
-        return "Cão.png";
+        return null;
     }
 
     public String toString() {

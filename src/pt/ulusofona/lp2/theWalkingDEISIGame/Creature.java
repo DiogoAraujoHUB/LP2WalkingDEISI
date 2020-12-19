@@ -2,6 +2,7 @@ package pt.ulusofona.lp2.theWalkingDEISIGame;
 
 public abstract class Creature {
     protected int id;
+    protected int tipo;
     protected String nome;
     protected int x, y;
     protected int numEquipamentos;
@@ -9,8 +10,9 @@ public abstract class Creature {
 
     protected boolean moveFree;
 
-    public Creature( int id, String nome, int x, int y, int deslocamentoMaximo, boolean moveFree ) {
+    public Creature( int id, int tipo, String nome, int x, int y, int deslocamentoMaximo, boolean moveFree ) {
         this.id = id;
+        this.tipo = tipo;
         this.nome = nome;
         this.x = x;
         this.y = y;
@@ -23,6 +25,10 @@ public abstract class Creature {
 
     public int getId() {
         return this.id;
+    }
+
+    public int getTipo() {
+        return this.tipo;
     }
 
     public int getX() {

@@ -5,8 +5,8 @@ import java.util.List;
 
 public class Zombie extends Creature {
 
-    Zombie( int id, String nome, int x, int y, int deslocamentoMaximo, boolean moveFree ) {
-        super(id, nome, x, y, deslocamentoMaximo, moveFree);
+    Zombie( int id, int tipo, String nome, int x, int y, int deslocamentoMaximo, boolean moveFree ) {
+        super(id, tipo, nome, x, y, deslocamentoMaximo, moveFree);
     }
 
     public String getImagePNG() {
