@@ -22,13 +22,6 @@ public class Humano extends Creature {
         this.equipamentoApanhado = equipamento;
     }
 
-    public String toString() {
-        String texto = id + " | Humano | Os Vivos |" + nome + "";
-        texto += numEquipamentos + " @ (" + x + ", " + y + ")";
-
-        return texto;
-    }
-
     public void move( Mapa map, int destinoX, int destinoY, int tipoMovido ) {
         int tipoDeixado = 0;
 
@@ -53,4 +46,34 @@ public class Humano extends Creature {
         x = destinoX;
         y = destinoY;
     }
+
+    public String toString() {
+        String creaturaVista = "";
+
+        switch ( tipo ) {
+            case 5:
+                creaturaVista = "Criança (Vivo)";
+                break;
+
+            case 6:
+                creaturaVista = "Adulto (Vivo)";
+                break;
+
+            case 7:
+                creaturaVista = "Militar (Vivo)";
+                break;
+
+            case 8:
+                creaturaVista = "Idoso (Vivo)";
+                break;
+
+            default:
+                creaturaVista = "Humano";
+        }
+
+        String texto = id + " | " + creaturaVista + " | Os Vivos |" + nome + "";
+        texto += numEquipamentos + " @ (" + x + ", " + y + ")";
+        return texto;
+    }
+
 }

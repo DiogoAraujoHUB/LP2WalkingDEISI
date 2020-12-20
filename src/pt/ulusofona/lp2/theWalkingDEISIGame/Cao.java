@@ -30,6 +30,9 @@ public class Cao extends Creature {
     }
 
     public String toString() {
-        return "Cão == " + nome + " and id == " + id + ", while x and y == " + x + " " + y;
+        String texto = id + " | Cão | Os Vivos |" + nome + "";
+        texto += numEquipamentos + " @ (" + x + ", " + y + ")";
+
+        return texto;
     }
 }

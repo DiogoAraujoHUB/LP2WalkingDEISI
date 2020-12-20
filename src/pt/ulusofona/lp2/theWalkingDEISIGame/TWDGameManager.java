@@ -392,6 +392,7 @@ public class TWDGameManager {
                 mapId = equipamento.getId();
                 break;
 
+
             case 1:
             case 2:
             case 3:

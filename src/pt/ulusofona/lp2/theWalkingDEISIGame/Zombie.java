@@ -13,17 +13,11 @@ public class Zombie extends Creature {
         return "Zombie.png";
     }
 
-    public String toString() {
-        String texto = id + " | Zombie | Os Outros |" + nome + "";
-        texto += numEquipamentos + " @ (" + x + ", " + y + ")";
-
-        return texto;
-    }
-
     public void move( Mapa map, int destinoX, int destinoY, int tipoMovido ) {
         //parte o equipamento na posição que move para
         //Será que tamos a retirar o equipamento da lista de equipamentos quando partimos? Tenho que testar
         if ( map.getMapId( destinoX, destinoY )  == -1 ) {
+
             pickEquipment();
             map.getPosition( destinoX, destinoY ).setEquipamento(null);
         }
@@ -37,4 +31,37 @@ public class Zombie extends Creature {
         y = destinoY;
     }
 
+    public String toString() {
+        String creaturaVista = "";
+
+        switch ( tipo ) {
+
+            case 0:
+                creaturaVista = "Criança (Zombie)";
+                break;
+
+            case 1:
+                creaturaVista = "Adulto (Zombie)";
+                break;
+
+            case 2:
+                creaturaVista = "Militar (Zombie)";
+                break;
+
+            case 3:
+                creaturaVista = "Idoso (Zombie)";
+                break;
+
+            case 4:
+                creaturaVista = "Zombie Vampiro";
+                break;
+
+            default:
+                creaturaVista = "Zombie";
+        }
+
+        String texto = id + " | " + creaturaVista + " | Os Outros |" + nome + "";
+        texto += numEquipamentos + " @ (" + x + ", " + y + ")";
+        return texto;
+    }
 }
