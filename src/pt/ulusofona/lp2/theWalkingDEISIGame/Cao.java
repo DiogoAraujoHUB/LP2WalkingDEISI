@@ -9,7 +9,7 @@ public class Cao extends Animal {
     }
 
     public String getImagePNG() {
-        return null;
+        return "Cão.png";
     }
 
     public String toString() {

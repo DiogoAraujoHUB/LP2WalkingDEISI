@@ -388,12 +388,15 @@ public class TWDGameManager {
         int tipo = gameMap.getMapId(x,y);
         int mapId;
 
+        if ( gameMap.getPosition(x,y).getSafeHaven() != null ) {
+            return 1;
+        }
+
         switch( tipo ) {
             case 0:
                 mapId = 0;
                 break;
 
-            case -2:
             case -1:
                 Equipamento equipamento = gameMap.getPosition(x,y).getEquipamento();
                 mapId = equipamento.getId();
@@ -401,8 +404,6 @@ public class TWDGameManager {
 
 
             case 1:
-            case 2:
-            case 3:
                 Creature creature = gameMap.getPosition(x,y).getCreature();
                 mapId = creature.getId();
                 break;
@@ -414,7 +415,7 @@ public class TWDGameManager {
         return mapId;
     }
 
-    public boolean attack( int xO, int yO, int xD, int yD ) {
+    public boolean attack(int xO, int yO, int xD, int yD) {
         return true;
     }
 

@@ -1,5 +1,7 @@
 package pt.ulusofona.lp2.theWalkingDEISIGame;
 
+import pt.ulusofona.lp2.theWalkingDEISIGame.classesCriaturas.*;
+
 import java.util.List;
 
 public class Mapa {
@@ -43,25 +45,12 @@ public class Mapa {
             int xFound = creature.getX();
             int yFound = creature.getY();
 
-            //Já está um humano na posicão?
-            if ( map[xFound][yFound].getTipo() == 1 || map[xFound][yFound].getTipo() == 2 ) {
-                continue;
-            }
-            //Já está um zombie na posição?
-            if ( map[xFound][yFound].getTipo() == 3 ) {
+            //Já está uma creatura na posicão?
+            if ( map[xFound][yFound].getTipo() == 1 ) {
                 continue;
             }
 
-            if ( creature instanceof Humano ) {
-                map[xFound][yFound].setTipo(2);    //1 is human with equipment //2 is human without equipment
-            }
-            if ( creature instanceof Zombie ) {
-                map[xFound][yFound].setTipo(3);         //3 is a zombie
-            }
-            if ( creature instanceof Cao ) {
-                map[xFound][yFound].setTipo(4);         //? is a dog
-            }
-
+            map[xFound][yFound].setTipo(1);
             map[xFound][yFound].setCreature(creature);
         }
     }
@@ -76,7 +65,7 @@ public class Mapa {
                 continue;
             }
             //Já está um humano com equipamento ou um zombie na posição?
-            if ( map[xFound][yFound].getTipo() == 1 || map[xFound][yFound].getTipo() == 3 ) {
+            if ( map[xFound][yFound].getTipo() == 1 ) {
                 continue;
             }
 
@@ -108,7 +97,7 @@ public class Mapa {
             }
 
             map[xFound][yFound].setSafeHaven(safeHaven);
-            map[xFound][yFound].setTipo(0);                 //O tipo 0 é um SafeHaven
+            map[xFound][yFound].setTipo(0); //O tipo 0 é um SafeHaven
         }
     }
 
