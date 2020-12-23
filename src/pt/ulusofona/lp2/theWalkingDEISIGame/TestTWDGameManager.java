@@ -1,6 +1,7 @@
 package pt.ulusofona.lp2.theWalkingDEISIGame;
 
 import org.junit.Test;
+import pt.ulusofona.lp2.theWalkingDEISIGame.classesCriaturas.*;
 
 import java.io.File;
 
@@ -39,7 +40,8 @@ public class TestTWDGameManager {
         TWDGameManager game = new TWDGameManager();
 
         game.startGame( new File("valoresWalkingDEISI.txt") );
-        assertEquals( game.verificaCondicoes(2,2, 5, 5), false );
+        Creature creatureTested = new AdultoHumano(3, 2, "Diogo Brando", 2, 2);
+        assertEquals( game.verificaCondicoes(2,2, 5, 5, creatureTested), false );
     }
 
     @Test

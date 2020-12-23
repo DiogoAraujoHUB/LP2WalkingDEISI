@@ -3,14 +3,10 @@ package pt.ulusofona.lp2.theWalkingDEISIGame;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Zombie extends Creature {
+public abstract class Zombie extends Creature {
 
-    Zombie( int id, int tipo, String nome, int x, int y, int deslocamentoMaximo, boolean moveFree ) {
-        super(id, tipo, nome, x, y, deslocamentoMaximo, moveFree);
-    }
-
-    public String getImagePNG() {
-        return "Zombie.png";
+    public Zombie(int id, int tipo, String nome, int x, int y) {
+        super(id, tipo, nome, x, y);
     }
 
     public void move( Mapa map, int destinoX, int destinoY, int tipoMovido ) {
@@ -31,37 +27,7 @@ public class Zombie extends Creature {
         y = destinoY;
     }
 
-    public String toString() {
-        String creaturaVista = "";
+    public abstract String toString();
 
-        switch ( tipo ) {
-
-            case 0:
-                creaturaVista = "Criança (Zombie)";
-                break;
-
-            case 1:
-                creaturaVista = "Adulto (Zombie)";
-                break;
-
-            case 2:
-                creaturaVista = "Militar (Zombie)";
-                break;
-
-            case 3:
-                creaturaVista = "Idoso (Zombie)";
-                break;
-
-            case 4:
-                creaturaVista = "Zombie Vampiro";
-                break;
-
-            default:
-                creaturaVista = "Zombie";
-        }
-
-        String texto = id + " | " + creaturaVista + " | Os Outros |" + nome + "";
-        texto += numEquipamentos + " @ (" + x + ", " + y + ")";
-        return texto;
-    }
+    public abstract String getImagePNG();
 }

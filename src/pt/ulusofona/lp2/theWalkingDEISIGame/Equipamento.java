@@ -1,17 +1,18 @@
 package pt.ulusofona.lp2.theWalkingDEISIGame;
 
-public class Equipamento {
-    private int id;
-    private int tipo;
-    private int x, y;
-    private int numUses;
+public abstract class Equipamento {
+    protected int id;
+    protected int tipo;
+    protected int x, y;
+    protected int numUses;
 
-    public Equipamento( int id, int tipo, int x, int y, int numUses ) {
+    public Equipamento( int id, int tipo, int x, int y) {
         this.id = id;
         this.tipo = tipo;
         this.x = x;
         this.y = y;
-        this.numUses = numUses; //if numUses == -1, then it has no limited amount of uses
+
+        this.numUses = -1;     //O numUses == -1 quer dizer que tem número de uses infinito
     }
 
     public int getId() {

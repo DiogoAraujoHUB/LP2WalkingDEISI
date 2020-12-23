@@ -1,13 +1,11 @@
 package pt.ulusofona.lp2.theWalkingDEISIGame;
 
-public class Ofensivo extends Equipamento {
+public abstract class Ofensivo extends Equipamento {
 
-    private int range;
+    protected int range;
 
-    public Ofensivo( int id, int tipo, int x, int y, int numUses, int range ) {
-        super(id, tipo, x, y, numUses);
-
-        this.range = range;
+    public Ofensivo( int id, int tipo, int x, int y) {
+        super(id, tipo, x, y);
     }
 
     public int getRange() {

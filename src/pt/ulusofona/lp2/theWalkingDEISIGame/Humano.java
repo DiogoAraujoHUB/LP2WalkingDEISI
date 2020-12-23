@@ -1,17 +1,13 @@
 package pt.ulusofona.lp2.theWalkingDEISIGame;
 
-public class Humano extends Creature {
+public abstract class Humano extends Creature {
 
     private Equipamento equipamentoApanhado;
 
-    Humano(int id, int tipo, String nome, int x, int y, int deslocamentoMaximo, boolean moveFree) {
-        super(id, tipo, nome, x, y, deslocamentoMaximo, moveFree);
+    public Humano(int id, int tipo, String nome, int x, int y) {
+        super(id, tipo, nome, x, y);
 
         this.equipamentoApanhado = null;
-    }
-
-    public String getImagePNG() {
-        return "Human.png";
     }
 
     public Equipamento getEquipamentoApanhado() {
@@ -47,33 +43,7 @@ public class Humano extends Creature {
         y = destinoY;
     }
 
-    public String toString() {
-        String creaturaVista = "";
+    public abstract String toString();
 
-        switch ( tipo ) {
-            case 5:
-                creaturaVista = "Criança (Vivo)";
-                break;
-
-            case 6:
-                creaturaVista = "Adulto (Vivo)";
-                break;
-
-            case 7:
-                creaturaVista = "Militar (Vivo)";
-                break;
-
-            case 8:
-                creaturaVista = "Idoso (Vivo)";
-                break;
-
-            default:
-                creaturaVista = "Humano";
-        }
-
-        String texto = id + " | " + creaturaVista + " | Os Vivos |" + nome + "";
-        texto += numEquipamentos + " @ (" + x + ", " + y + ")";
-        return texto;
-    }
-
+    public abstract String getImagePNG();
 }

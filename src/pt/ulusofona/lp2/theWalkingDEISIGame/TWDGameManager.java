@@ -1,5 +1,8 @@
 package pt.ulusofona.lp2.theWalkingDEISIGame;
 
+import pt.ulusofona.lp2.theWalkingDEISIGame.classesCriaturas.*;
+import pt.ulusofona.lp2.theWalkingDEISIGame.classesEquipamentos.*;
+
 import java.io.*;
 import java.sql.SQLOutput;
 import java.util.*;
@@ -11,6 +14,7 @@ public class TWDGameManager {
     private int initialTeamId;
     private int currentTeamId;
     private int numberOfTurns;
+    private int numberOfTurnsToPassDays;
 
     private List<Creature> creatures;
     private List<Creature> humansInSafeHaven;
@@ -24,6 +28,7 @@ public class TWDGameManager {
         initialTeamId = 0;
         currentTeamId = 0;
         numberOfTurns = 0;
+        numberOfTurnsToPassDays = 0;
 
         creatures = new ArrayList<>();
         equipment = new ArrayList<>();
@@ -96,73 +101,10 @@ public class TWDGameManager {
                                 int spawnX = Integer.parseInt( splitCreatures[3].trim() );
                                 int spawnY = Integer.parseInt( splitCreatures[4].trim() );
 
-                                //por este switch para dentro de uma função
-                                Creature creatureFound = null;
-                                switch ( typeID ) {
-                                    case 0: //Criança Zombie
-                                        creatureFound = new Zombie(creatureID, typeID, creatureName, spawnX, spawnY,
-                                                1, true);
-                                        creatures.add(creatureFound);
-                                        break;
-
-                                    case 1: //Adulto Zombie
-                                        creatureFound = new Zombie(creatureID, typeID, creatureName, spawnX, spawnY,
-                                                2, true);
-                                        creatures.add(creatureFound);
-                                        break;
-
-                                    case 2: //Militar Zombie
-                                        creatureFound = new Zombie(creatureID, typeID, creatureName, spawnX, spawnY,
-                                                3, true);
-                                        creatures.add(creatureFound);
-                                        break;
-
-                                    case 3: //Idoso Zombie
-                                        creatureFound = new Zombie(creatureID, typeID, creatureName, spawnX, spawnY,
-                                                1, false);
-                                        creatures.add(creatureFound);
-                                        break;
-
-                                    case 4: //Zombie Vampiro
-                                        creatureFound = new Zombie(creatureID, typeID, creatureName, spawnX, spawnY,
-                                                2, true);
-                                        creatures.add(creatureFound);
-                                        break;
-
-                                    case 5: //Criança Vivo
-                                        creatureFound = new Humano(creatureID, typeID, creatureName, spawnX, spawnY,
-                                                1, true);
-                                        creatures.add(creatureFound);
-                                        break;
-
-                                    case 6: //Adulto Vivo
-                                        creatureFound = new Humano(creatureID, typeID, creatureName, spawnX, spawnY,
-                                                2, true);
-                                        creatures.add(creatureFound);
-                                        break;
-
-                                    case 7: //Militar Vivo
-                                        creatureFound = new Humano(creatureID, typeID, creatureName, spawnX, spawnY,
-                                                3, true);
-                                        creatures.add(creatureFound);
-                                        break;
-
-                                    case 8: //Idoso Vivo
-                                        creatureFound = new Humano(creatureID, typeID, creatureName, spawnX, spawnY,
-                                                1, false);
-                                        creatures.add(creatureFound);
-                                        break;
-
-                                    case 9: //Cão
-                                        creatureFound = new Cao(creatureID, typeID, creatureName, spawnX, spawnY,
-                                                2, false);
-                                        creatures.add(creatureFound);
-                                        break;
-
-                                    default:
-                                        return false;
+                                if ( !createCreatureWithParameters(creatureID, typeID, creatureName, spawnX, spawnY) ) {
+                                    return false;
                                 }
-                                
+
                                 if ( pos == numCreatures - 1 ) {
                                     break;
                                 }
@@ -187,70 +129,8 @@ public class TWDGameManager {
                                 int spawnX = Integer.parseInt( splitEquipment[2].trim() );
                                 int spawnY = Integer.parseInt( splitEquipment[3].trim() );
 
-                                //Por este swithc para dentro de uma função
-                                Equipamento equipmentFound = null;
-                                switch ( typeID ) {
-                                    case 0:
-                                        equipmentFound = new Defensivo(equipmentID,typeID,spawnX,spawnY,1);
-                                        equipment.add(equipmentFound);
-                                        break;
-
-                                    case 1:
-                                        equipmentFound = new Ofensivo(equipmentID,typeID,spawnX,spawnY,-1, 1);
-                                        equipment.add(equipmentFound);
-                                        break;
-
-                                    case 2:
-                                        equipmentFound = new Ofensivo(equipmentID,typeID,spawnX,spawnY,-1,2);
-                                        equipment.add(equipmentFound);
-                                        break;
-
-                                    case 3:
-                                        equipmentFound = new Defensivo(equipmentID,typeID,spawnX,spawnY,-1);
-                                        equipment.add(equipmentFound);
-                                        break;
-
-                                    case 4:
-                                        //So serve contra zombies idosos
-                                        //Encontrar uma maneira de mostrar isso
-                                        equipmentFound = new Defensivo(equipmentID,typeID,spawnX,spawnY,-1);
-                                        equipment.add(equipmentFound);
-                                        break;
-
-                                    case 5:
-                                        //So funciona contra ataques de zombies vampiros
-                                        equipmentFound = new Defensivo(equipmentID,typeID,spawnX,spawnY,-1);
-                                        equipment.add(equipmentFound);
-                                        break;
-
-                                    case 6:
-                                        //Consegue matar zombies vampiros e zombies normais
-                                        equipmentFound = new Ofensivo(equipmentID,typeID,spawnX,spawnY,-1,1);
-                                        equipment.add(equipmentFound);
-                                        break;
-
-                                    case 7:
-                                        equipmentFound = new Defensivo(equipmentID,typeID,spawnX,spawnY,3);
-                                        equipment.add(equipmentFound);
-                                        break;
-
-                                    case 8:
-                                        equipmentFound = new Defensivo(equipmentID,typeID,spawnX,spawnY,-1);
-                                        equipment.add(equipmentFound);
-                                        break;
-
-                                    case 9:
-                                        equipmentFound = new Defensivo(equipmentID,typeID,spawnX,spawnY,-1);
-                                        equipment.add(equipmentFound);
-                                        break;
-
-                                    case 10:
-                                        equipmentFound = new Equipamento(equipmentID,typeID,spawnX,spawnY,-1);
-                                        equipment.add(equipmentFound);
-                                        break;
-
-                                    default:
-                                        return false;
+                                if ( !createEquipmentWithParameters(equipmentID, typeID, spawnX, spawnY) ) {
+                                    return false;
                                 }
 
                                 if ( pos == numEquipment - 1 ) {
@@ -286,9 +166,6 @@ public class TWDGameManager {
                                 }
                             }
 
-                            System.out.println("Creatures Size == "+ creatures.size() );
-                            System.out.println("Equipment Size == " + equipment.size() );
-                            System.out.println("SafeHavens Size == " + safeHavens.size() );
                             gameMap.addCreatures( creatures );
                             gameMap.addEquipment( equipment );
                             gameMap.addSafeHavens( safeHavens );
@@ -309,6 +186,136 @@ public class TWDGameManager {
         } catch ( FileNotFoundException e ) {
             System.out.println("No file was found with that name");
             return false;
+        }
+
+        return true;
+    }
+
+    public boolean createEquipmentWithParameters(int id, int typeID, int spawnX, int spawnY) {
+        Equipamento equipmentFound = null;
+
+        switch ( typeID ) {
+            case 0: //Escudo de Madeira
+                equipmentFound = new EscudoMadeira(id,typeID,spawnX,spawnY);
+                equipment.add(equipmentFound);
+                break;
+
+            case 1: //Espada Hattori Hanzo
+                equipmentFound = new EspadaHattoriHanzo(id,typeID,spawnX,spawnY);
+                equipment.add(equipmentFound);
+                break;
+
+            case 2: //Pistola Walther PPK
+                equipmentFound = new PistolaWaltherPPK(id,typeID,spawnX,spawnY);
+                equipment.add(equipmentFound);
+                break;
+
+            case 3: //Escudo Táctico
+                equipmentFound = new EscudoTactico(id,typeID,spawnX,spawnY);
+                equipment.add(equipmentFound);
+                break;
+
+            case 4: //Revista Maria
+                //So funciona contra ataques de zombies idosos
+                equipmentFound = new RevistaMaria(id,typeID,spawnX,spawnY);
+                equipment.add(equipmentFound);
+                break;
+
+            case 5: //Cabeça de Alho
+                //So funciona contra ataques de zombies vampiros
+                equipmentFound = new CabecaAlho(id,typeID,spawnX,spawnY);
+                equipment.add(equipmentFound);
+                break;
+
+            case 6: //Estaca de Madeira
+                //Consegue matar zombies vampiros e zombies normais
+                equipmentFound = new EstacaMadeira(id,typeID,spawnX,spawnY);
+                equipment.add(equipmentFound);
+                break;
+
+            case 7: //Garrafa de Lixivía (1 litro)
+                equipmentFound = new GarrafaLixivia(id,typeID,spawnX,spawnY);
+                equipment.add(equipmentFound);
+                break;
+
+            case 8: //Veneno
+                equipmentFound = new Veneno(id,typeID,spawnX,spawnY);
+                equipment.add(equipmentFound);
+                break;
+
+            case 9: //Antidoto (para os envenenados)
+                equipmentFound = new Antidoto(id,typeID,spawnX,spawnY);
+                equipment.add(equipmentFound);
+                break;
+
+            case 10: //Beskar Helmet
+                equipmentFound = new BeskarHelmet(id,typeID,spawnX,spawnY);
+                equipment.add(equipmentFound);
+                break;
+
+            default:
+                return false;
+        }
+
+        return true;
+    }
+
+    public boolean createCreatureWithParameters(int id, int typeID, String name, int spawnX, int spawnY) {
+        Creature creatureFound = null;
+
+        switch ( typeID ) {
+            case 0: //Criança Zombie
+                creatureFound = new CriancaZombie(id, typeID, name, spawnX, spawnY);
+                creatures.add(creatureFound);
+                break;
+
+            case 1: //Adulto Zombie
+                creatureFound = new AdultoZombie(id, typeID, name, spawnX, spawnY);
+                creatures.add(creatureFound);
+                break;
+
+            case 2: //Militar Zombie
+                creatureFound = new MilitarZombie(id, typeID, name, spawnX, spawnY);
+                creatures.add(creatureFound);
+                break;
+
+            case 3: //Idoso Zombie
+                creatureFound = new IdosoZombie(id, typeID, name, spawnX, spawnY);
+                creatures.add(creatureFound);
+                break;
+
+            case 4: //Zombie Vampiro
+                creatureFound = new VampiroZombie(id, typeID, name, spawnX, spawnY);
+                creatures.add(creatureFound);
+                break;
+
+            case 5: //Criança Vivo
+                creatureFound = new CriancaHumano(id, typeID, name, spawnX, spawnY);
+                creatures.add(creatureFound);
+                break;
+
+            case 6: //Adulto Vivo
+                creatureFound = new AdultoHumano(id, typeID, name, spawnX, spawnY);
+                creatures.add(creatureFound);
+                break;
+
+            case 7: //Militar Vivo
+                creatureFound = new MilitarHumano(id, typeID, name, spawnX, spawnY);
+                creatures.add(creatureFound);
+                break;
+
+            case 8: //Idoso Vivo
+                creatureFound = new IdosoHumano(id, typeID, name, spawnX, spawnY);
+                creatures.add(creatureFound);
+                break;
+
+            case 9: //Cão
+                creatureFound = new Cao(id, typeID, name, spawnX, spawnY);
+                creatures.add(creatureFound);
+                break;
+
+            default:
+                return false;
         }
 
         return true;
@@ -407,13 +414,21 @@ public class TWDGameManager {
         return mapId;
     }
 
+    public boolean attack( int xO, int yO, int xD, int yD ) {
+        return true;
+    }
+
     //deve tentar executar uma jogada
     //xO, yO é uma origem
     //xD, yD é o destino
-    public boolean move( int xO, int yO, int xD, int yD ) {
-        if ( !verificaCondicoes(xO, yO, xD, yD) ) {
-            return false;
+    public boolean move(int xO, int yO, int xD, int yD) {
+        Creature humanFound = null;
+
+        //Move human (with equipment) onto a zombie, attacking the zombie
+        if ( gameMap.getMapId(xO,yO) == 1 || gameMap.getMapId(xD, yD) == 3 ) {
+            attack(xO,yO,xD,yD);
         }
+        //Verifica se a equipa atual é a de zombies
         if ( currentTeamId == 20 ) {
             return moveZombie(xO, yO, xD, yD);
         }
@@ -422,8 +437,18 @@ public class TWDGameManager {
             return false;
         }
 
+        //Temos que mover um humano!
+        if ( gameMap.getMapId(xO, yO) == 1 || gameMap.getMapId(xO, yO) == 2 ) {
+            humanFound = gameMap.getPosition(xO, yO).getCreature();
+        }
+
+        if ( humanFound == null ) {
+            return false;
+        }
+        if ( !verificaCondicoes(xO, yO, xD, yD, humanFound) ) {
+            return false;
+        }
         //ocorre o movimento
-        Creature humanFound = gameMap.getPosition(xO,yO).getCreature();
         int tipoMovido = gameMap.getMapId( xO, yO );
 
         //Verificar se o humano está a andar para um safe haven
@@ -446,6 +471,20 @@ public class TWDGameManager {
     }
 
     public boolean moveZombie( int xO, int yO, int xD, int yD ) {
+        Creature zombieFound = null;
+
+        //Temos que mover um zombie!
+        if ( gameMap.getMapId(xO, yO) == 3 ) {
+            zombieFound = gameMap.getPosition(xO, yO).getCreature();
+        }
+
+        if ( zombieFound == null ) {
+            return false;
+        }
+        if ( !verificaCondicoes(xO, yO, xD, yD, zombieFound) ) {
+            return false;
+        }
+
         //verifica se tentamos mover um humano
         if ( gameMap.getMapId(xO,yO) == 2 || gameMap.getMapId(xO,yO) == 1 ) {
             return false;
@@ -466,7 +505,8 @@ public class TWDGameManager {
         return true;
     }
 
-    public boolean verificaCondicoes( int xO, int yO, int xD, int yD ) {
+    public boolean verificaCondicoes( int xO, int yO, int xD, int yD, Creature creatureMoved ) {
+
         //verifica se os parametros introduzidos estáo corretos para o mapa
         if ( xD >= gameMap.getSizeX() || yD >= gameMap.getSizeY() || xD < 0 || yD < 0 ) {
             return false;
@@ -493,21 +533,68 @@ public class TWDGameManager {
             return false;
         }
 
-        //verifica se tenta mover mais que uma posição
-        if ( xO + 1 == xD && yO == yD ) {
-            return true;
-        }
-        if( xO - 1 == xD && yO == yD ) {
-            return true;
-        }
-        if ( xO == xD && yO + 1 == yD ) {
-            return true;
-        }
-        if ( xO == xD && yO - 1 == yD ) {
-            return true;
+        int deslocamento = creatureMoved.getDeslocamentoMaximo();
+        return verificaMovimento(deslocamento, xO, yO, xD, yD);
+    }
+
+    //verifica se tenta mover mais que conseguimos
+    public boolean verificaMovimento(int deslocamento, int xO, int yO, int xD, int yD) {
+        for ( int pos = 1; pos <= deslocamento; pos++ ) {
+
+            if ( xO + pos == xD && yO == yD ) {
+                return verificaPassagem(xO, yO, pos, true, 1);
+            }
+            if( xO - pos == xD && yO == yD ) {
+                if ( !verificaPassagem(xO, yO, pos, true, -1) ) {
+                    return false;
+                }
+
+                return true;
+            }
+            if ( xO == xD && yO + pos == yD ) {
+                if ( !verificaPassagem(xO, yO, pos, false, 1) ) {
+                    return false;
+                }
+
+                return true;
+            }
+            if ( xO == xD && yO - pos == yD ) {
+                if ( !verificaPassagem(xO, yO, pos, false, -1) ) {
+                    return false;
+                }
+
+                return true;
+            }
         }
 
         return false;
+    }
+
+    //Escolha Direcao == true implica que estamos a andar no x, e igual a false no y
+    //Movimento so pode ser -1 e 1, e vai escolher o que fazemos á posição
+    public boolean verificaPassagem(int xO, int yO, int tamanhoPassagem, boolean escolhaDirecao, int movimento) {
+
+        for ( int pos = 1; pos <= tamanhoPassagem; pos++ ) {
+            if ( escolhaDirecao ) {
+                if ( gameMap.getMapId(xO + ( movimento * pos ), yO ) < 0 ) {
+                    return true;
+                }
+
+                if ( gameMap.getMapId(xO + ( movimento * pos ), yO ) != 0 ) {
+                    return false;
+                }
+            } else {
+                if ( gameMap.getMapId(xO, yO + ( movimento * pos ) ) < 0 ) {
+                    return true;
+                }
+
+                if ( gameMap.getMapId(xO, yO + ( movimento * pos ) ) != 0 ) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
     }
 
     public boolean removeCreature( Creature creatureFound ) {
@@ -681,7 +768,8 @@ public class TWDGameManager {
             currentTeamId -= 10;
         }
         numberOfTurns++;
-        if ( numberOfTurns % 2 == 0 ) {
+        numberOfTurnsToPassDays++;
+        if ( numberOfTurnsToPassDays % 2 == 0 ) {
             if ( dayNightCycle == 0 ) {
                 dayNightCycle = 1;
             } else {
@@ -866,7 +954,7 @@ public class TWDGameManager {
 
         switch (tipo) {
             case 0:
-                name = "Escudo de madeira";
+                name = "Escudo de Madeira";
                 break;
 
             case 1:
@@ -878,7 +966,7 @@ public class TWDGameManager {
                 break;
 
             case 3:
-                name = "Escudo táctico";
+                name = "Escudo Táctico";
                 break;
 
             case 4:
@@ -1030,71 +1118,8 @@ public class TWDGameManager {
                                 int spawnX = Integer.parseInt( splitCreatures[3].trim() );
                                 int spawnY = Integer.parseInt( splitCreatures[4].trim() );
 
-                                //por este switch para dentro de uma função
-                                Creature creatureFound = null;
-                                switch ( typeID ) {
-                                    case 0: //Criança Zombie
-                                        creatureFound = new Zombie(creatureID, typeID, creatureName, spawnX, spawnY,
-                                                1, true);
-                                        creatures.add(creatureFound);
-                                        break;
-
-                                    case 1: //Adulto Zombie
-                                        creatureFound = new Zombie(creatureID, typeID, creatureName, spawnX, spawnY,
-                                                2, true);
-                                        creatures.add(creatureFound);
-                                        break;
-
-                                    case 2: //Militar Zombie
-                                        creatureFound = new Zombie(creatureID, typeID, creatureName, spawnX, spawnY,
-                                                3, true);
-                                        creatures.add(creatureFound);
-                                        break;
-
-                                    case 3: //Idoso Zombie
-                                        creatureFound = new Zombie(creatureID, typeID, creatureName, spawnX, spawnY,
-                                                1, false);
-                                        creatures.add(creatureFound);
-                                        break;
-
-                                    case 4: //Zombie Vampiro
-                                        creatureFound = new Zombie(creatureID, typeID, creatureName, spawnX, spawnY,
-                                                2, true);
-                                        creatures.add(creatureFound);
-                                        break;
-
-                                    case 5: //Criança Vivo
-                                        creatureFound = new Humano(creatureID, typeID, creatureName, spawnX, spawnY,
-                                                1, true);
-                                        creatures.add(creatureFound);
-                                        break;
-
-                                    case 6: //Adulto Vivo
-                                        creatureFound = new Humano(creatureID, typeID, creatureName, spawnX, spawnY,
-                                                2, true);
-                                        creatures.add(creatureFound);
-                                        break;
-
-                                    case 7: //Militar Vivo
-                                        creatureFound = new Humano(creatureID, typeID, creatureName, spawnX, spawnY,
-                                                3, true);
-                                        creatures.add(creatureFound);
-                                        break;
-
-                                    case 8: //Idoso Vivo
-                                        creatureFound = new Humano(creatureID, typeID, creatureName, spawnX, spawnY,
-                                                1, false);
-                                        creatures.add(creatureFound);
-                                        break;
-
-                                    case 9: //Cão
-                                        creatureFound = new Cao(creatureID, typeID, creatureName, spawnX, spawnY,
-                                                2, false);
-                                        creatures.add(creatureFound);
-                                        break;
-
-                                    default:
-                                        return false;
+                                if ( !createCreatureWithParameters(creatureID, typeID, creatureName, spawnX, spawnY) ) {
+                                    return false;
                                 }
 
                                 if ( pos == numCreatures - 1 ) {
@@ -1121,70 +1146,8 @@ public class TWDGameManager {
                                 int spawnX = Integer.parseInt( splitEquipment[2].trim() );
                                 int spawnY = Integer.parseInt( splitEquipment[3].trim() );
 
-                                //Por este swithc para dentro de uma função
-                                Equipamento equipmentFound = null;
-                                switch ( typeID ) {
-                                    case 0:
-                                        equipmentFound = new Defensivo(equipmentID,typeID,spawnX,spawnY,1);
-                                        equipment.add(equipmentFound);
-                                        break;
-
-                                    case 1:
-                                        equipmentFound = new Ofensivo(equipmentID,typeID,spawnX,spawnY,-1, 1);
-                                        equipment.add(equipmentFound);
-                                        break;
-
-                                    case 2:
-                                        equipmentFound = new Ofensivo(equipmentID,typeID,spawnX,spawnY,-1,2);
-                                        equipment.add(equipmentFound);
-                                        break;
-
-                                    case 3:
-                                        equipmentFound = new Defensivo(equipmentID,typeID,spawnX,spawnY,-1);
-                                        equipment.add(equipmentFound);
-                                        break;
-
-                                    case 4:
-                                        //So serve contra zombies idosos
-                                        //Encontrar uma maneira de mostrar isso
-                                        equipmentFound = new Defensivo(equipmentID,typeID,spawnX,spawnY,-1);
-                                        equipment.add(equipmentFound);
-                                        break;
-
-                                    case 5:
-                                        //So funciona contra ataques de zombies vampiros
-                                        equipmentFound = new Defensivo(equipmentID,typeID,spawnX,spawnY,-1);
-                                        equipment.add(equipmentFound);
-                                        break;
-
-                                    case 6:
-                                        //Consegue matar zombies vampiros e zombies normais
-                                        equipmentFound = new Ofensivo(equipmentID,typeID,spawnX,spawnY,-1,1);
-                                        equipment.add(equipmentFound);
-                                        break;
-
-                                    case 7:
-                                        equipmentFound = new Defensivo(equipmentID,typeID,spawnX,spawnY,3);
-                                        equipment.add(equipmentFound);
-                                        break;
-
-                                    case 8:
-                                        equipmentFound = new Defensivo(equipmentID,typeID,spawnX,spawnY,-1);
-                                        equipment.add(equipmentFound);
-                                        break;
-
-                                    case 9:
-                                        equipmentFound = new Defensivo(equipmentID,typeID,spawnX,spawnY,-1);
-                                        equipment.add(equipmentFound);
-                                        break;
-
-                                    case 10:
-                                        equipmentFound = new Equipamento(equipmentID,typeID,spawnX,spawnY,-1);
-                                        equipment.add(equipmentFound);
-                                        break;
-
-                                    default:
-                                        return false;
+                                if ( !createEquipmentWithParameters(equipmentID, typeID, spawnX, spawnY) ) {
+                                    return false;
                                 }
 
                                 if ( pos == numEquipment - 1 ) {
@@ -1220,9 +1183,6 @@ public class TWDGameManager {
                                 }
                             }
 
-                            System.out.println("Creatures Size == "+ creatures.size() );
-                            System.out.println("Equipment Size == " + equipment.size() );
-                            System.out.println("SafeHavens Size == " + safeHavens.size() );
                             gameMap.addCreatures( creatures );
                             gameMap.addEquipment( equipment );
                             gameMap.addSafeHavens( safeHavens );

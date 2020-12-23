@@ -1,5 +1,9 @@
 package pt.ulusofona.lp2.theWalkingDEISIGame;
 
+//Ja reparei que estas variáveis todas estavam a estragar tudo, vou ter que mudar a maneira que estou a fazer isto
+//Vou criar uma classe para cada creatura que este jogo pode ter!!!!
+//(E, devido a isso, vou retirar as variaveis boolean que antes eram usadas para mais ou menos definir essas classes)
+
 public abstract class Creature {
     protected int id;
     protected int tipo;
@@ -8,19 +12,14 @@ public abstract class Creature {
     protected int numEquipamentos;
     protected int deslocamentoMaximo;
 
-    protected boolean moveFree;
-
-    public Creature( int id, int tipo, String nome, int x, int y, int deslocamentoMaximo, boolean moveFree ) {
+    public Creature(int id, int tipo, String nome, int x, int y) {
         this.id = id;
         this.tipo = tipo;
         this.nome = nome;
         this.x = x;
         this.y = y;
-        this.deslocamentoMaximo = deslocamentoMaximo;
-        this.moveFree = moveFree;
 
         this.numEquipamentos = 0;
-        this.deslocamentoMaximo = 0;
     }
 
     public int getId() {
