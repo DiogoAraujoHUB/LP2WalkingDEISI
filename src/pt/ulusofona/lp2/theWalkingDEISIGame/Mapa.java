@@ -64,24 +64,13 @@ public class Mapa {
             if ( map[xFound][yFound].getTipo() == -1 ) {
                 continue;
             }
-            //Já está um humano com equipamento ou um zombie na posição?
+            //Já está uma creatura na posição?
             if ( map[xFound][yFound].getTipo() == 1 ) {
                 continue;
             }
 
-            //Verificar se na posição está um humano, e logo podemos dar-lhe equipamento
-            if ( map[xFound][yFound].getTipo() == 2 ) {
-                map[xFound][yFound].setTipo(1);
-
-                Creature creature = map[xFound][yFound].getCreature();
-                if ( creature instanceof Humano ) {
-                    ((Humano) creature).setEquipamentoApanhado(equipamento);
-                }
-                continue;
-            }
-
             //Na posição não está nada, logo pusemos o equipamento no chão
-            map[xFound][yFound].setTipo(-1);    //everything below 0 is equipment
+            map[xFound][yFound].setTipo(-1);    //-1 is equipment
             map[xFound][yFound].setEquipamento(equipamento);
         }
     }

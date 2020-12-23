@@ -388,10 +388,6 @@ public class TWDGameManager {
         int tipo = gameMap.getMapId(x,y);
         int mapId;
 
-        if ( gameMap.getPosition(x,y).getSafeHaven() != null ) {
-            return 1;
-        }
-
         switch( tipo ) {
             case 0:
                 mapId = 0;
@@ -423,10 +419,10 @@ public class TWDGameManager {
     //xO, yO é uma origem
     //xD, yD é o destino
     public boolean move(int xO, int yO, int xD, int yD) {
-        Creature humanFound = null;
+        Creature creatureFound = null;
 
-        //Move human (with equipment) onto a zombie, attacking the zombie
-        if ( gameMap.getMapId(xO,yO) == 1 || gameMap.getMapId(xD, yD) == 3 ) {
+        //Move creature onto a creature, attacking eachother
+        if ( gameMap.getMapId(xO,yO) == 1 && gameMap.getMapId(xD, yD) == 1 ) {
             attack(xO,yO,xD,yD);
         }
         //Verifica se a equipa atual é a de zombies
@@ -434,19 +430,20 @@ public class TWDGameManager {
             return moveZombie(xO, yO, xD, yD);
         }
         //verifica se tentamos mover um zombie
-        if ( gameMap.getMapId(xO,yO) == 3 ) {
+        if ( gameMap.getPosition(xO,yO).getCreature() instanceof Zombie ) {
             return false;
         }
 
-        //Temos que mover um humano!
-        if ( gameMap.getMapId(xO, yO) == 1 || gameMap.getMapId(xO, yO) == 2 ) {
-            humanFound = gameMap.getPosition(xO, yO).getCreature();
+        //Temos que mover um humano ou um animal!
+        if ( gameMap.getPosition(xO,yO).getCreature() instanceof Humano
+                || gameMap.getPosition(xO,yO).getCreature() instanceof Animal ) {
+            creatureFound = gameMap.getPosition(xO, yO).getCreature();
         }
 
-        if ( humanFound == null ) {
+        if ( creatureFound == null ) {
             return false;
         }
-        if ( !verificaCondicoes(xO, yO, xD, yD, humanFound) ) {
+        if ( !verificaCondicoes(xO, yO, xD, yD, creatureFound) ) {
             return false;
         }
         //ocorre o movimento
@@ -455,7 +452,7 @@ public class TWDGameManager {
         //Verificar se o humano está a andar para um safe haven
         if ( gameMap.getPosition(xD, yD).getSafeHaven() != null ) {
             gameMap.getPosition(xD, yD).getSafeHaven()
-                    .moveIntoSafeHaven(gameMap, humanFound, creatures, humansInSafeHaven);
+                    .moveIntoSafeHaven(gameMap, creatureFound, creatures, humansInSafeHaven);
             incrementaTempo();
             return true;
         }
@@ -466,7 +463,7 @@ public class TWDGameManager {
         }
 
         //move normalmente
-        humanFound.move( gameMap, xD, yD, tipoMovido );
+        creatureFound.move( gameMap, xD, yD, tipoMovido );
         incrementaTempo();
         return true;
     }
@@ -475,7 +472,7 @@ public class TWDGameManager {
         Creature zombieFound = null;
 
         //Temos que mover um zombie!
-        if ( gameMap.getMapId(xO, yO) == 3 ) {
+        if ( gameMap.getPosition(xO,yO).getCreature() instanceof Zombie ) {
             zombieFound = gameMap.getPosition(xO, yO).getCreature();
         }
 
@@ -487,7 +484,7 @@ public class TWDGameManager {
         }
 
         //verifica se tentamos mover um humano
-        if ( gameMap.getMapId(xO,yO) == 2 || gameMap.getMapId(xO,yO) == 1 ) {
+        if ( gameMap.getPosition(xO,yO).getCreature() instanceof Humano ) {
             return false;
         }
         //Verifica se estamos a tentar mover para um safe haven
@@ -495,6 +492,7 @@ public class TWDGameManager {
             return false;
         }
 
+        //Zombie moves onto equipment
         if ( gameMap.getPosition(xD, yD).getTipo() == -1 ) {
             retiraEquipamento( xD, yD );
         }
@@ -516,12 +514,8 @@ public class TWDGameManager {
             return false;
         }
 
-        //verifica se tamos a tentar mover para cima de um humano
-        if ( gameMap.getMapId(xD,yD) == 2 || gameMap.getMapId(xD,yD) == 1) {
-            return false;
-        }
-        //verifica se tentamos mover para cima de um zombie
-        if ( gameMap.getMapId(xD,yD) == 3 ) {
+        //verifica se tamos a tentar mover para cima de uma criatura
+        if ( gameMap.getMapId(xD,yD) == 1) {
             return false;
         }
 
@@ -577,19 +571,23 @@ public class TWDGameManager {
 
         for ( int pos = 1; pos <= tamanhoPassagem; pos++ ) {
             if ( escolhaDirecao ) {
-                if ( gameMap.getMapId(xO + ( movimento * pos ), yO ) < 0 ) {
+                /*
+                if ( gameMap.getMapId(xO + ( movimento * pos ), yO ) == -1 ) {
                     return true;
                 }
+                 */
 
-                if ( gameMap.getMapId(xO + ( movimento * pos ), yO ) != 0 ) {
+                if ( gameMap.getMapId(xO + ( movimento * pos ), yO ) == 1 ) {
                     return false;
                 }
             } else {
-                if ( gameMap.getMapId(xO, yO + ( movimento * pos ) ) < 0 ) {
+                /*
+                if ( gameMap.getMapId(xO, yO + ( movimento * pos ) ) == -1 ) {
                     return true;
                 }
+                 */
 
-                if ( gameMap.getMapId(xO, yO + ( movimento * pos ) ) != 0 ) {
+                if ( gameMap.getMapId(xO, yO + ( movimento * pos ) ) == 1 ) {
                     return false;
                 }
             }
@@ -617,7 +615,7 @@ public class TWDGameManager {
     }
 
     /*
-    //este movimento é automático
+    //este movimento é automático e feito para o zombie
     public boolean moveZombie() {
         Random randomNum = new Random();
         if ( zombies == null ) {
@@ -768,8 +766,10 @@ public class TWDGameManager {
         } else {
             currentTeamId -= 10;
         }
+
         numberOfTurns++;
         numberOfTurnsToPassDays++;
+
         if ( numberOfTurnsToPassDays % 2 == 0 ) {
             if ( dayNightCycle == 0 ) {
                 dayNightCycle = 1;
@@ -791,42 +791,6 @@ public class TWDGameManager {
 
         return false;
     }
-
-    /*
-    public List<String> getSurvivors() {
-        List<String> listOfSurvivors = new ArrayList<>();
-        String text = "Nr. de turnos terminados:";
-        listOfSurvivors.add( text );
-        text = "" + numberOfTurns ;
-        listOfSurvivors.add( text );
-        listOfSurvivors.add(" ");
-
-        text = "OS VIVOS";
-        listOfSurvivors.add( text );
-        for ( Creature creature: creatures ) {
-            if ( creature.getTipo() == 3  ) {
-                continue;   //Se estivermos a ver um zombie
-            }
-
-            text = "" + creature.getId() + " " + creature.getNome();
-            listOfSurvivors.add(text);
-        }
-        listOfSurvivors.add( " " );
-
-        text = "OS OUTROS";
-        listOfSurvivors.add( text );
-        for ( Creature creature: creatures ) {
-            if ( creature.getTipo() == 1 || creature.getTipo() == 2 ) {
-                continue;   //Se estivermos a ver um humano
-            }
-
-            text = creature.getId() + " " + creature.getNome();
-            listOfSurvivors.add(text);
-        }
-
-        return listOfSurvivors;
-    }
-     */
 
     public boolean isDay() {
         return (dayNightCycle == 0);

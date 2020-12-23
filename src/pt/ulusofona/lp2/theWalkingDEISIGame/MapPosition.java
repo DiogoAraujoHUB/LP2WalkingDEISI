@@ -3,8 +3,8 @@ package pt.ulusofona.lp2.theWalkingDEISIGame;
 public class MapPosition {
     private int tipo;
 
-    private SafeHaven safeHaven;    //Tipo == 3;
-    private Creature creature;          //Tipo == 1; (tipo == 2 é um humano com equipamento)
+    private SafeHaven safeHaven;    //Tipo == 2;
+    private Creature creature;          //Tipo == 1;
     private Equipamento equipamento;    //Tipo == -1;
 
     public MapPosition() {
