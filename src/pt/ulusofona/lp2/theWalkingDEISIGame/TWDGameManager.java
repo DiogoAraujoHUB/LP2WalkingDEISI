@@ -17,7 +17,6 @@ public class TWDGameManager {
     private int numberOfTurnsToPassDays;
 
     private List<Creature> creatures;
-    private List<Creature> humansInSafeHaven;
     private List<Equipamento> equipment;
     private List<SafeHaven> safeHavens;
 
@@ -33,7 +32,6 @@ public class TWDGameManager {
         creatures = new ArrayList<>();
         equipment = new ArrayList<>();
         safeHavens = new ArrayList<>();
-        humansInSafeHaven = new ArrayList<>();
 
         gameMap = new Mapa();
     }
@@ -44,7 +42,6 @@ public class TWDGameManager {
         creatures.clear();
         equipment.clear();
         safeHavens.clear();
-        humansInSafeHaven.clear();
 
         gameMap = new Mapa();
 
@@ -412,7 +409,30 @@ public class TWDGameManager {
     }
 
     public boolean attack(int xO, int yO, int xD, int yD) {
+        if ( currentTeamId == 20 ) {
+            return attackZombie(xO, yO, xD, yD);
+        }
+
+        //verifica se tentamos atacar com um zombie
+        if ( gameMap.getPosition(xO,yO).getCreature() instanceof Zombie ) {
+            return false;
+        }
+
+        Creature creatureFound = gameMap.getPosition(xO,yO).getCreature();
+        if ( creatureFound == null ) {
+
+        }
+
         return true;
+    }
+
+    public boolean attackZombie(int xO, int yO, int xD, int yD) {
+        //verifica se tentamos atacar com um humano
+        if ( gameMap.getPosition(xO,yO).getCreature() instanceof Humano ) {
+            return false;
+        }
+
+        return false;
     }
 
     //deve tentar executar uma jogada
@@ -421,10 +441,6 @@ public class TWDGameManager {
     public boolean move(int xO, int yO, int xD, int yD) {
         Creature creatureFound = null;
 
-        //Move creature onto a creature, attacking eachother
-        if ( gameMap.getMapId(xO,yO) == 1 && gameMap.getMapId(xD, yD) == 1 ) {
-            attack(xO,yO,xD,yD);
-        }
         //Verifica se a equipa atual é a de zombies
         if ( currentTeamId == 20 ) {
             return moveZombie(xO, yO, xD, yD);
@@ -446,13 +462,24 @@ public class TWDGameManager {
         if ( !verificaCondicoes(xO, yO, xD, yD, creatureFound) ) {
             return false;
         }
+
+        //Move creature onto a creature, attacking eachother
+        if ( gameMap.getMapId(xO,yO) == 1 && gameMap.getMapId(xD, yD) == 1 ) {
+            return attack(xO,yO,xD,yD);
+        }
+
+        //verifica se tamos a tentar mover para cima de uma criatura
+        if ( gameMap.getMapId(xD,yD) == 1) {
+            return false;
+        }
+
         //ocorre o movimento
         int tipoMovido = gameMap.getMapId( xO, yO );
 
         //Verificar se o humano está a andar para um safe haven
         if ( gameMap.getPosition(xD, yD).getSafeHaven() != null ) {
             gameMap.getPosition(xD, yD).getSafeHaven()
-                    .moveIntoSafeHaven(gameMap, creatureFound, creatures, humansInSafeHaven);
+                    .moveIntoSafeHaven(gameMap, creatureFound, creatures);
             incrementaTempo();
             return true;
         }
@@ -480,6 +507,16 @@ public class TWDGameManager {
             return false;
         }
         if ( !verificaCondicoes(xO, yO, xD, yD, zombieFound) ) {
+            return false;
+        }
+
+        //Move creature onto a creature, attacking eachother
+        if ( gameMap.getMapId(xO,yO) == 1 && gameMap.getMapId(xD, yD) == 1 ) {
+            return attackZombie(xO,yO,xD,yD);
+        }
+
+        //verifica se tamos a tentar mover para cima de uma criatura
+        if ( gameMap.getMapId(xD,yD) == 1) {
             return false;
         }
 
@@ -511,11 +548,6 @@ public class TWDGameManager {
             return false;
         }
         if ( xO >= gameMap.getSizeX() || yO >= gameMap.getSizeY() || xO < 0 || yO < 0 ) {
-            return false;
-        }
-
-        //verifica se tamos a tentar mover para cima de uma criatura
-        if ( gameMap.getMapId(xD,yD) == 1) {
             return false;
         }
 
@@ -873,13 +905,23 @@ public class TWDGameManager {
     }
 
     public List<Integer> getIdsInSafeHaven() {
-        if ( humansInSafeHaven == null ) {
+        if ( safeHavens == null ) {
             return null;
         }
 
         List<Integer> idsInSafeHaven = new ArrayList<>();
-        for ( Creature creature: humansInSafeHaven ) {
-            idsInSafeHaven.add( creature.getId() );
+        for ( SafeHaven safeHaven: safeHavens ) {
+            if ( safeHaven == null ) {
+                continue;
+            }
+
+            for ( Creature creature: safeHaven.getHumansInSafeHaven() ) {
+                if ( creature == null ) {
+                    continue;
+                }
+
+                idsInSafeHaven.add( creature.getId() );
+            }
         }
 
         return idsInSafeHaven;
@@ -1026,7 +1068,6 @@ public class TWDGameManager {
         creatures.clear();
         equipment.clear();
         safeHavens.clear();
-        humansInSafeHaven.clear();
 
         gameMap = new Mapa();
 
