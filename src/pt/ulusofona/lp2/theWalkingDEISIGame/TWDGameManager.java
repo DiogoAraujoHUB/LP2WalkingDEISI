@@ -401,6 +401,17 @@ public class TWDGameManager {
                 mapId = creature.getId();
                 break;
 
+            case 3:
+                SafeHaven safeHaven = gameMap.getPosition(x,y).getSafeHaven();
+                List<Creature> humansInSafeHaven = safeHaven.getHumansInSafeHaven();
+                if ( humansInSafeHaven.size() == 0 ) {
+                    return 0;
+                }
+
+                Creature humanFound = humansInSafeHaven.get( humansInSafeHaven.size() - 1);
+                mapId = humanFound.getId();
+                break;
+
             default:
                 mapId = 0;
         }

@@ -86,7 +86,7 @@ public class Mapa {
             }
 
             map[xFound][yFound].setSafeHaven(safeHaven);
-            map[xFound][yFound].setTipo(0); //O tipo 0 é um SafeHaven
+            map[xFound][yFound].setTipo(3); //O tipo 3 é um SafeHaven
         }
     }
 
