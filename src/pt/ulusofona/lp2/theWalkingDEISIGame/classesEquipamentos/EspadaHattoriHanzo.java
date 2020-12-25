@@ -6,7 +6,5 @@ public class EspadaHattoriHanzo extends Ofensivo {
 
     public EspadaHattoriHanzo( int id, int tipo, int x, int y) {
         super(id, tipo, x, y);
-
-        this.range = 1;
     }
 }

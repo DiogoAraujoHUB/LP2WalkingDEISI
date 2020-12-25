@@ -12,9 +12,8 @@ public abstract class Creature {
     protected int numEquipamentos;
     protected int deslocamentoMaximo;
 
-    public Creature(int id, int tipo, String nome, int x, int y) {
+    public Creature(int id, String nome, int x, int y) {
         this.id = id;
-        this.tipo = tipo;
         this.nome = nome;
         this.x = x;
         this.y = y;
@@ -58,5 +57,5 @@ public abstract class Creature {
 
     public abstract String toString();
 
-    public abstract void move(Mapa map, int destinoX, int destinoY, int tipoMovido);
+    public abstract void move(Mapa map, int destinoX, int destinoY);
 }

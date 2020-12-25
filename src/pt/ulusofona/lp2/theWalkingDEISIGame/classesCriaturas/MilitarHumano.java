@@ -4,9 +4,10 @@ import pt.ulusofona.lp2.theWalkingDEISIGame.Humano;
 
 public class MilitarHumano extends Humano {
 
-    public MilitarHumano(int id, int tipo, String nome, int x, int y) {
-        super(id, tipo, nome, x, y);
+    public MilitarHumano(int id, String nome, int x, int y) {
+        super(id, nome, x, y);
 
+        this.tipo = 7;
         this.deslocamentoMaximo = 3;
     }
 

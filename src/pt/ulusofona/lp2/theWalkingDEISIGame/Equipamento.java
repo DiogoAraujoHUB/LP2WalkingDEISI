@@ -35,6 +35,10 @@ public abstract class Equipamento {
         return this.numUses;
     }
 
+    public void setNumUses(int numUses) {
+        this.numUses = numUses;
+    }
+
     public String toString() {
         return id + " | " + tipo + " | @ (" + x + ", " + y + ")";
     }

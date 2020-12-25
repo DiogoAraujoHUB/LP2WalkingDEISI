@@ -4,7 +4,6 @@ import pt.ulusofona.lp2.theWalkingDEISIGame.classesCriaturas.*;
 import pt.ulusofona.lp2.theWalkingDEISIGame.classesEquipamentos.*;
 
 import java.io.*;
-import java.sql.SQLOutput;
 import java.util.*;
 
 public class TWDGameManager {
@@ -262,52 +261,52 @@ public class TWDGameManager {
 
         switch ( typeID ) {
             case 0: //Criança Zombie
-                creatureFound = new CriancaZombie(id, typeID, name, spawnX, spawnY);
+                creatureFound = new CriancaZombie(id, name, spawnX, spawnY);
                 creatures.add(creatureFound);
                 break;
 
             case 1: //Adulto Zombie
-                creatureFound = new AdultoZombie(id, typeID, name, spawnX, spawnY);
+                creatureFound = new AdultoZombie(id, name, spawnX, spawnY);
                 creatures.add(creatureFound);
                 break;
 
             case 2: //Militar Zombie
-                creatureFound = new MilitarZombie(id, typeID, name, spawnX, spawnY);
+                creatureFound = new MilitarZombie(id, name, spawnX, spawnY);
                 creatures.add(creatureFound);
                 break;
 
             case 3: //Idoso Zombie
-                creatureFound = new IdosoZombie(id, typeID, name, spawnX, spawnY);
+                creatureFound = new IdosoZombie(id, name, spawnX, spawnY);
                 creatures.add(creatureFound);
                 break;
 
             case 4: //Zombie Vampiro
-                creatureFound = new VampiroZombie(id, typeID, name, spawnX, spawnY);
+                creatureFound = new VampiroZombie(id, name, spawnX, spawnY);
                 creatures.add(creatureFound);
                 break;
 
             case 5: //Criança Vivo
-                creatureFound = new CriancaHumano(id, typeID, name, spawnX, spawnY);
+                creatureFound = new CriancaHumano(id, name, spawnX, spawnY);
                 creatures.add(creatureFound);
                 break;
 
             case 6: //Adulto Vivo
-                creatureFound = new AdultoHumano(id, typeID, name, spawnX, spawnY);
+                creatureFound = new AdultoHumano(id, name, spawnX, spawnY);
                 creatures.add(creatureFound);
                 break;
 
             case 7: //Militar Vivo
-                creatureFound = new MilitarHumano(id, typeID, name, spawnX, spawnY);
+                creatureFound = new MilitarHumano(id, name, spawnX, spawnY);
                 creatures.add(creatureFound);
                 break;
 
             case 8: //Idoso Vivo
-                creatureFound = new IdosoHumano(id, typeID, name, spawnX, spawnY);
+                creatureFound = new IdosoHumano(id, name, spawnX, spawnY);
                 creatures.add(creatureFound);
                 break;
 
             case 9: //Cão
-                creatureFound = new Cao(id, typeID, name, spawnX, spawnY);
+                creatureFound = new Cao(id, name, spawnX, spawnY);
                 creatures.add(creatureFound);
                 break;
 
@@ -387,7 +386,7 @@ public class TWDGameManager {
 
         switch( tipo ) {
             case 0:
-                mapId = 0;
+                mapId = 10;
                 break;
 
             case -1:
@@ -402,6 +401,7 @@ public class TWDGameManager {
                 break;
 
             case 3:
+                /*
                 SafeHaven safeHaven = gameMap.getPosition(x,y).getSafeHaven();
                 List<Creature> humansInSafeHaven = safeHaven.getHumansInSafeHaven();
                 if ( humansInSafeHaven.size() == 0 ) {
@@ -410,6 +410,8 @@ public class TWDGameManager {
 
                 Creature humanFound = humansInSafeHaven.get( humansInSafeHaven.size() - 1);
                 mapId = humanFound.getId();
+                 */
+                mapId = 0;
                 break;
 
             default:
@@ -423,24 +425,114 @@ public class TWDGameManager {
         if ( currentTeamId == 20 ) {
             return attackZombie(xO, yO, xD, yD);
         }
+        Creature creatureBeingAttacked = null;
+        Creature creatureAttacking = null;
 
-        //verifica se tentamos atacar com um zombie
-        if ( gameMap.getPosition(xO,yO).getCreature() instanceof Zombie ) {
+        //Apanhar o humano que está a tentar atacar
+        if ( gameMap.getPosition(xO,yO).getCreature() instanceof Humano ) {
+            creatureAttacking = gameMap.getPosition(xO,yO).getCreature();
+        }
+        //Se a criatura não for humano então não vamos atacar
+        if ( creatureAttacking == null ) {
             return false;
         }
 
-        Creature creatureFound = gameMap.getPosition(xO,yO).getCreature();
-        if ( creatureFound == null ) {
-
+        //Verifica se tentamos atacar algo diferente de um zombie
+        if ( gameMap.getPosition(xD,yD).getCreature() instanceof Zombie ) {
+            creatureBeingAttacked = gameMap.getPosition(xD,yD).getCreature();
+        }
+        //Só vamos atacar um zombie, e nada mais
+        if ( creatureBeingAttacked == null ) {
+            return false;
         }
 
-        return true;
+        //Vamos ver se o humano tem um equipamento para atacar com
+        if ( creatureAttacking instanceof Humano ) {
+            Equipamento equipamentoUtilizado = ((Humano) creatureAttacking).getEquipamentoApanhado();
+
+            //Não conseguimos atacar se não tivermos um equipamento na mão
+            if ( equipamentoUtilizado == null ) {
+                return false;
+            }
+
+            //Não conseguimos atacar com um equipamento defensivo, logo tem que ser ofensivo
+            if ( equipamentoUtilizado instanceof Ofensivo ) {
+                if ( ((Humano) creatureAttacking).attack(gameMap, creatureBeingAttacked, xD, yD) ) {
+                    incrementaTempo();
+                    removeCreature(creatureBeingAttacked);
+
+                    return true;
+                }
+
+                return false;
+            }
+        }
+
+        return false;
     }
 
     public boolean attackZombie(int xO, int yO, int xD, int yD) {
-        //verifica se tentamos atacar com um humano
-        if ( gameMap.getPosition(xO,yO).getCreature() instanceof Humano ) {
+        Creature creatureAttacking = null;
+        Creature creatureBeingAttacked = null;
+
+        //Verifica se tentamos atacar com um Zombie
+        if ( gameMap.getPosition(xO,yO).getCreature() instanceof Zombie ) {
+            creatureAttacking = gameMap.getPosition(xO,yO).getCreature();
+        }
+        //Estamos a tentar atacar com algo diferente de um zombie
+        if ( creatureAttacking == null ) {
             return false;
+        }
+
+        //Verifica se estamos a tentar atacar um humano
+        if ( gameMap.getPosition(xD,yD).getCreature() instanceof Humano ) {
+            creatureBeingAttacked = gameMap.getPosition(xD,yD).getCreature();
+        }
+        //Só queremos atacar um humano
+        if ( creatureBeingAttacked == null ) {
+            return false;
+        }
+
+        //Vamos começar o ataque no humano!
+        if ( creatureAttacking instanceof Zombie ) {
+
+            //Vamos verificar se o humano tem algum equipamento para se defender com
+            if ( creatureBeingAttacked instanceof Humano ) {
+
+                //Vamos verificar se o humano tem um equipamento equipado!
+                Equipamento equipamentoApanhado = ((Humano) creatureBeingAttacked).getEquipamentoApanhado();
+                if ( equipamentoApanhado != null ) {
+
+                    //Como o humano tem um equipamento ofensivo, vai atacar o zombie para se defender
+                    if ( equipamentoApanhado instanceof Ofensivo ) {
+                        if ( ((Humano) creatureBeingAttacked).attack(gameMap, creatureAttacking, xD, yD) ) {
+                            incrementaTempo();
+                            removeCreature(creatureAttacking);
+
+                            return true;
+                        }
+                    }
+
+                    //Como o humano tem um equipamento defensivo, vai se defender de o zombie
+                    if (equipamentoApanhado instanceof Defensivo) {
+                        if ( ((Humano) creatureBeingAttacked).defend(gameMap, creatureAttacking) ) {
+                            incrementaTempo();
+
+                            return true;
+                        }
+                    }
+                }
+            }
+
+            //Vamos atacar com o zombie e converter o humano
+            Creature zombieMade = ((Zombie) creatureAttacking).convert(gameMap, creatureBeingAttacked, xD, yD);
+            removeCreature(creatureBeingAttacked);
+            creatures.add(zombieMade);
+
+            //Como um humano foi convertido, então o número de turnos volta a zero
+            numberOfTurns = 0;
+            incrementaTempo();
+            return true;
         }
 
         return false;
@@ -489,8 +581,9 @@ public class TWDGameManager {
 
         //Verificar se o humano está a andar para um safe haven
         if ( gameMap.getPosition(xD, yD).getSafeHaven() != null ) {
-            gameMap.getPosition(xD, yD).getSafeHaven()
-                    .moveIntoSafeHaven(gameMap, creatureFound, creatures);
+
+            gameMap.getPosition(xD, yD).getSafeHaven().moveIntoSafeHaven(gameMap, creatureFound);
+            removeCreature(creatureFound);
             incrementaTempo();
             return true;
         }
@@ -501,7 +594,7 @@ public class TWDGameManager {
         }
 
         //move normalmente
-        creatureFound.move( gameMap, xD, yD, tipoMovido );
+        creatureFound.move(gameMap, xD, yD);
         incrementaTempo();
         return true;
     }
@@ -542,13 +635,19 @@ public class TWDGameManager {
 
         //Zombie moves onto equipment
         if ( gameMap.getPosition(xD, yD).getTipo() == -1 ) {
+
+            //Se o equipamento for uma cabeca de alho, um zombie vampiro não pode destruir!
+            if ( gameMap.getPosition(xD, yD).getEquipamento() instanceof CabecaAlho ) {
+                if (gameMap.getPosition(xO,yO).getCreature() instanceof VampiroZombie) {
+                    return false;
+                }
+            }
+
             retiraEquipamento( xD, yD );
         }
 
         incrementaTempo();
-        int tipoMovido = gameMap.getMapId( xO, yO );
-
-        gameMap.getPosition(xO, yO).getCreature().move( gameMap, xD, yD, tipoMovido );
+        gameMap.getPosition(xO, yO).getCreature().move( gameMap, xD, yD );
         return true;
     }
 
@@ -612,7 +711,11 @@ public class TWDGameManager {
     //Movimento so pode ser -1 e 1, e vai escolher o que fazemos á posição
     public boolean verificaPassagem(int xO, int yO, int tamanhoPassagem, boolean escolhaDirecao, int movimento) {
 
-        for ( int pos = 1; pos <= tamanhoPassagem; pos++ ) {
+        if ( tamanhoPassagem == 1 ) {
+            return true;
+        }
+
+        for ( int pos = 1; pos < tamanhoPassagem; pos++ ) {
             if ( escolhaDirecao ) {
                 /*
                 if ( gameMap.getMapId(xO + ( movimento * pos ), yO ) == -1 ) {
@@ -620,7 +723,7 @@ public class TWDGameManager {
                 }
                  */
 
-                if ( gameMap.getMapId(xO + ( movimento * pos ), yO ) == 1 ) {
+                if ( gameMap.getMapId(xO + ( movimento * pos ), yO ) != 0 ) {
                     return false;
                 }
             } else {
@@ -630,7 +733,7 @@ public class TWDGameManager {
                 }
                  */
 
-                if ( gameMap.getMapId(xO, yO + ( movimento * pos ) ) == 1 ) {
+                if ( gameMap.getMapId(xO, yO + ( movimento * pos ) ) != 0 ) {
                     return false;
                 }
             }
@@ -640,21 +743,21 @@ public class TWDGameManager {
     }
 
     public boolean removeCreature( Creature creatureFound ) {
-        if ( creatureFound == null ) {
-            return false;
-        }
-
         int pos = 0;
-        for ( Creature creature : creatures ) {
-            if ( creatureFound.getId() == creature.getId() ) {
-                creatures.remove(pos);
-                return true;
+        for (Creature creature : creatures) {
+            if (creature.getId() == creatureFound.getId()) {
+                break;
             }
 
             pos++;
         }
 
-        return false;
+        if (pos == creatures.size()) {
+            return false;
+        }
+
+        creatures.remove(pos);
+        return true;
     }
 
     /*
@@ -831,9 +934,38 @@ public class TWDGameManager {
         if ( creatures.size() == 0 ) {
             return true;
         }
+        if ( checkNumberOfHumansOnMap() == 0 ) {
+            return true;
+        }
+        if ( checkNumberOfZombiesOnMap() == 0 ) {
+            return true;
+        }
 
         return false;
     }
+
+    public int checkNumberOfHumansOnMap(){
+        int numHumans = 0;
+        for (Creature creature: creatures) {
+            if (creature instanceof Humano) {
+                numHumans++;
+            }
+        }
+
+        return numHumans;
+    }
+
+    public int checkNumberOfZombiesOnMap(){
+        int numZombies = 0;
+        for (Creature creature: creatures) {
+            if (creature instanceof Zombie) {
+                numZombies++;
+            }
+        }
+
+        return numZombies;
+    }
+
 
     public boolean isDay() {
         return (dayNightCycle == 0);
@@ -1024,46 +1156,54 @@ public class TWDGameManager {
 
     //Save current state of game onto file
     public boolean saveGame(File fich) {
-        String text = "";
+        BufferedWriter writer = null;
 
         try {
+            if ( !fich.exists() ) {
+                fich.createNewFile();
+            }
             FileWriter fileWriter = new FileWriter(fich);
-            fileWriter.flush();
+            writer = new BufferedWriter(fileWriter);
 
-            PrintWriter writer = new PrintWriter(fileWriter);
-
-            writer.print(gameMap.getSizeX() + " " + gameMap.getSizeY());
-            writer.print(initialTeamId);
-            writer.print(creatures.size());
+            writer.write(gameMap.getSizeX() + " " + gameMap.getSizeY());
+            writer.flush();
+            writer.write(initialTeamId);
+            writer.flush();
+            writer.write(creatures.size());
+            writer.flush();
 
             for ( Creature creature: creatures ) {
                 if ( creature == null ) {
                     continue;
                 }
 
-                writer.print(creature.getId() + " : " + creature.getTipo() + " : " + creature.getNome() +
+                writer.write(creature.getId() + " : " + creature.getTipo() + " : " + creature.getNome() +
                         " : " + creature.getX() + " : " + creature.getY() );
+                writer.flush();
             }
 
-            writer.print(equipment.size());
+            writer.write(equipment.size());
 
             for ( Equipamento equipamento: equipment ) {
                 if ( equipamento == null ) {
                     continue;
                 }
 
-                writer.print(equipamento.getId() + " : " + equipamento.getTipo() + " : "
+                writer.write(equipamento.getId() + " : " + equipamento.getTipo() + " : "
                         + equipamento.getX() + " : " + equipamento.getY() );
+                writer.flush();
             }
 
-            writer.print(safeHavens.size());
+            writer.write(safeHavens.size());
+            writer.flush();
 
             for ( SafeHaven safeHaven: safeHavens ) {
                 if ( safeHaven == null ) {
                     continue;
                 }
 
-                writer.print(safeHaven.getX() + " : " + safeHaven.getY() );
+                writer.write(safeHaven.getX() + " : " + safeHaven.getY() );
+                writer.flush();
             }
 
             writer.close();

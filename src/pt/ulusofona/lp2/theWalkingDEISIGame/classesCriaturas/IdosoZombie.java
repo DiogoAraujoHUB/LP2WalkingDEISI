@@ -4,9 +4,10 @@ import pt.ulusofona.lp2.theWalkingDEISIGame.Zombie;
 
 public class IdosoZombie extends Zombie {
 
-    public IdosoZombie(int id, int tipo, String nome, int x, int y) {
-        super(id, tipo, nome, x, y);
+    public IdosoZombie(int id, String nome, int x, int y) {
+        super(id, nome, x, y);
 
+        this.tipo = 3;
         this.deslocamentoMaximo = 1;
     }
 

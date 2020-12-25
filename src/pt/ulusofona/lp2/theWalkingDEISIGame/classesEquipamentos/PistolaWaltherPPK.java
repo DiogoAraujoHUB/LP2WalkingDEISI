@@ -7,7 +7,6 @@ public class PistolaWaltherPPK extends Ofensivo {
     public PistolaWaltherPPK(int id, int tipo, int x, int y) {
         super(id, tipo, x, y);
 
-        this.range = 2;
         this.numUses = 3;
     }
 

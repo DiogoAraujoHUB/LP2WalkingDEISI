@@ -31,7 +31,7 @@ public class SafeHaven {
 
     //push a human into the safe haven
     //and add him to the list of survivors
-    public boolean moveIntoSafeHaven(Mapa map, Creature humanFound, List<Creature> creatures){
+    public boolean moveIntoSafeHaven(Mapa map, Creature humanFound) {
         int xO = humanFound.getX();
         int yO = humanFound.getY();
 
@@ -42,21 +42,10 @@ public class SafeHaven {
         map.setPositionType( xO, yO, 0 );
         map.getPosition(xO,yO).setCreature(null);
 
-        //remover o humano da lista de criaturas
-        int pos = 0;
-        for ( Creature creature: creatures ) {
-            if ( creature.getId() == humanFound.getId() ) {
-                break;
-            }
-
-            pos++;
-        }
-        if ( pos == creatures.size() ) {
-            return false;
-        }
-
-        creatures.remove(pos);
         return true;
     }
 
+    public String toString() {
+        return "Safe Haven | @ (" + x + ", " + y + ")";
+    }
 }

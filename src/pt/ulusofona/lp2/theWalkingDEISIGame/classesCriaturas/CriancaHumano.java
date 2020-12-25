@@ -4,9 +4,10 @@ import pt.ulusofona.lp2.theWalkingDEISIGame.Humano;
 
 public class CriancaHumano extends Humano {
 
-    public CriancaHumano(int id, int tipo, String nome, int x, int y) {
-        super(id, tipo, nome, x, y);
+    public CriancaHumano(int id, String nome, int x, int y) {
+        super(id, nome, x, y);
 
+        this.tipo = 5;
         this.deslocamentoMaximo = 1;
     }
 

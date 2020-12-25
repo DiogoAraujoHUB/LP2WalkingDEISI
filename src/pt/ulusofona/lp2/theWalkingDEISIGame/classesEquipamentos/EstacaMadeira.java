@@ -6,7 +6,5 @@ public class EstacaMadeira extends Ofensivo {
 
     public EstacaMadeira( int id, int tipo, int x, int y) {
         super(id, tipo, x, y);
-
-        this.range = 1;
     }
 }

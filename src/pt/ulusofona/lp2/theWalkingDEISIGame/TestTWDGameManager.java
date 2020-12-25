@@ -40,7 +40,7 @@ public class TestTWDGameManager {
         TWDGameManager game = new TWDGameManager();
 
         game.startGame( new File("valoresWalkingDEISI.txt") );
-        Creature creatureTested = new AdultoHumano(3, 2, "Diogo Brando", 2, 2);
+        Creature creatureTested = new AdultoHumano(3,"Diogo Brando", 2, 2);
         assertEquals( game.verificaCondicoes(2,2, 5, 5, creatureTested), false );
     }
 
