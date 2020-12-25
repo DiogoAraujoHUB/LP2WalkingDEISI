@@ -18,7 +18,6 @@ public abstract class Zombie extends Creature {
         //parte o equipamento na posição que move para
         //Será que tamos a retirar o equipamento da lista de equipamentos quando partimos? Tenho que testar
         if ( map.getMapId(destinoX, destinoY)  == -1 ) {
-
             pickEquipment();
             map.getPosition( destinoX, destinoY ).setEquipamento(null);
         }

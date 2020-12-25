@@ -601,15 +601,24 @@ public class TWDGameManager {
             return false;
         }
 
-        //ocorre o movimento
-        int tipoMovido = gameMap.getMapId( xO, yO );
-
+        //Ocorre o movimento
         //Verificar se o humano está a andar para um safe haven
         if ( gameMap.getPosition(xD, yD).getSafeHaven() != null ) {
 
             gameMap.getPosition(xD, yD).getSafeHaven().moveIntoSafeHaven(gameMap, creatureFound);
             incrementaTempo();
             return true;
+        }
+
+        //Estamos a andar para cima de um equipamento
+        if (gameMap.getMapId(xD,yD) == -1) {
+            if (creatureFound instanceof Humano) {
+                if ( ((Humano) creatureFound).getEquipamentoApanhado() != null ) {
+                    equipment.add(((Humano) creatureFound).getEquipamentoApanhado());
+                }
+            }
+
+            removeEquipment(gameMap.getPosition(xD,yD).getEquipamento());
         }
 
         //move normalmente
@@ -662,7 +671,8 @@ public class TWDGameManager {
                 }
             }
 
-            retiraEquipamento( xD, yD );
+            //Vamos retirar o equipamento da lista
+            removeEquipment(gameMap.getPosition(xD,yD).getEquipamento());
         }
 
         incrementaTempo();
@@ -775,6 +785,24 @@ public class TWDGameManager {
         return true;
     }
 
+    public boolean removeEquipment(Equipamento equipamentFound) {
+        int pos = 0;
+        for (Equipamento equipamento : equipment) {
+            if (equipamento.getId() == equipamentFound.getId()) {
+                break;
+            }
+
+            pos++;
+        }
+
+        if (pos == equipment.size()) {
+            return false;
+        }
+
+        equipment.remove(pos);
+        return true;
+    }
+
     /*
     //este movimento é automático e feito para o zombie
     public boolean moveZombie() {
@@ -883,21 +911,6 @@ public class TWDGameManager {
         return true;   //se true, quando o zombie esta preso, não se move
     }
      */
-
-    public void retiraEquipamento( int destinoX, int destinoY ) {
-        Equipamento equipamentoDestruido = gameMap.getPosition(destinoX, destinoY).getEquipamento();
-        int idEquipamento = equipamentoDestruido.getId();
-
-        int pos = 0;
-        for ( Equipamento equipamento: equipment ) {
-            if ( equipamento.getId() == idEquipamento ) {
-                break;
-            }
-            pos++;
-        }
-
-        equipment.remove(pos);
-    }
 
     /*
     //este verifica condicoes foi feito para funcionar
