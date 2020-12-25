@@ -365,9 +365,22 @@ public class TWDGameManager {
         return this.currentTeamId;
     }
 
+    /*
     public boolean isDoorToSafeHaven(int x, int y) {
         if ( gameMap.getPosition(x, y).getSafeHaven() != null ) {
             return true;
+        }
+
+        return false;
+    }
+     */
+
+    //Criei uma nova versão para ver se funcionava com o DP
+    public boolean isDoorToSafeHaven(int x, int y) {
+        for (SafeHaven safeHaven: safeHavens) {
+            if ( safeHaven.getX() == x && safeHaven.getY() == y) {
+                return true;
+            }
         }
 
         return false;
