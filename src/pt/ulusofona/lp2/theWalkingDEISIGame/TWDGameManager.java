@@ -6,6 +6,8 @@ import pt.ulusofona.lp2.theWalkingDEISIGame.classesEquipamentos.*;
 import java.io.*;
 import java.util.*;
 
+//Falta-me fazer com que o veneno funcione
+
 public class TWDGameManager {
 
     //0 -> day and 1 -> night
@@ -574,14 +576,8 @@ public class TWDGameManager {
         if ( gameMap.getPosition(xD, yD).getSafeHaven() != null ) {
 
             gameMap.getPosition(xD, yD).getSafeHaven().moveIntoSafeHaven(gameMap, creatureFound);
-            removeCreature(creatureFound);
             incrementaTempo();
             return true;
-        }
-
-        //ve se estamos a mover para cima de uma arma
-        if ( gameMap.getMapId( xD, yD ) == -1 ) {
-            tipoMovido = 1;
         }
 
         //move normalmente
@@ -1040,17 +1036,15 @@ public class TWDGameManager {
         }
 
         List<Integer> idsInSafeHaven = new ArrayList<>();
-        for ( SafeHaven safeHaven: safeHavens ) {
-            if ( safeHaven == null ) {
+        for ( Creature creature: creatures ) {
+            if ( creature == null ) {
                 continue;
             }
 
-            for ( Creature creature: safeHaven.getHumansInSafeHaven() ) {
-                if ( creature == null ) {
-                    continue;
+            if ( creature instanceof Humano ) {
+                if (((Humano) creature).getInsideSafeHaven()) {
+                    idsInSafeHaven.add(creature.getId());
                 }
-
-                idsInSafeHaven.add( creature.getId() );
             }
         }
 

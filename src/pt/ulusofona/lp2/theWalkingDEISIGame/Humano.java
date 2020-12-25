@@ -7,6 +7,7 @@ public abstract class Humano extends Creature {
 
     private Equipamento equipamentoApanhado;
 
+    private boolean insideSafeHaven;
     private boolean envenenado;
     private int turnosRestantes;
 
@@ -14,6 +15,7 @@ public abstract class Humano extends Creature {
         super(id, nome, x, y);
 
         this.tipo = 1;
+        this.insideSafeHaven = false;
         this.envenenado = false;
         this.turnosRestantes = 6;
 
@@ -26,6 +28,22 @@ public abstract class Humano extends Creature {
 
     public void setEquipamentoApanhado( Equipamento equipamento ) {
         this.equipamentoApanhado = equipamento;
+    }
+
+    public boolean getInsideSafeHaven() {
+        return this.insideSafeHaven;
+    }
+
+    public void goInsideSafeHaven() {
+        this.insideSafeHaven = true;
+    }
+
+    public boolean getEnvenenado() {
+        return this.envenenado;
+    }
+
+    public int getTurnosRestantes() {
+        return this.turnosRestantes;
     }
 
     public void move(Mapa map, int destinoX, int destinoY) {

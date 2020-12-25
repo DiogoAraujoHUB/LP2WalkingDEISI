@@ -8,13 +8,9 @@ public class SafeHaven {
     private int x;
     private int y;
 
-    private List<Creature> humansInSafeHaven;
-
     public SafeHaven(int x, int y) {
         this.x = x;
         this.y = y;
-
-        this.humansInSafeHaven = new ArrayList<>();
     }
 
     public int getX() {
@@ -25,18 +21,15 @@ public class SafeHaven {
         return this.y;
     }
 
-    public List<Creature> getHumansInSafeHaven() {
-        return this.humansInSafeHaven;
-    }
-
     //push a human into the safe haven
-    //and add him to the list of survivors
     public boolean moveIntoSafeHaven(Mapa map, Creature humanFound) {
         int xO = humanFound.getX();
         int yO = humanFound.getY();
 
         //mover para dentro do safeHaven
-        humansInSafeHaven.add(humanFound);
+        if (humanFound instanceof Humano) {
+            ((Humano) humanFound).goInsideSafeHaven();
+        }
 
         //Fazer o humano desaparecer
         map.setPositionType(xO, yO, 0);
