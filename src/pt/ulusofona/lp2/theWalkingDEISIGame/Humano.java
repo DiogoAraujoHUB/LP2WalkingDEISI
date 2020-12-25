@@ -80,7 +80,6 @@ public abstract class Humano extends Creature {
         map.getPosition(x,y).setCreature(null);
         x = destinoX;
         y = destinoY;
-        System.out.println("X and Y == " + x + " and " + y);
     }
 
     public boolean attack(Mapa map, Creature creatureAttacked, int xD, int yD) {
