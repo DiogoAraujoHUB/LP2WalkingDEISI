@@ -530,6 +530,7 @@ public class TWDGameManager {
             creatures.add(zombieMade);
 
             //Como um humano foi convertido, então o número de turnos volta a zero
+            //Não tenho a certeza se sou suposto o numberOfTurns = 0 antes ou depois do incrementa tempo
             numberOfTurns = 0;
             incrementaTempo();
             return true;
@@ -717,21 +718,17 @@ public class TWDGameManager {
 
         for ( int pos = 1; pos < tamanhoPassagem; pos++ ) {
             if ( escolhaDirecao ) {
-                /*
-                if ( gameMap.getMapId(xO + ( movimento * pos ), yO ) == -1 ) {
-                    return true;
+                if ( gameMap.getPosition(xO + ( movimento * pos ), yO).getSafeHaven() != null ) {
+                    return false;
                 }
-                 */
 
                 if ( gameMap.getMapId(xO + ( movimento * pos ), yO ) != 0 ) {
                     return false;
                 }
             } else {
-                /*
-                if ( gameMap.getMapId(xO, yO + ( movimento * pos ) ) == -1 ) {
-                    return true;
+                if ( gameMap.getPosition(xO, yO + ( movimento * pos )).getSafeHaven() != null ) {
+                    return false;
                 }
-                 */
 
                 if ( gameMap.getMapId(xO, yO + ( movimento * pos ) ) != 0 ) {
                     return false;
