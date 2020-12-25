@@ -24,7 +24,7 @@ public abstract class Zombie extends Creature {
         }
 
         //move normalmente
-        map.setPositionType( x, y, 0 );
+        map.setPositionType(x, y, 0);
         map.setPositionType( destinoX, destinoY, 1);
         map.getPosition(destinoX, destinoY ).setCreature( map.getPosition(x,y).getCreature() );
         map.getPosition( x, y ).setCreature( null );

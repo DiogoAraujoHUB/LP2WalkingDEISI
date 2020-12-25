@@ -373,7 +373,7 @@ public class TWDGameManager {
 
     //devolve o id do objeto/elemento que se encontra na posição indicada pelas
     //coordenadas (x,y) passadas no argumento
-    public int getElementId( int x, int y ) {
+    public int getElementId(int x, int y) {
         if ( x >= gameMap.getSizeX() || y >= gameMap.getSizeY() || x < 0 || y < 0 ) {
             return 0;
         }
@@ -386,7 +386,7 @@ public class TWDGameManager {
 
         switch( tipo ) {
             case 0:
-                mapId = 10;
+                mapId = 0;
                 break;
 
             case -1:
@@ -400,17 +400,7 @@ public class TWDGameManager {
                 mapId = creature.getId();
                 break;
 
-            case 3:
-                /*
-                SafeHaven safeHaven = gameMap.getPosition(x,y).getSafeHaven();
-                List<Creature> humansInSafeHaven = safeHaven.getHumansInSafeHaven();
-                if ( humansInSafeHaven.size() == 0 ) {
-                    return 0;
-                }
-
-                Creature humanFound = humansInSafeHaven.get( humansInSafeHaven.size() - 1);
-                mapId = humanFound.getId();
-                 */
+            case 2:
                 mapId = 0;
                 break;
 
@@ -1363,7 +1353,13 @@ public class TWDGameManager {
     }
 
     public String[] popCultureExtravaganza() {
-        String[] popCulture = new String[11];
+        String[] popCulture = new String[14];
+
+        popCulture[0] = "Resident Evil";
+        popCulture[1] = "The Evil Dead";
+        popCulture[2] = "The Night Eats the World";
+        popCulture[3] = "";
+        popCulture[4] = "";
 
         return popCulture;
     }

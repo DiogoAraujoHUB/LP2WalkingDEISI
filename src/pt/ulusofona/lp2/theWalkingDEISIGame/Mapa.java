@@ -70,7 +70,7 @@ public class Mapa {
             }
 
             //Na posição não está nada, logo pusemos o equipamento no chão
-            map[xFound][yFound].setTipo(-1);    //-1 is equipment
+            map[xFound][yFound].setTipo(-1);    //Tipo -1 é equipamento
             map[xFound][yFound].setEquipamento(equipamento);
         }
     }
@@ -86,15 +86,15 @@ public class Mapa {
             }
 
             map[xFound][yFound].setSafeHaven(safeHaven);
-            map[xFound][yFound].setTipo(3); //O tipo 3 é um SafeHaven
+            map[xFound][yFound].setTipo(2); //O tipo 2 é um SafeHaven
         }
     }
 
-    public int getMapId( int x, int y ) {
+    public int getMapId(int x, int y) {
         return map[x][y].getTipo();
     }
 
-    public void setPositionType( int x, int y, int type ) {
+    public void setPositionType(int x, int y, int type) {
         map[x][y].setTipo(type);
     }
 

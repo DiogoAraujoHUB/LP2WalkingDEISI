@@ -39,7 +39,7 @@ public class SafeHaven {
         humansInSafeHaven.add(humanFound);
 
         //Fazer o humano desaparecer
-        map.setPositionType( xO, yO, 0 );
+        map.setPositionType(xO, yO, 0);
         map.getPosition(xO,yO).setCreature(null);
 
         return true;
