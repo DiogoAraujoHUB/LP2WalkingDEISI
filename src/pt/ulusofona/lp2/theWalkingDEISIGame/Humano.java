@@ -140,12 +140,20 @@ public abstract class Humano extends Creature {
 
     public boolean defend(Mapa map, Creature creatureAttacking) {
         //O vampiro não pode atacar alguem que tenha uma cabeca de alho
-        if (equipamentoApanhado instanceof CabecaAlho && creatureAttacking instanceof VampiroZombie) {
-            return true;
+        if (equipamentoApanhado instanceof CabecaAlho) {
+            if ( creatureAttacking instanceof VampiroZombie ) {
+                return true;
+            }
+
+            return false;
         }
         //O zombie idoso não pode atacar um humano com a revista maria
-        if ( equipamentoApanhado instanceof RevistaMaria && creatureAttacking instanceof IdosoZombie) {
-            return true;
+        if ( equipamentoApanhado instanceof RevistaMaria ) {
+            if ( creatureAttacking instanceof IdosoZombie ) {
+                return true;
+            }
+
+            return false;
         }
 
         //O equipamento que o humano tem é um escudo de madeira
