@@ -163,10 +163,6 @@ public class TWDGameManager {
                                     return false;
                                 }
                             }
-
-                            gameMap.addCreatures( creatures );
-                            gameMap.addEquipment( equipment );
-                            gameMap.addSafeHavens( safeHavens );
                             break;
 
                         default:
@@ -186,6 +182,10 @@ public class TWDGameManager {
             return false;
         }
 
+        //Adiciona o que fomos buscar ao ficheiro para o mapa
+        gameMap.addCreatures( creatures );
+        gameMap.addEquipment( equipment );
+        gameMap.addSafeHavens( safeHavens );
         return true;
     }
 
