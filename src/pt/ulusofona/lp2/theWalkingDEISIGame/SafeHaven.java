@@ -22,20 +22,20 @@ public class SafeHaven {
     }
 
     //push a human into the safe haven
-    public boolean moveIntoSafeHaven(Mapa map, Creature humanFound) {
-        int xO = humanFound.getX();
-        int yO = humanFound.getY();
+    public boolean moveIntoSafeHaven(Mapa map, Creature creatureFound) {
+        int xO = creatureFound.getX();
+        int yO = creatureFound.getY();
 
         //mover para dentro do safeHaven
-        if (humanFound instanceof Humano) {
-            ((Humano) humanFound).goInsideSafeHaven();
+        if (creatureFound instanceof Humano) {
+            ((Humano) creatureFound).goInsideSafeHaven();
+
+            //Fazer o humano desaparecer
+            map.setPositionType(xO, yO, 0);
+            map.getPosition(xO,yO).setCreature(null);
+            return true;
         }
-
-        //Fazer o humano desaparecer
-        map.setPositionType(xO, yO, 0);
-        map.getPosition(xO,yO).setCreature(null);
-
-        return true;
+        return false;
     }
 
     public String toString() {

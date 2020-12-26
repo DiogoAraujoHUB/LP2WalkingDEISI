@@ -9,6 +9,8 @@ public class MilitarZombie extends Zombie {
 
         this.tipo = 2;
         this.deslocamentoMaximo = 3;
+
+        this.ableToMoveFreely = true;
     }
 
     public String toString() {

@@ -15,7 +15,7 @@ public class TWDGameManager {
     private int initialTeamId;
     private int currentTeamId;
     private int numberOfTurns;
-    private int numberOfTurnsToPassDays;
+    private int numberOfTurnsTotal;
 
     private List<Creature> creatures;
     private List<Equipamento> equipment;
@@ -28,7 +28,7 @@ public class TWDGameManager {
         initialTeamId = 0;
         currentTeamId = 0;
         numberOfTurns = 0;
-        numberOfTurnsToPassDays = 0;
+        numberOfTurnsTotal = 0;
 
         creatures = new ArrayList<>();
         equipment = new ArrayList<>();
@@ -537,6 +537,11 @@ public class TWDGameManager {
     public boolean move(int xO, int yO, int xD, int yD) {
         Creature creatureFound = null;
 
+        //Não conseguimos mover para (ou atacar) um cão!
+        if (gameMap.getPosition(xD,yD).getCreature() instanceof Cao) {
+            return false;
+        }
+
         //Verifica se a equipa atual é a de zombies
         if ( currentTeamId == 20 ) {
             return moveZombie(xO, yO, xD, yD);
@@ -559,6 +564,13 @@ public class TWDGameManager {
             return false;
         }
 
+        //Os idosos não se conseguem mover á noite!
+        if (creatureFound instanceof IdosoHumano) {
+            if ( !isDay() ) {
+                return false;
+            }
+        }
+
         //Move creature onto a creature, attacking eachother
         if ( gameMap.getMapId(xO,yO) == 1 && gameMap.getMapId(xD, yD) == 1 ) {
             return attack(xO,yO,xD,yD);
@@ -572,10 +584,18 @@ public class TWDGameManager {
         //Ocorre o movimento
         //Verificar se o humano está a andar para um safe haven
         if ( gameMap.getPosition(xD, yD).getSafeHaven() != null ) {
+            if ( creatureFound instanceof Humano ) {
+                //Remover o equipamento da lista se o humano tiver equipamento
+                if ( ((Humano) creatureFound).getEquipamentoApanhado() != null ) {
+                    removeEquipment(((Humano) creatureFound).getEquipamentoApanhado());
+                }
 
-            gameMap.getPosition(xD, yD).getSafeHaven().moveIntoSafeHaven(gameMap, creatureFound);
-            incrementaTempo();
-            return true;
+                gameMap.getPosition(xD, yD).getSafeHaven().moveIntoSafeHaven(gameMap, creatureFound);
+                incrementaTempo();
+                return true;
+            }
+
+            return false;
         }
 
         //move normalmente
@@ -597,6 +617,13 @@ public class TWDGameManager {
         }
         if ( !verificaCondicoes(xO, yO, xD, yD, zombieFound) ) {
             return false;
+        }
+
+        //Os vampiros só conseguem mover-se á noite! (Se for dia não se consegue mover)
+        if ( zombieFound instanceof VampiroZombie ) {
+            if ( isDay() ) {
+                return false;
+            }
         }
 
         //Move creature onto a creature, attacking eachother
@@ -638,7 +665,6 @@ public class TWDGameManager {
     }
 
     public boolean verificaCondicoes( int xO, int yO, int xD, int yD, Creature creatureMoved ) {
-
         //verifica se os parametros introduzidos estáo corretos para o mapa
         if ( xD >= gameMap.getSizeX() || yD >= gameMap.getSizeY() || xD < 0 || yD < 0 ) {
             return false;
@@ -657,36 +683,47 @@ public class TWDGameManager {
         }
 
         int deslocamento = creatureMoved.getDeslocamentoMaximo();
-        return verificaMovimento(deslocamento, xO, yO, xD, yD);
+        return verificaMovimento(deslocamento, xO, yO, xD, yD, creatureMoved);
     }
 
     //verifica se tenta mover mais que conseguimos
-    public boolean verificaMovimento(int deslocamento, int xO, int yO, int xD, int yD) {
+    public boolean verificaMovimento(int deslocamento, int xO, int yO, int xD, int yD, Creature creatureMoved) {
         for ( int pos = 1; pos <= deslocamento; pos++ ) {
-
+            //Direita
             if ( xO + pos == xD && yO == yD ) {
                 return verificaPassagem(xO, yO, pos, true, 1);
             }
+            //Esquerda
             if( xO - pos == xD && yO == yD ) {
-                if ( !verificaPassagem(xO, yO, pos, true, -1) ) {
-                    return false;
-                }
-
-                return true;
+                return verificaPassagem(xO, yO, pos, true, -1);
             }
+            //Para baixo
             if ( xO == xD && yO + pos == yD ) {
-                if ( !verificaPassagem(xO, yO, pos, false, 1) ) {
-                    return false;
-                }
-
-                return true;
+                return verificaPassagem(xO, yO, pos, false, 1);
             }
+            //Para cima
             if ( xO == xD && yO - pos == yD ) {
-                if ( !verificaPassagem(xO, yO, pos, false, -1) ) {
-                    return false;
-                }
+                return verificaPassagem(xO, yO, pos, false, -1);
+            }
 
-                return true;
+            //A criatura consegue mover-se mais do que só as direções cardinais
+            if ( creatureMoved.getAbleToMoveFreely() ) {
+                //Canto inferior direito
+                if ( xO + pos == xD && yO + pos == yD ) {
+                    return verificaPassagemObliqua(xO, yO, pos, 1, 1);
+                }
+                //Canto superior direito
+                if( xO + pos == xD && yO - pos == yD ) {
+                    return verificaPassagemObliqua(xO, yO, pos, 1, -1);
+                }
+                //Canto inferior esquerdo
+                if ( xO - pos == xD && yO + pos == yD ) {
+                    return verificaPassagemObliqua(xO, yO, pos, -1, 1);
+                }
+                //Canto superior esquerdo
+                if ( xO - pos == xD && yO - pos == yD ) {
+                    return verificaPassagemObliqua(xO, yO, pos, -1, -1);
+                }
             }
         }
 
@@ -695,8 +732,8 @@ public class TWDGameManager {
 
     //Escolha Direcao == true implica que estamos a andar no x, e igual a false no y
     //Movimento so pode ser -1 e 1, e vai escolher o que fazemos á posição
+    //Ou seja, se incrementamos ou se decrementamos
     public boolean verificaPassagem(int xO, int yO, int tamanhoPassagem, boolean escolhaDirecao, int movimento) {
-
         if ( tamanhoPassagem == 1 ) {
             return true;
         }
@@ -718,6 +755,26 @@ public class TWDGameManager {
                 if ( gameMap.getMapId(xO, yO + ( movimento * pos ) ) != 0 ) {
                     return false;
                 }
+            }
+        }
+
+        return true;
+    }
+
+    //O movX e movY escolhem em que direção vamos em relação ao x e ao y so podem ser 1 e -1
+    //Ou seja, se incrementamos ou se decrementamos
+    public boolean verificaPassagemObliqua(int xO, int yO, int tamanhoPassagem, int movX, int movY) {
+        if ( tamanhoPassagem == 1 ) {
+            return true;
+        }
+
+        for ( int pos = 1; pos < tamanhoPassagem; pos++ ) {
+            if ( gameMap.getPosition(xO + ( movX * pos ), yO + ( movY * pos) ).getSafeHaven() != null ) {
+                return false;
+            }
+
+            if ( gameMap.getMapId(xO + ( movX * pos ), yO + ( movY * pos) ) != 0 ) {
+                return false;
             }
         }
 
@@ -899,9 +956,9 @@ public class TWDGameManager {
         }
 
         numberOfTurns++;
-        numberOfTurnsToPassDays++;
+        numberOfTurnsTotal++;
 
-        if ( numberOfTurnsToPassDays % 2 == 0 ) {
+        if ( numberOfTurnsTotal % 2 == 0 ) {
             if ( dayNightCycle == 0 ) {
                 dayNightCycle = 1;
             } else {
@@ -933,6 +990,7 @@ public class TWDGameManager {
         int numHumans = 0;
         for (Creature creature: creatures) {
             if (creature instanceof Humano) {
+                System.out.println(((Humano) creature).getInsideSafeHaven());
                 if ( ((Humano) creature).getInsideSafeHaven() ) {
                     continue;
                 }
@@ -955,7 +1013,7 @@ public class TWDGameManager {
         return numZombies;
     }
 
-
+    //Se der true quer dizer que é dia
     public boolean isDay() {
         return (dayNightCycle == 0);
     }
@@ -964,7 +1022,7 @@ public class TWDGameManager {
         List<String> gameResults = new ArrayList<>();
         String text = "Nr. de turnos terminados:";
         gameResults.add( text );
-        text = "" + numberOfTurns ;
+        text = "" + numberOfTurnsTotal ;
         gameResults.add( text );
         gameResults.add(" ");
 

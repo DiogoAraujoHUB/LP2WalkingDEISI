@@ -12,6 +12,8 @@ public abstract class Creature {
     protected int numEquipamentos;
     protected int deslocamentoMaximo;
 
+    protected boolean ableToMoveFreely;
+
     public Creature(int id, String nome, int x, int y) {
         this.id = id;
         this.nome = nome;
@@ -35,6 +37,10 @@ public abstract class Creature {
 
     public int getY() {
         return this.y;
+    }
+
+    public boolean getAbleToMoveFreely() {
+        return this.ableToMoveFreely;
     }
 
     public String getNome() {

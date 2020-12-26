@@ -64,6 +64,8 @@ public abstract class Humano extends Creature {
             if ( equipamentoApanhado != null ) {
                 tipoDeixado = - 1;
                 map.getPosition(x,y).setEquipamento( equipamentoApanhado );
+                equipamentoApanhado.setX(x);
+                equipamentoApanhado.setY(y);
             }
 
             equipamentoApanhado =  map.getPosition(destinoX,destinoY).getEquipamento();
@@ -78,6 +80,12 @@ public abstract class Humano extends Creature {
         map.getPosition(x,y).setCreature(null);
         x = destinoX;
         y = destinoY;
+
+        //Fazer com que o equipamento se movesse com o humano
+        if (equipamentoApanhado != null) {
+            equipamentoApanhado.setX(x);
+            equipamentoApanhado.setY(y);
+        }
     }
 
     public boolean attack(Mapa map, Creature creatureAttacked, int xD, int yD) {

@@ -9,6 +9,8 @@ public class AdultoHumano extends Humano {
 
         this.tipo = 6;
         this.deslocamentoMaximo = 2;
+
+        this.ableToMoveFreely = true;
     }
 
     public String toString() {

@@ -9,6 +9,8 @@ public class VampiroZombie extends Zombie {
 
         this.tipo = 4;
         this.deslocamentoMaximo = 2;
+
+        this.ableToMoveFreely = true;
     }
 
     public String toString() {

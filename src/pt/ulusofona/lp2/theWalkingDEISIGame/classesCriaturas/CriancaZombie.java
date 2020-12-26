@@ -9,6 +9,8 @@ public class CriancaZombie extends Zombie {
 
         this.tipo = 0;
         this.deslocamentoMaximo = 1;
+
+        this.ableToMoveFreely = false;
     }
 
     public String toString() {

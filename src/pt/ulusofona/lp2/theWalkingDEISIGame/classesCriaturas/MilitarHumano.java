@@ -9,6 +9,8 @@ public class MilitarHumano extends Humano {
 
         this.tipo = 7;
         this.deslocamentoMaximo = 3;
+
+        this.ableToMoveFreely = true;
     }
 
     public String toString() {

@@ -1,5 +1,7 @@
 package pt.ulusofona.lp2.theWalkingDEISIGame;
 
+import pt.ulusofona.lp2.theWalkingDEISIGame.classesCriaturas.IdosoHumano;
+
 public class Cao extends Animal {
 
     private Equipamento equipamentoApanhado;
@@ -8,9 +10,11 @@ public class Cao extends Animal {
         super(id, nome, x, y);
 
         this.deslocamentoMaximo = 2;
+
+        this.ableToMoveFreely = false;
     }
 
-    public void move( Mapa map, int destinoX, int destinoY ) {
+    public void move(Mapa map, int destinoX, int destinoY) {
         int tipoDeixado = 0;
 
         //no caso de tarmos a andar para cima de uma arma
@@ -19,6 +23,8 @@ public class Cao extends Animal {
             if ( equipamentoApanhado != null ) {
                 tipoDeixado = - 1;
                 map.getPosition(x,y).setEquipamento( equipamentoApanhado );
+                equipamentoApanhado.setX(x);
+                equipamentoApanhado.setY(y);
             }
 
             equipamentoApanhado =  map.getPosition(destinoX,destinoY).getEquipamento();
@@ -33,6 +39,12 @@ public class Cao extends Animal {
         map.getPosition(x,y).setCreature(null);
         x = destinoX;
         y = destinoY;
+
+        //Fazer com que o equipamento se movesse com o humano
+        if (equipamentoApanhado != null) {
+            equipamentoApanhado.setX(x);
+            equipamentoApanhado.setY(y);
+        }
     }
 
     public String getImagePNG() {
