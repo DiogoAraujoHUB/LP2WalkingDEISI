@@ -1176,7 +1176,7 @@ public class TWDGameManager {
                 break;
 
             case 7:
-                name = "Garrafa de lixívia";
+                name = "Garrafa de lixívia (1 litro)";
                 break;
 
             case 8:

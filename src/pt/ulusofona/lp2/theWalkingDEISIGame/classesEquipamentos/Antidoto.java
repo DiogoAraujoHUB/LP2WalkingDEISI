@@ -7,5 +7,4 @@ public class Antidoto extends Defensivo {
     public Antidoto(int id, int tipo, int x, int y) {
         super(id, tipo, x, y);
     }
-
 }
