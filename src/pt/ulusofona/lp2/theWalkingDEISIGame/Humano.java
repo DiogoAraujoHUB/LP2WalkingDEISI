@@ -63,8 +63,6 @@ public abstract class Humano extends Creature {
             //verifica se ja tem uma arma
             if ( equipamentoApanhado != null ) {
                 tipoDeixado = - 1;
-                equipamentoApanhado.setX(x);
-                equipamentoApanhado.setY(y);
                 map.getPosition(x,y).setEquipamento( equipamentoApanhado );
             }
 

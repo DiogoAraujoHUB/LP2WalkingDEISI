@@ -365,7 +365,6 @@ public class TWDGameManager {
         return this.currentTeamId;
     }
 
-    /*
     public boolean isDoorToSafeHaven(int x, int y) {
         if ( gameMap.getPosition(x, y).getSafeHaven() != null ) {
             return true;
@@ -373,50 +372,7 @@ public class TWDGameManager {
 
         return false;
     }
-     */
 
-    //Criei uma nova versão para ver se funcionava com o DP
-    public boolean isDoorToSafeHaven(int x, int y) {
-        for (SafeHaven safeHaven: safeHavens) {
-            if ( safeHaven.getX() == x && safeHaven.getY() == y) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    //Criei uma nova versão para ver se funcionava com o DP
-    //devolve o id do objeto/elemento que se encontra na posição indicada pelas
-    //coordenadas (x,y) passadas no argumento
-    public int getElementId(int x, int y) {
-        if ( x >= gameMap.getSizeX() || y >= gameMap.getSizeY() || x < 0 || y < 0 ) {
-            return 0;
-        }
-        if ( gameMap == null ) {
-            return 0;
-        }
-
-        for (Creature creature: creatures) {
-            if (x == creature.getX() && y == creature.getY()) {
-                return creature.getId();
-            }
-        }
-        for(Equipamento equipamento: equipment) {
-            if (x == equipamento.getX() && y == equipamento.getY()) {
-                return equipamento.getId();
-            }
-        }
-        for (SafeHaven safeHaven: safeHavens) {
-            if (x == safeHaven.getX() && y == safeHaven.getY()) {
-                return 0;
-            }
-        }
-
-        return 0;
-    }
-
-    /*
     //devolve o id do objeto/elemento que se encontra na posição indicada pelas
     //coordenadas (x,y) passadas no argumento
     public int getElementId(int x, int y) {
@@ -456,7 +412,6 @@ public class TWDGameManager {
 
         return mapId;
     }
-     */
 
     public boolean attack(int xO, int yO, int xD, int yD) {
         if ( currentTeamId == 20 ) {
@@ -621,17 +576,6 @@ public class TWDGameManager {
             gameMap.getPosition(xD, yD).getSafeHaven().moveIntoSafeHaven(gameMap, creatureFound);
             incrementaTempo();
             return true;
-        }
-
-        //Estamos a andar para cima de um equipamento
-        if (gameMap.getMapId(xD,yD) == -1) {
-            if (creatureFound instanceof Humano) {
-                if ( ((Humano) creatureFound).getEquipamentoApanhado() != null ) {
-                    equipment.add(((Humano) creatureFound).getEquipamentoApanhado());
-                }
-            }
-
-            removeEquipment(gameMap.getPosition(xD,yD).getEquipamento());
         }
 
         //move normalmente
@@ -989,6 +933,10 @@ public class TWDGameManager {
         int numHumans = 0;
         for (Creature creature: creatures) {
             if (creature instanceof Humano) {
+                if ( ((Humano) creature).getInsideSafeHaven() ) {
+                    continue;
+                }
+
                 numHumans++;
             }
         }
