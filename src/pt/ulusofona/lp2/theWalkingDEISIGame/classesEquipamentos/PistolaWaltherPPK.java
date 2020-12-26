@@ -9,8 +9,4 @@ public class PistolaWaltherPPK extends Ofensivo {
 
         this.numUses = 3;
     }
-
-    public int getNumUses() {
-        return this.numUses;
-    }
 }

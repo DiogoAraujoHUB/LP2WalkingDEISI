@@ -49,6 +49,7 @@ public class TWDGameManager {
         initialTeamId = 0;
         currentTeamId = 0;
         numberOfTurns = 0;
+        numberOfTurnsTotal = 0;
         dayNightCycle = 0;
 
         int numFileLine = 1;
@@ -365,8 +366,9 @@ public class TWDGameManager {
         return this.currentTeamId;
     }
 
+    //O tipo 2 é um safe haven
     public boolean isDoorToSafeHaven(int x, int y) {
-        if ( gameMap.getPosition(x, y).getSafeHaven() != null ) {
+        if ( gameMap.getMapId(x,y) == 2 ) {
             return true;
         }
 
@@ -449,6 +451,7 @@ public class TWDGameManager {
 
             //Não conseguimos atacar com um equipamento defensivo, logo tem que ser ofensivo
             if ( equipamentoUtilizado instanceof Ofensivo ) {
+                //Kill zombie being attacked
                 if ( ((Humano) creatureAttacking).attack(gameMap, creatureBeingAttacked, xD, yD) ) {
                     incrementaTempo();
                     removeCreature(creatureBeingAttacked);
@@ -497,8 +500,11 @@ public class TWDGameManager {
 
                     //Como o humano tem um equipamento ofensivo, vai atacar o zombie para se defender
                     if ( equipamentoApanhado instanceof Ofensivo ) {
-                        if ( ((Humano) creatureBeingAttacked).attack(gameMap, creatureAttacking, xD, yD) ) {
+                        //xO and yO are the position of the zombie attacking
+                        if ( ((Humano) creatureBeingAttacked).defendWithAttack(gameMap, creatureAttacking, xO, yO) ) {
                             incrementaTempo();
+                            //Kill the zombie attacking
+                            gameMap.setPositionType(xO,yO,0);
                             removeCreature(creatureAttacking);
 
                             return true;
@@ -516,10 +522,19 @@ public class TWDGameManager {
                 }
             }
 
+            //Se o humano tiver um equipamento que já não o protega, temos que o retirar da lista (partir)
+            //(Não sei se temos de incrementar como ele tivesse partido o equipamento)
+            if ( creatureBeingAttacked instanceof Humano ) {
+                if ( ((Humano) creatureBeingAttacked).getEquipamentoApanhado() != null ) {
+                    removeEquipment(((Humano) creatureBeingAttacked).getEquipamentoApanhado());
+                    ((Humano) creatureBeingAttacked).setEquipamentoApanhado(null);
+                }
+            }
+
             //Vamos atacar com o zombie e converter o humano
             Creature zombieMade = ((Zombie) creatureAttacking).convert(gameMap, creatureBeingAttacked, xD, yD);
-            removeCreature(creatureBeingAttacked);
             creatures.add(zombieMade);
+            removeCreature(creatureBeingAttacked);
 
             //Como um humano foi convertido, então o número de turnos volta a zero
             //Não tenho a certeza se sou suposto o numberOfTurns = 0 antes ou depois do incrementa tempo

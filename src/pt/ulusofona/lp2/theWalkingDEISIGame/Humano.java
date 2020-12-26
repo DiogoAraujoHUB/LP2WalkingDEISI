@@ -89,10 +89,6 @@ public abstract class Humano extends Creature {
     }
 
     public boolean attack(Mapa map, Creature creatureAttacked, int xD, int yD) {
-        if ( xD == x && yD == y ) {
-            return true;
-        }
-
         //Vamos ver se isto é uma criança humana
         if ( map.getPosition(x,y).getCreature() instanceof CriancaHumano ) {
             if (equipamentoApanhado instanceof EspadaHattoriHanzo) {
@@ -130,9 +126,9 @@ public abstract class Humano extends Creature {
             }
 
             //Reduce number of bullets by one and shoot zombie
+            equipamentoApanhado.setNumUses(equipamentoApanhado.getNumUses() - 1);
             map.getPosition(xD,yD).setCreature(null);
             move(map, xD, yD);
-            equipamentoApanhado.setNumUses(equipamentoApanhado.getNumUses() - 1);
             return true;
         }
 
@@ -179,6 +175,51 @@ public abstract class Humano extends Creature {
             return true;
         }
 
+        return true;
+    }
+
+    //Same as attack, but without the move
+    public boolean defendWithAttack(Mapa map, Creature creatureAttacked, int xD, int yD) {
+        //Vamos ver se isto é uma criança humana
+        if ( map.getPosition(x,y).getCreature() instanceof CriancaHumano ) {
+            if (equipamentoApanhado instanceof EspadaHattoriHanzo) {
+                if (creatureAttacked instanceof CriancaZombie) {
+                    map.getPosition(xD,yD).setCreature(null);
+                    return true;
+                }
+
+                return false;
+            }
+        }
+
+        //Verificar se estamos a atacar um vampiro!
+        if ( creatureAttacked instanceof VampiroZombie ) {
+
+            //Para matar um vampiro, necessitamos de usar uma estaca
+            if ( equipamentoApanhado instanceof EstacaMadeira ) {
+                map.getPosition(xD,yD).setCreature(null);
+                return true;
+            }
+
+            return false;
+        }
+
+        //Ver se estamos a utilizar uma pistola para atacar o zombie
+        if ( equipamentoApanhado instanceof PistolaWaltherPPK ) {
+
+            //A pistola já não tem balas!
+            if ( equipamentoApanhado.getNumUses() == 0 ) {
+                return false;
+            }
+
+            //Reduce number of bullets by one and shoot zombie
+            equipamentoApanhado.setNumUses(equipamentoApanhado.getNumUses() - 1);
+            map.getPosition(xD,yD).setCreature(null);
+            return true;
+        }
+
+        //Attack normally
+        map.getPosition(xD,yD).setCreature(null);
         return true;
     }
 
