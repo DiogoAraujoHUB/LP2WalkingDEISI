@@ -990,7 +990,6 @@ public class TWDGameManager {
         int numHumans = 0;
         for (Creature creature: creatures) {
             if (creature instanceof Humano) {
-                System.out.println(((Humano) creature).getInsideSafeHaven());
                 if ( ((Humano) creature).getInsideSafeHaven() ) {
                     continue;
                 }
