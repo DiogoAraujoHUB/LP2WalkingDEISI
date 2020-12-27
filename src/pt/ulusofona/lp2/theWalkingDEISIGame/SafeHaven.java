@@ -26,7 +26,7 @@ public class SafeHaven {
         int xO = creatureFound.getX();
         int yO = creatureFound.getY();
 
-        //mover para dentro do safeHaven
+        //so movemos para dentro do safe haven se for humano
         if (creatureFound instanceof Humano) {
             ((Humano) creatureFound).goInsideSafeHaven();
 
@@ -35,6 +35,7 @@ public class SafeHaven {
             map.getPosition(xO,yO).setCreature(null);
             return true;
         }
+
         return false;
     }
 

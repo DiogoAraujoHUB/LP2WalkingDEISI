@@ -88,6 +88,10 @@ public class TWDGameManager {
 
                         case 3:
                             numCreatures = Integer.parseInt( lineRead.trim() );
+                            //Skip over creatures
+                            if ( numCreatures == 0 ) {
+                                numFileLine = 4;
+                            }
                             break;
 
                         case 4:
@@ -117,6 +121,10 @@ public class TWDGameManager {
 
                         case 5:
                             numEquipment = Integer.parseInt( lineRead.trim() );
+                            //Skip over equipment
+                            if ( numEquipment == 0 ) {
+                                numFileLine = 6;
+                            }
                             break;
 
                         case 6:
@@ -144,6 +152,10 @@ public class TWDGameManager {
 
                         case 7:
                             numSafeHavens = Integer.parseInt( lineRead );
+                            //Skip over safe havens
+                            if ( numSafeHavens == 0 ) {
+                                numFileLine = 8;
+                            }
                             break;
 
                         case 8:
