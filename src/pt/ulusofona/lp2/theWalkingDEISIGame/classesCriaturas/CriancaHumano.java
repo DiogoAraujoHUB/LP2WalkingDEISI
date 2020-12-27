@@ -15,7 +15,11 @@ public class CriancaHumano extends Humano {
 
     public String toString() {
         String texto = id + " | Criança (Vivo) | Os Vivos |" + nome + "";
-        texto += numEquipamentos + " @ (" + x + ", " + y + ")";
+        if ( insideSafeHaven ) {
+            texto += numEquipamentos + " @ A salvo";
+        } else {
+            texto += numEquipamentos + " @ (" + x + ", " + y + ")";
+        }
 
         return texto;
     }

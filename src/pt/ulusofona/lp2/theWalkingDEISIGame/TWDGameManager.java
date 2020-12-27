@@ -368,11 +368,7 @@ public class TWDGameManager {
 
     //O tipo 2 é um safe haven
     public boolean isDoorToSafeHaven(int x, int y) {
-        if ( gameMap.getMapId(x,y) == 2 ) {
-            return true;
-        }
-
-        return false;
+        return (gameMap.getPosition(x, y).getSafeHaven() != null);
     }
 
     //devolve o id do objeto/elemento que se encontra na posição indicada pelas
@@ -454,7 +450,7 @@ public class TWDGameManager {
                 //Kill zombie being attacked
                 if ( ((Humano) creatureAttacking).attack(gameMap, creatureBeingAttacked, xD, yD) ) {
                     incrementaTempo();
-                    removeCreature(creatureBeingAttacked);
+                    creatureBeingAttacked.beDestroyed();
 
                     return true;
                 }
@@ -505,7 +501,7 @@ public class TWDGameManager {
                             incrementaTempo();
                             //Kill the zombie attacking
                             gameMap.setPositionType(xO,yO,0);
-                            removeCreature(creatureAttacking);
+                            creatureAttacking.beDestroyed();
 
                             return true;
                         }
@@ -550,6 +546,13 @@ public class TWDGameManager {
     //xO, yO é uma origem
     //xD, yD é o destino
     public boolean move(int xO, int yO, int xD, int yD) {
+        System.out.println("Get Map Id Inicial == " + gameMap.getMapId(xO,yO) );
+        System.out.println("Get Map Id Final == " + gameMap.getMapId(xD,yD) );
+
+        if ( gameMap.getMapId(xD,yD) < 0 ) {
+            System.out.println("Equipment Info == " + getEquipmentInfo(gameMap.getMapId(xD,yD) ) );
+        }
+
         Creature creatureFound = null;
 
         //Não conseguimos mover para (ou atacar) um cão!
@@ -579,17 +582,19 @@ public class TWDGameManager {
             return false;
         }
 
-        //Move creature onto a creature, attacking eachother
-        if ( gameMap.getMapId(xO,yO) == 1 && gameMap.getMapId(xD, yD) == 1 ) {
-            return attack(xO,yO,xD,yD);
-        }
-
         //Os idosos humanos não se conseguem mover á noite!
         if (creatureFound instanceof IdosoHumano) {
             if ( !isDay() ) {
                 return false;
             }
         }
+
+        //Move creature onto a creature, attacking eachother
+        if ( gameMap.getMapId(xO,yO) == 1 && gameMap.getMapId(xD, yD) == 1 ) {
+            return attack(xO,yO,xD,yD);
+        }
+
+
 
         //verifica se tamos a tentar mover para cima de uma criatura
         if ( gameMap.getMapId(xD,yD) == 1) {
@@ -634,17 +639,19 @@ public class TWDGameManager {
             return false;
         }
 
-        //Move creature onto a creature, attacking eachother
-        if ( gameMap.getMapId(xO,yO) == 1 && gameMap.getMapId(xD, yD) == 1 ) {
-            return attackZombie(xO,yO,xD,yD);
-        }
-
         //Os vampiros só conseguem mover-se á noite! (Se for dia não se consegue mover)
         if ( zombieFound instanceof VampiroZombie ) {
             if ( isDay() ) {
                 return false;
             }
         }
+
+        //Move creature onto a creature, attacking eachother
+        if ( gameMap.getMapId(xO,yO) == 1 && gameMap.getMapId(xD, yD) == 1 ) {
+            return attackZombie(xO,yO,xD,yD);
+        }
+
+
 
         //verifica se tamos a tentar mover para cima de uma criatura
         if ( gameMap.getMapId(xD,yD) == 1) {
@@ -1008,6 +1015,9 @@ public class TWDGameManager {
                 if ( ((Humano) creature).getInsideSafeHaven() ) {
                     continue;
                 }
+                if ( creature.getHasDied() ) {
+                    continue;
+                }
 
                 numHumans++;
             }
@@ -1020,6 +1030,10 @@ public class TWDGameManager {
         int numZombies = 0;
         for (Creature creature: creatures) {
             if (creature instanceof Zombie) {
+                if ( creature.getHasDied() ) {
+                    continue;
+                }
+
                 numZombies++;
             }
         }
@@ -1035,18 +1049,30 @@ public class TWDGameManager {
     public List<String> getGameResults() {
         List<String> gameResults = new ArrayList<>();
         String text = "Nr. de turnos terminados:";
-        gameResults.add( text );
+        gameResults.add(text);
         text = "" + numberOfTurnsTotal ;
-        gameResults.add( text );
-        gameResults.add(" ");
+        gameResults.add(text);
+        gameResults.add("");
+
+        text = "Ainda pelo bairro:";
+        gameResults.add(text);
+        gameResults.add("");
 
         text = "OS VIVOS";
         gameResults.add( text );
         for ( Creature creature: creatures ) {
-            if ( creature instanceof Zombie || creature instanceof Cao ) {
+            if ( creature instanceof Zombie ) {
                 continue;   //Se estivermos a ver um zombie ou um cao
             }
 
+            if ( creature.getHasDied() ) {
+                continue;
+            }
+            if ( creature instanceof Humano ) {
+                if ( ((Humano) creature).getInsideSafeHaven() ) {
+                    continue;
+                }
+            }
             text = "" + creature.getId() + " " + creature.getNome();
             gameResults.add(text);
         }
@@ -1055,12 +1081,63 @@ public class TWDGameManager {
         text = "OS OUTROS";
         gameResults.add( text );
         for ( Creature creature: creatures ) {
-            if ( creature instanceof Humano || creature instanceof Cao ) {
-                continue;   //Se estivermos a ver um humano ou um cao
+            if ( creature instanceof Humano || creature instanceof Animal ) {
+                continue;   //Se estivermos a ver um humano ou um animal vivo
             }
 
+            if ( creature.getHasDied() ) {
+                continue;
+            }
             text = creature.getId() + " " + creature.getNome();
             gameResults.add(text);
+        }
+        gameResults.add("");
+
+        text = "Num safe haven:";
+        gameResults.add(text);
+        gameResults.add("");
+
+        text = "OS VIVOS";
+        gameResults.add( text );
+        for ( Creature creature: creatures ) {
+            if ( creature instanceof Humano ) {
+                if ( ((Humano) creature).getInsideSafeHaven() ) {
+                    text = "" + creature.getId() + " " + creature.getNome();
+                    gameResults.add(text);
+                }
+            }
+        }
+        gameResults.add("");
+
+        text = "Envenenados / Destruidos";
+        gameResults.add(text);
+        gameResults.add("");
+
+        text = "OS VIVOS";
+        gameResults.add( text );
+        for ( Creature creature: creatures ) {
+            if ( creature instanceof Zombie ) {
+                  //Se estivermos a ver um zombie ou um cao
+            }
+
+            if ( creature.getHasDied() ) {
+                text = "" + creature.getId() + " " + creature.getNome();
+                gameResults.add(text);
+            }
+        }
+        gameResults.add( " " );
+
+        text = "OS OUTROS";
+        gameResults.add( text );
+        for ( Creature creature: creatures ) {
+            if ( creature instanceof Humano || creature instanceof Animal ) {
+                continue;   //Se estivermos a ver um humano ou um animal vivo
+            }
+
+            if ( creature.getHasDied() ) {
+                text = creature.getId() + " " + creature.getNome();
+                gameResults.add(text);
+            }
         }
 
         return gameResults;

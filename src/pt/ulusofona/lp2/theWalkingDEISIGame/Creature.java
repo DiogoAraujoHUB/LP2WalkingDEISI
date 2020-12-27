@@ -13,6 +13,7 @@ public abstract class Creature {
     protected int deslocamentoMaximo;
 
     protected boolean ableToMoveFreely;
+    protected boolean hasDied;
 
     public Creature(int id, String nome, int x, int y) {
         this.id = id;
@@ -21,6 +22,16 @@ public abstract class Creature {
         this.y = y;
 
         this.numEquipamentos = 0;
+
+        this.hasDied = false;
+    }
+
+    public boolean getHasDied() {
+        return this.hasDied;
+    }
+
+    public void beDestroyed() {
+        this.hasDied = true;
     }
 
     public int getId() {

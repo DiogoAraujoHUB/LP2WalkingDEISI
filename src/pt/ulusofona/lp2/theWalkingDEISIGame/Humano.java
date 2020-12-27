@@ -5,11 +5,11 @@ import pt.ulusofona.lp2.theWalkingDEISIGame.classesEquipamentos.*;
 
 public abstract class Humano extends Creature {
 
-    private Equipamento equipamentoApanhado;
+    protected Equipamento equipamentoApanhado;
 
-    private boolean insideSafeHaven;
-    private boolean envenenado;
-    private int turnosRestantes;
+    protected boolean insideSafeHaven;
+    protected boolean envenenado;
+    protected int turnosRestantes;
 
     public Humano(int id, String nome, int x, int y) {
         super(id, nome, x, y);
