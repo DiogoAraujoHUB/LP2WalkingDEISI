@@ -1050,7 +1050,6 @@ public class TWDGameManager {
 
         text = "Ainda pelo bairro:";
         gameResults.add(text);
-        gameResults.add("");
 
         text = "OS VIVOS";
         gameResults.add( text );
@@ -1089,7 +1088,6 @@ public class TWDGameManager {
 
         text = "Num safe haven:";
         gameResults.add(text);
-        gameResults.add("");
 
         text = "OS VIVOS";
         gameResults.add( text );
@@ -1105,13 +1103,13 @@ public class TWDGameManager {
 
         text = "Envenenados / Destruidos";
         gameResults.add(text);
-        gameResults.add("");
 
         text = "OS VIVOS";
         gameResults.add( text );
         for ( Creature creature: creatures ) {
+            //Não queremos ver os zombies
             if ( creature instanceof Zombie ) {
-                  //Se estivermos a ver um zombie ou um cao
+                  continue;
             }
 
             if ( creature.getHasDied() ) {
@@ -1502,9 +1500,12 @@ public class TWDGameManager {
         popCulture[0] = "Resident Evil";
         popCulture[1] = "The Evil Dead";
         popCulture[2] = "The Night Eats the World";
-        popCulture[3] = "";
+        popCulture[3] = "Gremlins";
         popCulture[4] = "";
 
         return popCulture;
     }
 }
+
+
+
