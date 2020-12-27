@@ -262,6 +262,11 @@ public class TWDGameManager {
     public boolean createCreatureWithParameters(int id, int typeID, String name, int spawnX, int spawnY) {
         Creature creatureFound = null;
 
+        //Making sure the last character in a name is a space
+        if ( !Character.isWhitespace(name.charAt(name.length() - 1) ) ) {
+            name += " ";
+        }
+
         switch ( typeID ) {
             case 0: //Criança Zombie
                 creatureFound = new CriancaZombie(id, name, spawnX, spawnY);
