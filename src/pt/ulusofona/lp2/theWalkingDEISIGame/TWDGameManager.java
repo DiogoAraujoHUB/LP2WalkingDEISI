@@ -551,8 +551,8 @@ public class TWDGameManager {
 
             //Como um humano foi convertido, então o número de turnos volta a zero
             //Não tenho a certeza se sou suposto o numberOfTurns = 0 antes ou depois do incrementa tempo
-            numberOfTurns = 0;
             incrementaTempo();
+            numberOfTurns = 0;
             return true;
         }
 
@@ -1149,6 +1149,8 @@ public class TWDGameManager {
     }
 
     public int getEquipmentId(int creatureId) {
+        System.out.println("Creature Id == " + creatureId);
+
         if ( creatures == null || creatures.size() == 0 ) {
             return 0;
         }
@@ -1159,8 +1161,7 @@ public class TWDGameManager {
             //Encontramos o id que procuravamos
             if ( creature.getId() == creatureId ) {
 
-                //Se for humano, então consegue aguentar uma arma
-                //Logo vamos verificar se a criatura é um humano
+                //Se for humano, então consegue aguentar um equipamento
                 if ( creature instanceof Humano ) {
                     Equipamento equipamentoHumano = ((Humano) creature).getEquipamentoApanhado();
 
@@ -1168,7 +1169,20 @@ public class TWDGameManager {
                     if ( equipamentoHumano == null ) {
                         return 0;
                     }
+
                     return equipamentoHumano.getId();
+                }
+
+                //Se for cão, então consegue aguentar um equipamento
+                if ( creature instanceof Cao) {
+                    Equipamento equipamentoCao = ((Cao) creature).getEquipamentoApanhado();
+
+                    //Vamos verificar se o humano tem equipamento
+                    if ( equipamentoCao == null ) {
+                        return 0;
+                    }
+
+                    return equipamentoCao.getId();
                 }
             }
         }

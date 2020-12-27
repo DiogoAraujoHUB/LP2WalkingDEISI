@@ -47,6 +47,10 @@ public class Cao extends Animal {
         }
     }
 
+    public Equipamento getEquipamentoApanhado() {
+        return this.equipamentoApanhado;
+    }
+
     public String getImagePNG() {
         return "Cão.png";
     }
