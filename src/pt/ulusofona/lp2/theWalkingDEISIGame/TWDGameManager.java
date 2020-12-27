@@ -1149,8 +1149,6 @@ public class TWDGameManager {
     }
 
     public int getEquipmentId(int creatureId) {
-        System.out.println("Creature Id == " + creatureId);
-
         if ( creatures == null || creatures.size() == 0 ) {
             return 0;
         }
@@ -1164,6 +1162,7 @@ public class TWDGameManager {
                 //Se for humano, então consegue aguentar um equipamento
                 if ( creature instanceof Humano ) {
                     Equipamento equipamentoHumano = ((Humano) creature).getEquipamentoApanhado();
+                    //System.out.println("Equipamento == " + equipamentoHumano );
 
                     //Vamos verificar se o humano tem equipamento
                     if ( equipamentoHumano == null ) {
