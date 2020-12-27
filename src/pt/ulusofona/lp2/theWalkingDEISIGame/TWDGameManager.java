@@ -610,6 +610,8 @@ public class TWDGameManager {
             return false;
         }
 
+        //System.out.println("Id Equipment == " + getEquipmentId(creatureFound.getId()) );
+
         //move normalmente
         creatureFound.move(gameMap, xD, yD);
         incrementaTempo();
@@ -1042,7 +1044,7 @@ public class TWDGameManager {
         List<String> gameResults = new ArrayList<>();
         String text = "Nr. de turnos terminados:";
         gameResults.add(text);
-        text = "" + numberOfTurnsTotal ;
+        text = "" + numberOfTurnsTotal;
         gameResults.add(text);
         gameResults.add("");
 
@@ -1080,7 +1082,7 @@ public class TWDGameManager {
                 continue;
             }
 
-            text = creature.getId() + " (antigamente conhecido como" + creature.getNome() + ")";
+            text = creature.getId() + " (antigamente conhecido como " + creature.getNome().trim() + ")";
             gameResults.add(text);
         }
         gameResults.add("");
@@ -1127,7 +1129,7 @@ public class TWDGameManager {
             }
 
             if ( creature.getHasDied() ) {
-                text = creature.getId() + " (antigamente conhecido como" + creature.getNome() + ")";
+                text = creature.getId() + " (antigamente conhecido como " + creature.getNome().trim() + ")";
                 gameResults.add(text);
             }
         }
