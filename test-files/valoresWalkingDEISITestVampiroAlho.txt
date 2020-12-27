@@ -1,0 +1,9 @@
+7 7
+10
+2
+1 : 5 : Freddie M. : 1 : 1
+2 : 4 : Melania Vamp : 2 : 2
+3 : 3 : Substitui : 4 : 4
+1
+-1 : 5 : 0 : 0
+0

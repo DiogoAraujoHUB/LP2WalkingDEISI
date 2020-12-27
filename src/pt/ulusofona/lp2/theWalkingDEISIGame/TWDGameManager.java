@@ -579,16 +579,16 @@ public class TWDGameManager {
             return false;
         }
 
-        //Os idosos não se conseguem mover á noite!
+        //Move creature onto a creature, attacking eachother
+        if ( gameMap.getMapId(xO,yO) == 1 && gameMap.getMapId(xD, yD) == 1 ) {
+            return attack(xO,yO,xD,yD);
+        }
+
+        //Os idosos humanos não se conseguem mover á noite!
         if (creatureFound instanceof IdosoHumano) {
             if ( !isDay() ) {
                 return false;
             }
-        }
-
-        //Move creature onto a creature, attacking eachother
-        if ( gameMap.getMapId(xO,yO) == 1 && gameMap.getMapId(xD, yD) == 1 ) {
-            return attack(xO,yO,xD,yD);
         }
 
         //verifica se tamos a tentar mover para cima de uma criatura
@@ -634,16 +634,16 @@ public class TWDGameManager {
             return false;
         }
 
+        //Move creature onto a creature, attacking eachother
+        if ( gameMap.getMapId(xO,yO) == 1 && gameMap.getMapId(xD, yD) == 1 ) {
+            return attackZombie(xO,yO,xD,yD);
+        }
+
         //Os vampiros só conseguem mover-se á noite! (Se for dia não se consegue mover)
         if ( zombieFound instanceof VampiroZombie ) {
             if ( isDay() ) {
                 return false;
             }
-        }
-
-        //Move creature onto a creature, attacking eachother
-        if ( gameMap.getMapId(xO,yO) == 1 && gameMap.getMapId(xD, yD) == 1 ) {
-            return attackZombie(xO,yO,xD,yD);
         }
 
         //verifica se tamos a tentar mover para cima de uma criatura
