@@ -89,7 +89,8 @@ public abstract class Humano extends Creature {
     }
 
     public boolean attack(Mapa map, Creature creatureAttacked, int xD, int yD) {
-        //Vamos ver se isto é uma criança humana
+
+        //Vamos ver se estamos a atacar com uma criança humana com uma espada
         if ( map.getPosition(x,y).getCreature() instanceof CriancaHumano ) {
             if (equipamentoApanhado instanceof EspadaHattoriHanzo) {
                 if (creatureAttacked instanceof CriancaZombie) {

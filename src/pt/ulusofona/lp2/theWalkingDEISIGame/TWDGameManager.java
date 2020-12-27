@@ -551,13 +551,6 @@ public class TWDGameManager {
     //xO, yO é uma origem
     //xD, yD é o destino
     public boolean move(int xO, int yO, int xD, int yD) {
-        System.out.println("Get Map Id Inicial == " + gameMap.getMapId(xO,yO) );
-        System.out.println("Get Map Id Final == " + gameMap.getMapId(xD,yD) );
-
-        if ( gameMap.getMapId(xD,yD) < 0 ) {
-            System.out.println("Equipment Info == " + getEquipmentInfo(gameMap.getMapId(xD,yD) ) );
-        }
-
         Creature creatureFound = null;
 
         //Não conseguimos mover para (ou atacar) um cão!
@@ -599,8 +592,6 @@ public class TWDGameManager {
             return attack(xO,yO,xD,yD);
         }
 
-
-
         //verifica se tamos a tentar mover para cima de uma criatura
         if ( gameMap.getMapId(xD,yD) == 1) {
             return false;
@@ -610,10 +601,6 @@ public class TWDGameManager {
         //Verificar se o humano está a andar para um safe haven
         if ( gameMap.getPosition(xD, yD).getSafeHaven() != null ) {
             if ( creatureFound instanceof Humano ) {
-                //Remover o equipamento da lista se o humano tiver equipamento
-                if ( ((Humano) creatureFound).getEquipamentoApanhado() != null ) {
-                    removeEquipment(((Humano) creatureFound).getEquipamentoApanhado());
-                }
 
                 gameMap.getPosition(xD, yD).getSafeHaven().moveIntoSafeHaven(gameMap, creatureFound);
                 incrementaTempo();
@@ -1149,13 +1136,15 @@ public class TWDGameManager {
         return gameResults;
     }
 
-    public int getEquipmentId( int creatureId ) {
+    public int getEquipmentId(int creatureId) {
         if ( creatures == null || creatures.size() == 0 ) {
             return 0;
         }
 
         //Percorrer a lista de criaturas á procura da criatura que é a que procuramos
         for ( Creature creature : creatures ) {
+
+            //Encontramos o id que procuravamos
             if ( creature.getId() == creatureId ) {
 
                 //Se for humano, então consegue aguentar uma arma
@@ -1169,8 +1158,6 @@ public class TWDGameManager {
                     }
                     return equipamentoHumano.getId();
                 }
-
-                return 0;
             }
         }
 
