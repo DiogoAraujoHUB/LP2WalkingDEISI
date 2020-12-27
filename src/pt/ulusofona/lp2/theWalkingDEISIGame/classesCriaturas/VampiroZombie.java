@@ -14,7 +14,7 @@ public class VampiroZombie extends Zombie {
     }
 
     public String toString() {
-        String texto = id + " | Zombie Vampiro | Os Outros |" + nome + "";
+        String texto = id + " | Zombie Vampiro | Os Outros |" + nome + " ";
         texto += numEquipamentos + " @ (" + x + ", " + y + ")";
 
         return texto;

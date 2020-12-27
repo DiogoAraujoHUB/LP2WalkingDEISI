@@ -1139,6 +1139,7 @@ public class TWDGameManager {
                 gameResults.add(text);
             }
         }
+        gameResults.add("");
 
         return gameResults;
     }

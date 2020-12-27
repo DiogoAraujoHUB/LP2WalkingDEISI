@@ -14,7 +14,7 @@ public class MilitarZombie extends Zombie {
     }
 
     public String toString() {
-        String texto = id + " | Militar (Zombie) | Os Outros |" + nome + "";
+        String texto = id + " | Militar (Zombie) | Os Outros |" + nome + " ";
         texto += numEquipamentos + " @ (" + x + ", " + y + ")";
 
         return texto;
