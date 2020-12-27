@@ -592,12 +592,14 @@ public class TWDGameManager {
             return false;
         }
 
+        /*
         //Os idosos humanos não se conseguem mover á noite!
         if (creatureFound instanceof IdosoHumano) {
             if ( !isDay() ) {
                 return false;
             }
         }
+        */
 
         //Move creature onto a creature, attacking eachother
         if ( gameMap.getMapId(xO,yO) == 1 && gameMap.getMapId(xD, yD) == 1 ) {
@@ -1162,7 +1164,6 @@ public class TWDGameManager {
                 //Se for humano, então consegue aguentar um equipamento
                 if ( creature instanceof Humano ) {
                     Equipamento equipamentoHumano = ((Humano) creature).getEquipamentoApanhado();
-                    //System.out.println("Equipamento == " + equipamentoHumano );
 
                     //Vamos verificar se o humano tem equipamento
                     if ( equipamentoHumano == null ) {
