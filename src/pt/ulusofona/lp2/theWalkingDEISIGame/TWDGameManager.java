@@ -1076,11 +1076,11 @@ public class TWDGameManager {
             if ( creature instanceof Humano || creature instanceof Animal ) {
                 continue;   //Se estivermos a ver um humano ou um animal vivo
             }
-
             if ( creature.getHasDied() ) {
                 continue;
             }
-            text = creature.getId() + " " + creature.getNome();
+
+            text = creature.getId() + " (antigamente conhecido como" + creature.getNome() + ")";
             gameResults.add(text);
         }
         gameResults.add("");
@@ -1127,7 +1127,7 @@ public class TWDGameManager {
             }
 
             if ( creature.getHasDied() ) {
-                text = creature.getId() + " " + creature.getNome();
+                text = creature.getId() + " (antigamente conhecido como" + creature.getNome() + ")";
                 gameResults.add(text);
             }
         }
