@@ -1126,7 +1126,7 @@ public class TWDGameManager {
         }
         gameResults.add("");
 
-        text = "Envenenados / Destruidos";
+        text = "Envenenados / Destruídos";
         gameResults.add(text);
 
         text = "OS VIVOS";
