@@ -52,7 +52,11 @@ public abstract class Zombie extends Creature {
             zombieMade = new AdultoZombie(id, nome, x, y);
         }
 
+        //Primeiro retiramos o humano que estava la anteriormente
         map.getPosition(xD,yD).setCreature(null);
+        map.setPositionType(xD,yD, 0);
+
+        //Depois adicionamos o zombie que o humano se tornou em
         map.getPosition(xD,yD).setCreature(zombieMade);
         map.setPositionType(xD,yD,1);
         return zombieMade;

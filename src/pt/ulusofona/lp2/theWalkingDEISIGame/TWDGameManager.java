@@ -558,8 +558,8 @@ public class TWDGameManager {
 
             //Vamos atacar com o zombie e converter o humano
             Creature zombieMade = ((Zombie) creatureAttacking).convert(gameMap, creatureBeingAttacked, xD, yD);
-            creatures.add(zombieMade);
             removeCreature(creatureBeingAttacked);
+            creatures.add(zombieMade);
 
             //Como um humano foi convertido, então o número de turnos volta a zero
             //Não tenho a certeza se sou suposto o numberOfTurns = 0 antes ou depois do incrementa tempo

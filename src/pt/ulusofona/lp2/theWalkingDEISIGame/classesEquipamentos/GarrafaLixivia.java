@@ -7,6 +7,6 @@ public class GarrafaLixivia extends Defensivo {
     public GarrafaLixivia( int id, int tipo, int x, int y) {
         super(id, tipo, x, y);
 
-        this.numUses = 2;
+        this.numUses = 3;
     }
 }
