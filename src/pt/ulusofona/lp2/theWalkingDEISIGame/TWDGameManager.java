@@ -72,8 +72,8 @@ public class TWDGameManager {
                         case 1:
                             String[] splitNumLinesColumns = lineRead.split(" ", 2);
 
-                            gameMap.setSizeX( Integer.parseInt( splitNumLinesColumns[0].trim() ) + 1 );
-                            gameMap.setSizeY( Integer.parseInt( splitNumLinesColumns[1].trim() ) + 1 );
+                            gameMap.setSizeX( Integer.parseInt( splitNumLinesColumns[0].trim() ) + 3 );
+                            gameMap.setSizeY( Integer.parseInt( splitNumLinesColumns[1].trim() ) + 3 );
                             gameMap.createMap();
                             break;
 
@@ -347,8 +347,8 @@ public class TWDGameManager {
             return null;
         }
 
-        worldSize[0] = gameMap.getSizeX() - 1;
-        worldSize[1] = gameMap.getSizeY() - 1;
+        worldSize[0] = gameMap.getSizeX() - 3;
+        worldSize[1] = gameMap.getSizeY() - 3;
         return worldSize;
     }
 
