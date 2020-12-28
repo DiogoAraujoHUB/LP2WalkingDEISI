@@ -31,10 +31,10 @@ public class Mapa {
     }
 
     public void createMap() {
-        map = new MapPosition[sizeX][sizeY];
+        map = new MapPosition[sizeX + 1][sizeY + 1];
 
-        for ( int posX = 0; posX < sizeX; posX++ ) {
-            for ( int posY = 0; posY < sizeY; posY++ ) {
+        for ( int posX = 0; posX <= sizeX; posX++ ) {
+            for ( int posY = 0; posY <= sizeY; posY++ ) {
                 map[posX][posY] = new MapPosition();
             }
         }
