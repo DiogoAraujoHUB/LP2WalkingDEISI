@@ -347,8 +347,10 @@ public class TWDGameManager {
             return null;
         }
 
-        worldSize[0] = gameMap.getSizeX() - 1;
-        worldSize[1] = gameMap.getSizeY() - 1;
+        worldSize[0] = gameMap.getSizeX();
+        worldSize[1] = gameMap.getSizeY();
+        //worldSize[0] = gameMap.getSizeX() - 1;
+        //worldSize[1] = gameMap.getSizeY() - 1;
         return worldSize;
     }
 
