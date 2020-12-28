@@ -1399,6 +1399,7 @@ public class TWDGameManager {
         initialTeamId = 0;
         currentTeamId = 0;
         numberOfTurns = 0;
+        numberOfTurnsTotal = 0;
         dayNightCycle = 0;
 
         int numFileLine = 1;
@@ -1407,7 +1408,7 @@ public class TWDGameManager {
         int numSafeHavens = 0;
 
         try {
-            BufferedReader reader = new BufferedReader( new FileReader(fich) );
+            BufferedReader reader = new BufferedReader(new FileReader(fich));
             String lineRead = null;
 
             do {
@@ -1421,8 +1422,8 @@ public class TWDGameManager {
                         case 1:
                             String[] splitNumLinesColumns = lineRead.split(" ", 2);
 
-                            gameMap.setSizeX( Integer.parseInt( splitNumLinesColumns[0].trim() ) + 1 );
-                            gameMap.setSizeY( Integer.parseInt( splitNumLinesColumns[1].trim() ) + 1 );
+                            gameMap.setSizeX( Integer.parseInt( splitNumLinesColumns[0].trim() ) );
+                            gameMap.setSizeY( Integer.parseInt( splitNumLinesColumns[1].trim() ) );
                             gameMap.createMap();
                             break;
 
@@ -1437,6 +1438,10 @@ public class TWDGameManager {
 
                         case 3:
                             numCreatures = Integer.parseInt( lineRead.trim() );
+                            //Skip over creatures
+                            if ( numCreatures == 0 ) {
+                                numFileLine = 4;
+                            }
                             break;
 
                         case 4:
@@ -1466,6 +1471,10 @@ public class TWDGameManager {
 
                         case 5:
                             numEquipment = Integer.parseInt( lineRead.trim() );
+                            //Skip over equipment
+                            if ( numEquipment == 0 ) {
+                                numFileLine = 6;
+                            }
                             break;
 
                         case 6:
@@ -1493,6 +1502,10 @@ public class TWDGameManager {
 
                         case 7:
                             numSafeHavens = Integer.parseInt( lineRead );
+                            //Skip over safe havens
+                            if ( numSafeHavens == 0 ) {
+                                numFileLine = 8;
+                            }
                             break;
 
                         case 8:
@@ -1532,6 +1545,7 @@ public class TWDGameManager {
             return false;
         }
 
+        //Adiciona o que fomos buscar ao ficheiro para o mapa
         gameMap.addCreatures( creatures );
         gameMap.addEquipment( equipment );
         gameMap.addSafeHavens( safeHavens );
