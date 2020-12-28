@@ -1138,7 +1138,7 @@ public class TWDGameManager {
                 gameResults.add(text);
             }
         }
-        gameResults.add( " " );
+        gameResults.add("");
 
         text = "OS OUTROS";
         gameResults.add( text );
