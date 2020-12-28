@@ -1087,7 +1087,7 @@ public class TWDGameManager {
                     continue;
                 }
             }
-            text = "" + creature.getId() + "" + creature.getNome();
+            text = "" + creature.getId() + " " + creature.getNome().trim();
             gameResults.add(text);
         }
         gameResults.add("");
@@ -1115,7 +1115,7 @@ public class TWDGameManager {
         for ( Creature creature: creatures ) {
             if ( creature instanceof Humano ) {
                 if ( ((Humano) creature).getInsideSafeHaven() ) {
-                    text = "" + creature.getId() + "" + creature.getNome();
+                    text = "" + creature.getId() + " " + creature.getNome().trim();
                     gameResults.add(text);
                 }
             }
@@ -1134,7 +1134,7 @@ public class TWDGameManager {
             }
 
             if ( creature.getHasDied() ) {
-                text = "" + creature.getId() + "" + creature.getNome();
+                text = "" + creature.getId() + " " + creature.getNome().trim();
                 gameResults.add(text);
             }
         }
