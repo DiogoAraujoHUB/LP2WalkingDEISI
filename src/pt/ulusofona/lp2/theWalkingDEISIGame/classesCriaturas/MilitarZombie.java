@@ -11,6 +11,7 @@ public class MilitarZombie extends Zombie {
         this.deslocamentoMaximo = 3;
 
         this.ableToMoveFreely = true;
+        this.ableToMoveLinearly = true;
     }
 
     public String toString() {

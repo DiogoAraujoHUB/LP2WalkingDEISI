@@ -592,14 +592,12 @@ public class TWDGameManager {
             return false;
         }
 
-        /*
         //Os idosos humanos não se conseguem mover á noite!
         if (creatureFound instanceof IdosoHumano) {
             if ( !isDay() ) {
                 return false;
             }
         }
-        */
 
         //Move creature onto a creature, attacking eachother
         if ( gameMap.getMapId(xO,yO) == 1 && gameMap.getMapId(xD, yD) == 1 ) {
@@ -719,24 +717,28 @@ public class TWDGameManager {
     //verifica se tenta mover mais que conseguimos
     public boolean verificaMovimento(int deslocamento, int xO, int yO, int xD, int yD, Creature creatureMoved) {
         for ( int pos = 1; pos <= deslocamento; pos++ ) {
-            //Direita
-            if ( xO + pos == xD && yO == yD ) {
-                return verificaPassagem(xO, yO, pos, true, 1);
-            }
-            //Esquerda
-            if( xO - pos == xD && yO == yD ) {
-                return verificaPassagem(xO, yO, pos, true, -1);
-            }
-            //Para baixo
-            if ( xO == xD && yO + pos == yD ) {
-                return verificaPassagem(xO, yO, pos, false, 1);
-            }
-            //Para cima
-            if ( xO == xD && yO - pos == yD ) {
-                return verificaPassagem(xO, yO, pos, false, -1);
+
+            //A criatura consegue-se mover nas 4 direções principais
+            if ( creatureMoved.getAbleToMoveLinearly() ) {
+                //Direita
+                if ( xO + pos == xD && yO == yD ) {
+                    return verificaPassagem(xO, yO, pos, true, 1);
+                }
+                //Esquerda
+                if( xO - pos == xD && yO == yD ) {
+                    return verificaPassagem(xO, yO, pos, true, -1);
+                }
+                //Para baixo
+                if ( xO == xD && yO + pos == yD ) {
+                    return verificaPassagem(xO, yO, pos, false, 1);
+                }
+                //Para cima
+                if ( xO == xD && yO - pos == yD ) {
+                    return verificaPassagem(xO, yO, pos, false, -1);
+                }
             }
 
-            //A criatura consegue mover-se mais do que só as direções cardinais
+            //A criatura consegue mover-se nas direções colatorais
             if ( creatureMoved.getAbleToMoveFreely() ) {
                 //Canto inferior direito
                 if ( xO + pos == xD && yO + pos == yD ) {

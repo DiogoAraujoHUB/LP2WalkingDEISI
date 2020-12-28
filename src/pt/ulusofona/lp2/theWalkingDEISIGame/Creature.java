@@ -12,6 +12,7 @@ public abstract class Creature {
     protected int numEquipamentos;
     protected int deslocamentoMaximo;
 
+    protected boolean ableToMoveLinearly;
     protected boolean ableToMoveFreely;
     protected boolean hasDied;
 
@@ -52,6 +53,10 @@ public abstract class Creature {
 
     public boolean getAbleToMoveFreely() {
         return this.ableToMoveFreely;
+    }
+
+    public boolean getAbleToMoveLinearly() {
+        return this.ableToMoveLinearly;
     }
 
     public String getNome() {

@@ -11,7 +11,8 @@ public class Cao extends Animal {
 
         this.deslocamentoMaximo = 2;
 
-        this.ableToMoveFreely = false;
+        this.ableToMoveFreely = true;
+        this.ableToMoveLinearly = false;
     }
 
     public void move(Mapa map, int destinoX, int destinoY) {

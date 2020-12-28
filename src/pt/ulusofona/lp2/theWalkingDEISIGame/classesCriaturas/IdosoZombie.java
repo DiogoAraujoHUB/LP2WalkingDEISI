@@ -11,6 +11,7 @@ public class IdosoZombie extends Zombie {
         this.deslocamentoMaximo = 1;
 
         this.ableToMoveFreely = false;
+        this.ableToMoveLinearly = true;
     }
 
     public String toString() {
