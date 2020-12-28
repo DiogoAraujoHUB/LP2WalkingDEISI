@@ -526,6 +526,18 @@ public class TWDGameManager {
 
                     //Como o humano tem um equipamento defensivo, vai se defender de o zombie
                     if (equipamentoApanhado instanceof Defensivo) {
+                        //Defesa através da garrafa de lixivia
+                        if (equipamentoApanhado instanceof GarrafaLixivia) {
+                            if ( ((Humano) creatureBeingAttacked).defendWithAttack(gameMap, creatureAttacking, xO, yO) ) {
+                                //Kill the zombie attacking
+                                gameMap.setPositionType(xO,yO,0);
+                                creatureAttacking.beDestroyed();
+
+                                incrementaTempo();
+                                return true;
+                            }
+                        }
+
                         if ( ((Humano) creatureBeingAttacked).defend(gameMap, creatureAttacking) ) {
                             incrementaTempo();
 

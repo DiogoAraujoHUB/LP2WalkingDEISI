@@ -45,7 +45,7 @@ public class Mapa {
             int xFound = creature.getX();
             int yFound = creature.getY();
 
-            //Já está uma creatura na posicão?
+            //Já está uma criatura na posicão?
             if ( map[xFound][yFound].getTipo() == 1 ) {
                 continue;
             }

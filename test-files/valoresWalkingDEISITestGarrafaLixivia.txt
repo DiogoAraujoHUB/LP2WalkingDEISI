@@ -1,8 +1,9 @@
 7 7
 10
-2
+3
 1 : 5 : Freddie M. : 0 : 1
 2 : 2 : Jackie Chan : 1 : 0
+3 : 2 : Magical Johnson : 2 : 0
 1
 -1 : 7 : 0 : 0
 1

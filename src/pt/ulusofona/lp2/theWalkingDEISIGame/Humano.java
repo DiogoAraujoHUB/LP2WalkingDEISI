@@ -189,6 +189,19 @@ public abstract class Humano extends Creature {
 
     //Same as attack, but without the move
     public boolean defendWithAttack(Mapa map, Creature creatureAttacked, int xD, int yD) {
+        //Ver se temos uma garrafa de lixivia para nos defendermos com
+        if (equipamentoApanhado instanceof GarrafaLixivia) {
+            //Já não conseguimos utilizar a garrafa pois está vazia!
+            if ( equipamentoApanhado.getNumUses() == 0 ) {
+                return false;
+            }
+
+            //Vamos usar um pouco da garrafa para nos defendermos do zombie
+            equipamentoApanhado.setNumUses(equipamentoApanhado.getNumUses() - 1);
+            map.getPosition(xD,yD).setCreature(null);
+            return true;
+        }
+
         //Vamos ver se isto é uma criança humana
         if ( map.getPosition(x,y).getCreature() instanceof CriancaHumano ) {
             if (equipamentoApanhado instanceof EspadaHattoriHanzo) {
