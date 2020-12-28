@@ -347,10 +347,8 @@ public class TWDGameManager {
             return null;
         }
 
-        worldSize[0] = gameMap.getSizeX();
-        worldSize[1] = gameMap.getSizeY();
-        //worldSize[0] = gameMap.getSizeX() - 1;
-        //worldSize[1] = gameMap.getSizeY() - 1;
+        worldSize[0] = gameMap.getSizeX() - 1;
+        worldSize[1] = gameMap.getSizeY() - 1;
         return worldSize;
     }
 
@@ -677,7 +675,10 @@ public class TWDGameManager {
         if ( gameMap.getPosition(xD, yD).getTipo() == -1 ) {
             //O zombie não se pode mover para cima de veneno!
             if ( gameMap.getPosition(xD,yD).getEquipamento() instanceof Veneno ) {
-                return false;
+                //O zombie so quer saber do veneno se ainda houver algum
+                if ( !((Veneno) gameMap.getPosition(xD,yD).getEquipamento()).getIsEmpty() ) {
+                    return false;
+                }
             }
 
             //Se o equipamento for uma cabeca de alho, um zombie vampiro não pode destruir!
@@ -1086,10 +1087,10 @@ public class TWDGameManager {
                     continue;
                 }
             }
-            text = "" + creature.getId() + " " + creature.getNome();
+            text = "" + creature.getId() + "" + creature.getNome();
             gameResults.add(text);
         }
-        gameResults.add( " " );
+        gameResults.add("");
 
         text = "OS OUTROS";
         gameResults.add( text );
@@ -1104,7 +1105,6 @@ public class TWDGameManager {
             text = creature.getId() + " (antigamente conhecido como " + creature.getNome().trim() + ")";
             gameResults.add(text);
         }
-        gameResults.add("");
 
         text = "Num safe haven:";
         gameResults.add(text);
@@ -1114,7 +1114,7 @@ public class TWDGameManager {
         for ( Creature creature: creatures ) {
             if ( creature instanceof Humano ) {
                 if ( ((Humano) creature).getInsideSafeHaven() ) {
-                    text = "" + creature.getId() + " " + creature.getNome();
+                    text = "" + creature.getId() + "" + creature.getNome();
                     gameResults.add(text);
                 }
             }
@@ -1133,7 +1133,7 @@ public class TWDGameManager {
             }
 
             if ( creature.getHasDied() ) {
-                text = "" + creature.getId() + " " + creature.getNome();
+                text = "" + creature.getId() + "" + creature.getNome();
                 gameResults.add(text);
             }
         }
