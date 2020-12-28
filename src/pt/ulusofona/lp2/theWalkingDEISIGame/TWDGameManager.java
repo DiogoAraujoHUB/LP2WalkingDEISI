@@ -1108,6 +1108,7 @@ public class TWDGameManager {
 
         text = "Num safe haven:";
         gameResults.add(text);
+        gameResults.add("");
 
         text = "OS VIVOS";
         gameResults.add( text );
