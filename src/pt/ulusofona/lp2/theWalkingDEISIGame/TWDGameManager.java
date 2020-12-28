@@ -104,6 +104,11 @@ public class TWDGameManager {
                                 int spawnX = Integer.parseInt( splitCreatures[3].trim() );
                                 int spawnY = Integer.parseInt( splitCreatures[4].trim() );
 
+                                //Making sure the characters stay inside the map
+                                if ( spawnX >= getWorldSize()[0] || spawnY >= getWorldSize()[1] ) {
+                                    continue;
+                                }
+
                                 if ( !createCreatureWithParameters(creatureID, typeID, creatureName, spawnX, spawnY) ) {
                                     return false;
                                 }
@@ -136,6 +141,11 @@ public class TWDGameManager {
                                 int spawnX = Integer.parseInt( splitEquipment[2].trim() );
                                 int spawnY = Integer.parseInt( splitEquipment[3].trim() );
 
+                                //Making sure the characters stay inside the map
+                                if ( spawnX >= getWorldSize()[0] || spawnY >= getWorldSize()[1] ) {
+                                    continue;
+                                }
+
                                 if ( !createEquipmentWithParameters(equipmentID, typeID, spawnX, spawnY) ) {
                                     return false;
                                 }
@@ -163,6 +173,11 @@ public class TWDGameManager {
                                 String[] splitSafeHaven = lineRead.split(":" );
                                 int spawnX = Integer.parseInt( splitSafeHaven[0].trim() );
                                 int spawnY = Integer.parseInt( splitSafeHaven[1].trim() );
+
+                                //Making sure the characters stay inside the map
+                                if ( spawnX >= getWorldSize()[0] || spawnY >= getWorldSize()[1] ) {
+                                    continue;
+                                }
 
                                 SafeHaven safeHavenDoor = new SafeHaven( spawnX, spawnY );
                                 safeHavens.add( safeHavenDoor );
@@ -1432,6 +1447,11 @@ public class TWDGameManager {
                                 int spawnX = Integer.parseInt( splitCreatures[3].trim() );
                                 int spawnY = Integer.parseInt( splitCreatures[4].trim() );
 
+                                //Making sure the characters stay inside the map
+                                if ( spawnX >= getWorldSize()[0] || spawnY >= getWorldSize()[1] ) {
+                                    continue;
+                                }
+
                                 if ( !createCreatureWithParameters(creatureID, typeID, creatureName, spawnX, spawnY) ) {
                                     return false;
                                 }
@@ -1460,6 +1480,11 @@ public class TWDGameManager {
                                 int spawnX = Integer.parseInt( splitEquipment[2].trim() );
                                 int spawnY = Integer.parseInt( splitEquipment[3].trim() );
 
+                                //Making sure the characters stay inside the map
+                                if ( spawnX >= getWorldSize()[0] || spawnY >= getWorldSize()[1] ) {
+                                    continue;
+                                }
+
                                 if ( !createEquipmentWithParameters(equipmentID, typeID, spawnX, spawnY) ) {
                                     return false;
                                 }
@@ -1484,6 +1509,11 @@ public class TWDGameManager {
                                 int spawnX = Integer.parseInt( splitSafeHaven[0].trim() );
                                 int spawnY = Integer.parseInt( splitSafeHaven[1].trim() );
 
+                                //Making sure the characters stay inside the map
+                                if ( spawnX >= getWorldSize()[0] || spawnY >= getWorldSize()[1] ) {
+                                    continue;
+                                }
+
                                 SafeHaven safeHavenDoor = new SafeHaven( spawnX, spawnY );
                                 safeHavens.add( safeHavenDoor );
 
@@ -1496,10 +1526,6 @@ public class TWDGameManager {
                                     return false;
                                 }
                             }
-
-                            gameMap.addCreatures( creatures );
-                            gameMap.addEquipment( equipment );
-                            gameMap.addSafeHavens( safeHavens );
                             break;
 
                         default:
@@ -1519,6 +1545,9 @@ public class TWDGameManager {
             return false;
         }
 
+        gameMap.addCreatures( creatures );
+        gameMap.addEquipment( equipment );
+        gameMap.addSafeHavens( safeHavens );
         return true;
     }
 
