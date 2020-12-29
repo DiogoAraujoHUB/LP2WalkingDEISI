@@ -385,6 +385,7 @@ public class TWDGameManager {
     }
 
     //O safe haven for null indica que não é uma porta
+    //Ver se esta maneira passou o teste 10
     public boolean isDoorToSafeHaven(int x, int y) {
         return (gameMap.getPosition(x, y).getSafeHaven() != null);
     }
