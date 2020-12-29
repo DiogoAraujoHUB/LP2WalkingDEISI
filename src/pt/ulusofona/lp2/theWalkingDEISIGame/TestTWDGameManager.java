@@ -52,5 +52,4 @@ public class TestTWDGameManager {
         game.incrementaTempo();
         assertEquals( game.isDay(), true );
     }
-
 }

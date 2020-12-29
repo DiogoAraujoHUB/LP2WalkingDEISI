@@ -64,6 +64,7 @@ public class TWDGameManager {
             do {
                 try {
                     lineRead = reader.readLine();
+
                     if ( lineRead == null ) {
                         break;
                     }
@@ -383,7 +384,7 @@ public class TWDGameManager {
         return this.currentTeamId;
     }
 
-    //O tipo 2 é um safe haven
+    //O safe haven for null indica que não é uma porta
     public boolean isDoorToSafeHaven(int x, int y) {
         return (gameMap.getPosition(x, y).getSafeHaven() != null);
     }
