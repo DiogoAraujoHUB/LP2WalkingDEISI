@@ -534,7 +534,7 @@ public class TWDGameManager {
 
                     //Como o humano tem um equipamento defensivo, vai se defender de o zombie
                     if (equipamentoApanhado instanceof Defensivo) {
-                        //Defesa através do veneno (o veneno não defende, a não ser que seja bebido)
+                        /*
                         if ( equipamentoApanhado instanceof Veneno || equipamentoApanhado instanceof Antidoto ) {
                             Creature zombieMade = ((Zombie) creatureAttacking).convert(gameMap, creatureBeingAttacked, xD, yD);
                             removeCreature(creatureBeingAttacked);
@@ -546,6 +546,7 @@ public class TWDGameManager {
                             numberOfTurns = 0;
                             return true;
                         }
+                         */
 
                         //Defesa através da garrafa de lixivia
                         if (equipamentoApanhado instanceof GarrafaLixivia) {
