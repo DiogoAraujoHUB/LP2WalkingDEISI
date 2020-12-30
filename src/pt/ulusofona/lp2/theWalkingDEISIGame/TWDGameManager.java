@@ -508,6 +508,12 @@ public class TWDGameManager {
 
             //Vamos verificar se o humano tem algum equipamento para se defender com
             if ( creatureBeingAttacked instanceof Humano ) {
+                //Um humano envenenado defende contra tudo
+                if ( ((Humano) creatureBeingAttacked).getEnvenenado() ) {
+                    incrementaTempo();
+
+                    return true;
+                }
 
                 //Vamos verificar se o humano tem um equipamento equipado!
                 Equipamento equipamentoApanhado = ((Humano) creatureBeingAttacked).getEquipamentoApanhado();
@@ -528,6 +534,19 @@ public class TWDGameManager {
 
                     //Como o humano tem um equipamento defensivo, vai se defender de o zombie
                     if (equipamentoApanhado instanceof Defensivo) {
+                        //Defesa através do veneno (o veneno não defense, a não ser que seja bebido)
+                        if ( equipamentoApanhado instanceof Veneno ) {
+                            Creature zombieMade = ((Zombie) creatureAttacking).convert(gameMap, creatureBeingAttacked, xD, yD);
+                            removeCreature(creatureBeingAttacked);
+                            creatures.add(zombieMade);
+
+                            //Como um humano foi convertido, então o número de turnos volta a zero
+                            //Não tenho a certeza se sou suposto o numberOfTurns = 0 antes ou depois do incrementa tempo
+                            incrementaTempo();
+                            numberOfTurns = 0;
+                            return true;
+                        }
+
                         //Defesa através da garrafa de lixivia
                         if (equipamentoApanhado instanceof GarrafaLixivia) {
                             if ( ((Humano) creatureBeingAttacked).defendWithAttack(gameMap, creatureAttacking, xO, yO) ) {
@@ -636,7 +655,52 @@ public class TWDGameManager {
             return false;
         }
 
-        //System.out.println("Id Equipment == " + getEquipmentId(creatureFound.getId()) );
+        //Verificar se estamos a mover para um antidoto sem estar envenenado
+        if ( gameMap.getMapId(xD, yD) == -1 ) {
+            if ( gameMap.getPosition(xD,yD).getEquipamento() instanceof Antidoto ) {
+
+                //Se a criatura for um animal, então nao pode mover-se para o antidoto
+                //Pois não pode estar envenenada
+                if ( creatureFound instanceof Animal ) {
+                    return false;
+                }
+
+                //Se o humano não estiver envenenado, não pode apanhar o antidoto
+                if (  creatureFound instanceof Humano ) {
+                    if ( !((Humano) creatureFound).getEnvenenado() ) {
+                        return false;
+                    }
+
+                    //Se houver antidoto, ele vai beber
+                    if ( ((Antidoto) gameMap.getPosition(xD,yD).getEquipamento()).getIsFull() ) {
+                        ((Humano) creatureFound).beberAntidoto();
+                        ((Antidoto) gameMap.getPosition(xD,yD).getEquipamento()).beberAntidoto();
+                    }
+                }
+            }
+
+            //Vamos tentar apanhar um veneno
+            if ( gameMap.getPosition(xD,yD).getEquipamento() instanceof Veneno ) {
+                //Um animal não pode apanhar o veneno
+                if ( creatureFound instanceof Animal ) {
+                    return false;
+                }
+
+                //Se for um humano, então vamos tentar beber o veneno
+                if ( creatureFound instanceof Humano ) {
+                    //Já está envenenado, logo não pode apanhar o veneno
+                    if ( ((Humano) creatureFound).getEnvenenado() ) {
+                        return false;
+                    }
+
+                    //O humano vai ficar envenenado e vai esvaziar o veneno
+                    if ( ((Veneno) gameMap.getPosition(xD,yD).getEquipamento()).getIsFull() ) {
+                        ((Humano) creatureFound).beberVeneno();
+                        ((Veneno) gameMap.getPosition(xD,yD).getEquipamento()).beberVeneno();
+                    }
+                }
+            }
+        }
 
         //move normalmente
         creatureFound.move(gameMap, xD, yD);
@@ -689,8 +753,8 @@ public class TWDGameManager {
         if ( gameMap.getPosition(xD, yD).getTipo() == -1 ) {
             //O zombie não se pode mover para cima de veneno!
             if ( gameMap.getPosition(xD,yD).getEquipamento() instanceof Veneno ) {
-                //O zombie so quer saber do veneno se ainda houver algum
-                if ( !((Veneno) gameMap.getPosition(xD,yD).getEquipamento()).getIsEmpty() ) {
+                //O zombie so quer saber do veneno se ainda houver algum la dentro
+                if ( ((Veneno) gameMap.getPosition(xD,yD).getEquipamento()).getIsFull() ) {
                     return false;
                 }
             }
@@ -1008,12 +1072,31 @@ public class TWDGameManager {
 
         numberOfTurns++;
         numberOfTurnsTotal++;
+        incrementaTempoVeneno();
 
         if ( numberOfTurnsTotal % 2 == 0 ) {
             if ( dayNightCycle == 0 ) {
                 dayNightCycle = 1;
             } else {
                 dayNightCycle = 0;
+            }
+        }
+    }
+
+    //Vamos percorrer a lista de criaturas á procura de humanos que estejam envenenados
+    //Para reduzir o número de turnos restantes para eles viverem
+    public void incrementaTempoVeneno() {
+        for (Creature creature: creatures) {
+            if ( creature instanceof Humano ) {
+                if ( ((Humano) creature).getEnvenenado() ) {
+                    ((Humano) creature).decrementarTurnosRestantes();
+
+                    if ( ((Humano) creature).getTurnosRestantes() == 0 ) {
+                        creature.beDestroyed();
+                        ((Humano) creature).beberAntidoto();
+                        gameMap.setPositionType(creature.getX(),creature.getY(),0);
+                    }
+                }
             }
         }
     }
@@ -1146,10 +1229,21 @@ public class TWDGameManager {
             if ( creature instanceof Zombie ) {
                   continue;
             }
+            if ( creature instanceof Humano ) {
+                if ( ((Humano) creature).getEnvenenado() ) {
+                    text = "" + creature.getId() + " " + creature.getNome().trim();
+                    gameResults.add(text);
+                }
 
-            if ( creature.getHasDied() ) {
-                text = "" + creature.getId() + " " + creature.getNome().trim();
-                gameResults.add(text);
+                if ( creature.getHasDied() ) {
+                    text = "" + creature.getId() + " " + creature.getNome().trim();
+                    gameResults.add(text);
+                }
+            } else {
+                if ( creature.getHasDied() ) {
+                    text = "" + creature.getId() + " " + creature.getNome().trim();
+                    gameResults.add(text);
+                }
             }
         }
         gameResults.add("");
@@ -1558,10 +1652,20 @@ public class TWDGameManager {
         String[] popCulture = new String[14];
 
         popCulture[0] = "Resident Evil";
-        popCulture[1] = "The Evil Dead";
+        popCulture[1] = "Ash vs. Evil Dead";
         popCulture[2] = "The Night Eats the World";
         popCulture[3] = "Gremlins";
         popCulture[4] = "";
+        popCulture[5] = "";
+        popCulture[6] = "";
+        popCulture[7] = "";
+        popCulture[8] = "";
+        popCulture[9] = "";
+        popCulture[10] = "";
+        popCulture[11] = "";
+        popCulture[12] = "";
+        popCulture[13] = "";
+
 
         return popCulture;
     }

@@ -42,8 +42,23 @@ public abstract class Humano extends Creature {
         return this.envenenado;
     }
 
+    public void beberVeneno() {
+        this.envenenado = true;
+    }
+
+    public void beberAntidoto() {
+        this.envenenado = false;
+        this.turnosRestantes = 6;
+    }
+
     public int getTurnosRestantes() {
         return this.turnosRestantes;
+    }
+
+    public void decrementarTurnosRestantes() {
+        if ( turnosRestantes != 0 ) {
+            this.turnosRestantes--;
+        }
     }
 
     public void move(Mapa map, int destinoX, int destinoY) {

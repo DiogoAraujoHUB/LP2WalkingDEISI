@@ -1,6 +1,7 @@
 package pt.ulusofona.lp2.theWalkingDEISIGame;
 
 import pt.ulusofona.lp2.theWalkingDEISIGame.classesCriaturas.IdosoHumano;
+import pt.ulusofona.lp2.theWalkingDEISIGame.classesEquipamentos.Antidoto;
 
 public class Cao extends Animal {
 
@@ -41,7 +42,7 @@ public class Cao extends Animal {
         x = destinoX;
         y = destinoY;
 
-        //Fazer com que o equipamento se movesse com o humano
+        //Fazer com que o equipamento se movesse com o cão
         if (equipamentoApanhado != null) {
             equipamentoApanhado.setX(x);
             equipamentoApanhado.setY(y);
