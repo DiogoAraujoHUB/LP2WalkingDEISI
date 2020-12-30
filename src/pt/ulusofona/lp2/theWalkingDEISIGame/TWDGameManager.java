@@ -510,9 +510,9 @@ public class TWDGameManager {
             if ( creatureBeingAttacked instanceof Humano ) {
                 //Um humano envenenado defende contra tudo
                 if ( ((Humano) creatureBeingAttacked).getEnvenenado() ) {
-                    incrementaTempo();
-
-                    return true;
+                    //incrementaTempo();
+                    //return true;
+                    return false;
                 }
 
                 //Vamos verificar se o humano tem um equipamento equipado!
