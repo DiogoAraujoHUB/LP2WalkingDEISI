@@ -17,7 +17,7 @@ public abstract class Humano extends Creature {
         this.tipo = 1;
         this.insideSafeHaven = false;
         this.envenenado = false;
-        this.turnosRestantes = 6;
+        this.turnosRestantes = 4;
 
         this.equipamentoApanhado = null;
     }
@@ -48,7 +48,7 @@ public abstract class Humano extends Creature {
 
     public void beberAntidoto() {
         this.envenenado = false;
-        this.turnosRestantes = 6;
+        this.turnosRestantes = 4;
     }
 
     public int getTurnosRestantes() {

@@ -16,7 +16,7 @@ public class Antidoto extends Defensivo {
         return this.isFull;
     }
 
-    public void beberAntidoto() {
+    public void esvaziarAntidoto() {
         this.isFull = false;
     }
 }

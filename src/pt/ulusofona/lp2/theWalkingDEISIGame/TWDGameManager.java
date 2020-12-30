@@ -671,8 +671,8 @@ public class TWDGameManager {
                     return false;
                 }
 
-                //Se o humano não estiver envenenado, não pode apanhar o antidoto
                 if (  creatureFound instanceof Humano ) {
+                    //Se o humano não estiver envenenado, não pode apanhar o antidoto
                     if ( !((Humano) creatureFound).getEnvenenado() ) {
                         return false;
                     }
@@ -680,7 +680,7 @@ public class TWDGameManager {
                     //Se houver antidoto, ele vai beber
                     if ( ((Antidoto) gameMap.getPosition(xD,yD).getEquipamento()).getIsFull() ) {
                         ((Humano) creatureFound).beberAntidoto();
-                        ((Antidoto) gameMap.getPosition(xD,yD).getEquipamento()).beberAntidoto();
+                        ((Antidoto) gameMap.getPosition(xD,yD).getEquipamento()).esvaziarAntidoto();
                     }
                 }
             }
@@ -702,7 +702,7 @@ public class TWDGameManager {
                     //O humano vai ficar envenenado e vai esvaziar o veneno
                     if ( ((Veneno) gameMap.getPosition(xD,yD).getEquipamento()).getIsFull() ) {
                         ((Humano) creatureFound).beberVeneno();
-                        ((Veneno) gameMap.getPosition(xD,yD).getEquipamento()).beberVeneno();
+                        ((Veneno) gameMap.getPosition(xD,yD).getEquipamento()).esvaziarVeneno();
                     }
                 }
             }
