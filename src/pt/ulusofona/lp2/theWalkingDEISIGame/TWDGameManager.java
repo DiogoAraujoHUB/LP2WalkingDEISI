@@ -661,18 +661,16 @@ public class TWDGameManager {
             return false;
         }
 
-        //Verificar se estamos a mover para um antidoto sem estar envenenado
         if ( gameMap.getMapId(xD, yD) == -1 ) {
             if ( gameMap.getPosition(xD,yD).getEquipamento() instanceof Antidoto ) {
 
                 //Se a criatura for um animal, então nao pode mover-se para o antidoto
-                //Pois não pode estar envenenada
                 if ( creatureFound instanceof Animal ) {
                     return false;
                 }
 
                 if (  creatureFound instanceof Humano ) {
-                    //Se o humano não estiver envenenado, não pode apanhar o antidoto
+                    //Verificar se estamos a mover para um antidoto sem estar envenenado
                     if ( !((Humano) creatureFound).getEnvenenado() ) {
                         return false;
                     }
