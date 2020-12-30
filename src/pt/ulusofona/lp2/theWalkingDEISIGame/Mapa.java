@@ -31,10 +31,21 @@ public class Mapa {
     }
 
     public void createMap() {
-        map = new MapPosition[sizeX + 1][sizeY + 1];
+        int tamanhoX = sizeX;
+        int tamanhoY = sizeY;
 
-        for ( int posX = 0; posX <= sizeX; posX++ ) {
-            for ( int posY = 0; posY <= sizeY; posY++ ) {
+        //Make sure the map is always a square (makes it easier to run)
+        //It will appear as its chosen size in game
+        if ( tamanhoX > tamanhoY ) {
+            tamanhoY = tamanhoX;
+        } else {
+            tamanhoX = tamanhoY;
+        }
+
+        map = new MapPosition[tamanhoX][tamanhoY];
+
+        for ( int posX = 0; posX < tamanhoX; posX++ ) {
+            for ( int posY = 0; posY < tamanhoY; posY++ ) {
                 map[posX][posY] = new MapPosition();
             }
         }
