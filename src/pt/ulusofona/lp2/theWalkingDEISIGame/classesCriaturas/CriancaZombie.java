@@ -15,7 +15,7 @@ public class CriancaZombie extends Zombie {
     }
 
     public String toString() {
-        String texto = id + " | Criança (Zombie) | Os Outros |" + nome + "";
+        String texto = id + " | Criança (Zombie) | Os Outros | " + nome.trim() + " ";
 
         if ( hasDied ) {
             texto += numEquipamentos + " @ RIP";

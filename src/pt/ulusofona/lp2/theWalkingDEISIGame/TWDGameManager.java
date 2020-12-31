@@ -1515,22 +1515,23 @@ public class TWDGameManager {
                     continue;
                 }
 
+                //O nome não está a funcionar (tem espaços a mais)
                 if ( creature instanceof Humano ) {
                     if ( creature.hasDied ) {
-                        writer.println("-1 : " + creature.getId() + " : " + creature.getTipo() + " : " + creature.getNome() +
-                                " : " + creature.getX() + " : " + creature.getY() );
+                        writer.println("-1 : " + creature.getId() + " : " + creature.getTipo() + " :" + creature.getNome() +
+                                ": " + creature.getX() + " : " + creature.getY() );
                     } else if ( ((Humano) creature).getInsideSafeHaven() ) {
                         writer.println("1 : " + creature.getId() + " : " + creature.getTipo() + " :" + creature.getNome() +
                                 ": " + creature.getX() + " : " + creature.getY() );
                     } else {
-                        writer.println("0 : " + creature.getId() + " : " + creature.getTipo() + " : " + creature.getNome() +
-                                " : " + creature.getX() + " : " + creature.getY() );
+                        writer.println("0 : " + creature.getId() + " : " + creature.getTipo() + " :" + creature.getNome() +
+                                ": " + creature.getX() + " : " + creature.getY() );
                     }
                 }
                 if ( creature instanceof Zombie ) {
                     if ( creature.hasDied ) {
-                        writer.println("-1 : " + creature.getId() + " : " + creature.getTipo() + " : " + creature.getNome() +
-                                " : " + creature.getX() + " : " + creature.getY() );
+                        writer.println("-1 : " + creature.getId() + " : " + creature.getTipo() + " :" + creature.getNome() +
+                                ": " + creature.getX() + " : " + creature.getY() );
                     } else {
                         writer.println("0 : " + creature.getId() + " : " + creature.getTipo() + " :" + creature.getNome() +
                                 ": " + creature.getX() + " : " + creature.getY() );

@@ -15,7 +15,7 @@ public class IdosoHumano extends Humano {
     }
 
     public String toString() {
-        String texto = id + " | Idoso (Vivo) | Os Vivos |" + nome + "";
+        String texto = id + " | Idoso (Vivo) | Os Vivos | " + nome.trim() + " ";
 
         if ( hasDied ) {
             texto += numEquipamentos + " @ RIP";

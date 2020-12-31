@@ -15,7 +15,7 @@ public class CriancaHumano extends Humano {
     }
 
     public String toString() {
-        String texto = id + " | Criança (Vivo) | Os Vivos |" + nome + "";
+        String texto = id + " | Criança (Vivo) | Os Vivos | " + nome.trim() + " ";
 
         if ( hasDied ) {
             texto += numEquipamentos + " @ RIP";
