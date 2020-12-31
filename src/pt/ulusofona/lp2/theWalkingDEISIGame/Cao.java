@@ -10,6 +10,7 @@ public class Cao extends Animal {
     public Cao(int id, String nome, int x, int y) {
         super(id, nome, x, y);
 
+        this.tipo = 9;
         this.deslocamentoMaximo = 2;
 
         this.ableToMoveFreely = true;
@@ -47,6 +48,10 @@ public class Cao extends Animal {
             equipamentoApanhado.setX(x);
             equipamentoApanhado.setY(y);
         }
+    }
+
+    public void setEquipamentoApanhado(Equipamento equipamentoApanhado) {
+        this.equipamentoApanhado = equipamentoApanhado;
     }
 
     public Equipamento getEquipamentoApanhado() {

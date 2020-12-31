@@ -105,7 +105,8 @@ public class TWDGameManager {
                                 int spawnX = Integer.parseInt( splitCreatures[3].trim() );
                                 int spawnY = Integer.parseInt( splitCreatures[4].trim() );
 
-                                if ( !createCreatureWithParameters(creatureID, typeID, creatureName, spawnX, spawnY) ) {
+                                if ( !createCreatureWithParameters(0, creatureID, typeID
+                                        , creatureName, spawnX, spawnY) ) {
                                     return false;
                                 }
 
@@ -137,7 +138,8 @@ public class TWDGameManager {
                                 int spawnX = Integer.parseInt( splitEquipment[2].trim() );
                                 int spawnY = Integer.parseInt( splitEquipment[3].trim() );
 
-                                if ( !createEquipmentWithParameters(equipmentID, typeID, spawnX, spawnY) ) {
+                                if ( !createEquipmentWithParameters(0, equipmentID, typeID,
+                                        spawnX, spawnY, -1) ) {
                                     return false;
                                 }
 
@@ -203,12 +205,19 @@ public class TWDGameManager {
         return true;
     }
 
-    public boolean createEquipmentWithParameters(int id, int typeID, int spawnX, int spawnY) {
+    //0 quer dizer que é um equipamento normal, sem usos definidos
+    //1 quer dizer que é um equipamento com um limite de usos
+    //Added Info == -1 quer dizer que não tem added info nenhuma
+    public boolean createEquipmentWithParameters(int state, int id, int typeID, int spawnX, int spawnY, int addedInfo) {
         Equipamento equipmentFound = null;
 
         switch ( typeID ) {
             case 0: //Escudo de Madeira
                 equipmentFound = new EscudoMadeira(id,typeID,spawnX,spawnY);
+
+                if ( state == 1 ) {
+                    equipmentFound.setNumUses(addedInfo);
+                }
                 equipment.add(equipmentFound);
                 break;
 
@@ -219,6 +228,10 @@ public class TWDGameManager {
 
             case 2: //Pistola Walther PPK
                 equipmentFound = new PistolaWaltherPPK(id,typeID,spawnX,spawnY);
+
+                if ( state == 1 ) {
+                    equipmentFound.setNumUses(addedInfo);
+                }
                 equipment.add(equipmentFound);
                 break;
 
@@ -247,16 +260,36 @@ public class TWDGameManager {
 
             case 7: //Garrafa de Lixivía (1 litro)
                 equipmentFound = new GarrafaLixivia(id,typeID,spawnX,spawnY);
+
+                if ( state == 1 ) {
+                    equipmentFound.setNumUses(addedInfo);
+                }
                 equipment.add(equipmentFound);
                 break;
 
             case 8: //Veneno
                 equipmentFound = new Veneno(id,typeID,spawnX,spawnY);
+
+                if ( state == 1 ) {
+                    if ( equipmentFound instanceof Veneno ) {
+                        if ( addedInfo == 0 ) {
+                            ((Veneno) equipmentFound).esvaziarVeneno();
+                        }
+                    }
+                }
                 equipment.add(equipmentFound);
                 break;
 
             case 9: //Antidoto (para os envenenados)
                 equipmentFound = new Antidoto(id,typeID,spawnX,spawnY);
+                if ( state == 1 ) {
+                    if ( equipmentFound instanceof Antidoto ) {
+                        if ( addedInfo == 0 ) {
+                            ((Antidoto) equipmentFound).esvaziarAntidoto();
+                        }
+                    }
+                }
+
                 equipment.add(equipmentFound);
                 break;
 
@@ -272,7 +305,10 @@ public class TWDGameManager {
         return true;
     }
 
-    public boolean createCreatureWithParameters(int id, int typeID, String name, int spawnX, int spawnY) {
+    //If state == 1, então a criatura está no safe haven
+    //If state == -1, então a criatura está morta
+    //If state == 0, então lê-se tudo normalmente
+    public boolean createCreatureWithParameters(int state, int id, int typeID, String name, int spawnX, int spawnY) {
         Creature creatureFound = null;
 
         //Making sure the last character in a name is a space
@@ -333,6 +369,14 @@ public class TWDGameManager {
 
             default:
                 return false;
+        }
+
+        if ( state == 1 ) {
+            if ( creatureFound instanceof Humano ) {
+                ((Humano) creatureFound).goInsideSafeHaven();
+            }
+        } else if ( state == -1 ) {
+            creatureFound.beDestroyed();
         }
 
         return true;
@@ -416,6 +460,20 @@ public class TWDGameManager {
 
             case 1:
                 Creature creature = gameMap.getPosition(x,y).getCreature();
+                if ( creature instanceof Humano ) {
+                    if ( ((Humano) creature).getInsideSafeHaven() || creature.getHasDied() ) {
+                        return 0;
+                    } else {
+                        return creature.getId();
+                    }
+                }
+                if ( creature instanceof Zombie ) {
+                    if ( creature.getHasDied() ) {
+                        return 0;
+                    } else {
+                        return creature.getId();
+                    }
+                }
                 mapId = creature.getId();
                 break;
 
@@ -1433,45 +1491,119 @@ public class TWDGameManager {
 
     //Save current state of game onto file
     public boolean saveGame(File fich) {
-        BufferedWriter writer = null;
+        PrintWriter writer = null;
 
         try {
             if ( !fich.exists() ) {
                 fich.createNewFile();
             }
             FileWriter fileWriter = new FileWriter(fich);
-            writer = new BufferedWriter(fileWriter);
+            writer = new PrintWriter(fileWriter);
 
-            writer.write(gameMap.getSizeY() + " " + gameMap.getSizeX());
+            writer.println(gameMap.getSizeY() + " " + gameMap.getSizeX());
             writer.flush();
-            writer.write(initialTeamId);
+            writer.println(initialTeamId);
             writer.flush();
-            writer.write(creatures.size());
+            writer.println(creatures.size());
             writer.flush();
 
+            //-1 means the creature is dead
+            //0 means the creature is in play
+            //1 means the creature is in the safe haven
             for ( Creature creature: creatures ) {
                 if ( creature == null ) {
                     continue;
                 }
 
-                writer.write(creature.getId() + " : " + creature.getTipo() + " : " + creature.getNome() +
-                        " : " + creature.getX() + " : " + creature.getY() );
+                if ( creature instanceof Humano ) {
+                    if ( creature.hasDied ) {
+                        writer.println("-1 : " + creature.getId() + " : " + creature.getTipo() + " : " + creature.getNome() +
+                                " : " + creature.getX() + " : " + creature.getY() );
+                    } else if ( ((Humano) creature).getInsideSafeHaven() ) {
+                        writer.println("1 : " + creature.getId() + " : " + creature.getTipo() + " : " + creature.getNome() +
+                                " : " + creature.getX() + " : " + creature.getY() );
+                    } else {
+                        writer.println("0 : " + creature.getId() + " : " + creature.getTipo() + " : " + creature.getNome() +
+                                " : " + creature.getX() + " : " + creature.getY() );
+                    }
+                }
+                if ( creature instanceof Zombie ) {
+                    if ( creature.hasDied ) {
+                        writer.println("-1 : " + creature.getId() + " : " + creature.getTipo() + " : " + creature.getNome() +
+                                " : " + creature.getX() + " : " + creature.getY() );
+                    } else {
+                        writer.println("0 : " + creature.getId() + " : " + creature.getTipo() + " : " + creature.getNome() +
+                                " : " + creature.getX() + " : " + creature.getY() );
+                    }
+                }
+                if ( creature instanceof Animal ) {
+                    writer.println("0 : " + creature.getId() + " : " + creature.getTipo() + " : " + creature.getNome() +
+                            " : " + creature.getX() + " : " + creature.getY() );
+                }
                 writer.flush();
             }
 
-            writer.write(equipment.size());
+            writer.println(equipment.size());
 
+            //0 quer dizer que é um equipamento normal, sem usos definidos
+            //1 quer dizer que é um equipamento com um limite de usos
+            //2 é especial para o escudo de madeira
             for ( Equipamento equipamento: equipment ) {
                 if ( equipamento == null ) {
                     continue;
                 }
 
-                writer.write(equipamento.getId() + " : " + equipamento.getTipo() + " : "
-                        + equipamento.getX() + " : " + equipamento.getY() );
+                if ( equipamento instanceof PistolaWaltherPPK ) {
+                    writer.println("1 : " + equipamento.getId() + " : " + equipamento.getTipo() + " : "
+                            + equipamento.getX() + " : " + equipamento.getY() + " : " + equipamento.getNumUses() );
+                    writer.flush();
+                    continue;
+                }
+                if ( equipamento instanceof GarrafaLixivia ) {
+                    writer.println("1 : " + equipamento.getId() + " : " + equipamento.getTipo() + " : "
+                            + equipamento.getX() + " : " + equipamento.getY() + " : " + equipamento.getNumUses() );
+                    writer.flush();
+                    continue;
+                }
+
+                //0 quer dizer que está vazio, 1 quer dizer que está cheio
+                if ( equipamento instanceof Veneno ) {
+                    if ( ((Veneno) equipamento).getIsFull() ) {
+                        writer.println("1 : " + equipamento.getId() + " : " + equipamento.getTipo() + " : "
+                                + equipamento.getX() + " : " + equipamento.getY() + " : 1 ");
+                    } else {
+                        writer.println("1 : " + equipamento.getId() + " : " + equipamento.getTipo() + " : "
+                                + equipamento.getX() + " : " + equipamento.getY() + " : 0 ");
+                    }
+                    writer.flush();
+                    continue;
+                }
+                if ( equipamento instanceof Antidoto ) {
+                    if ( ((Antidoto) equipamento).getIsFull() ) {
+                        writer.println("1 : " + equipamento.getId() + " : " + equipamento.getTipo() + " : "
+                                + equipamento.getX() + " : " + equipamento.getY() + " : 1 ");
+                    } else {
+                        writer.println("1 : " + equipamento.getId() + " : " + equipamento.getTipo() + " : "
+                                + equipamento.getX() + " : " + equipamento.getY() + " : 0 ");
+                    }
+                    writer.flush();
+                    continue;
+                }
+
+                //1 quer dizer que ainda não foi empunhado por um militar, 0 quer dizer que ja foi
+                if ( equipamento instanceof EscudoMadeira ) {
+                    writer.println("1 : " + equipamento.getId() + " : " + equipamento.getTipo() + " : "
+                            + equipamento.getX() + " : " + equipamento.getY() + " : " + equipamento.getNumUses() );
+                    writer.flush();
+                    continue;
+                }
+
+                writer.println("0 : " + equipamento.getId() + " : " + equipamento.getTipo() + " : "
+                        + equipamento.getX() + " : " + equipamento.getY());
                 writer.flush();
             }
 
-            writer.write(safeHavens.size());
+            writer.println(safeHavens.size());
             writer.flush();
 
             for ( SafeHaven safeHaven: safeHavens ) {
@@ -1479,7 +1611,7 @@ public class TWDGameManager {
                     continue;
                 }
 
-                writer.write(safeHaven.getX() + " : " + safeHaven.getY() );
+                writer.println(safeHaven.getX() + " : " + safeHaven.getY() );
                 writer.flush();
             }
 
@@ -1552,13 +1684,15 @@ public class TWDGameManager {
                             for ( int pos = 0; pos < numCreatures; pos++ ) {
                                 String[] splitCreatures = lineRead.split(":" );
 
-                                int creatureID = Integer.parseInt( splitCreatures[0].trim() );
-                                int typeID = Integer.parseInt( splitCreatures[1].trim() );
-                                String creatureName = splitCreatures[2];
-                                int spawnX = Integer.parseInt( splitCreatures[3].trim() );
-                                int spawnY = Integer.parseInt( splitCreatures[4].trim() );
+                                int creatureState = Integer.parseInt( splitCreatures[0].trim() );
+                                int creatureID = Integer.parseInt( splitCreatures[1].trim() );
+                                int typeID = Integer.parseInt( splitCreatures[2].trim() );
+                                String creatureName = splitCreatures[3];
+                                int spawnX = Integer.parseInt( splitCreatures[4].trim() );
+                                int spawnY = Integer.parseInt( splitCreatures[5].trim() );
 
-                                if ( !createCreatureWithParameters(creatureID, typeID, creatureName, spawnX, spawnY) ) {
+                                if ( !createCreatureWithParameters(creatureState, creatureID, typeID,
+                                        creatureName, spawnX, spawnY) ) {
                                     return false;
                                 }
 
@@ -1584,14 +1718,25 @@ public class TWDGameManager {
                         case 6:
 
                             for ( int pos = 0; pos < numEquipment; pos++ ) {
-                                String[] splitEquipment = lineRead.split(":", 4 );
-                                int equipmentID = Integer.parseInt( splitEquipment[0].trim() );
-                                int typeID = Integer.parseInt( splitEquipment[1].trim() );
-                                int spawnX = Integer.parseInt( splitEquipment[2].trim() );
-                                int spawnY = Integer.parseInt( splitEquipment[3].trim() );
+                                String[] splitEquipment = lineRead.split(":" );
+                                int equipmentState = Integer.parseInt( splitEquipment[0].trim() );
+                                int equipmentID = Integer.parseInt( splitEquipment[1].trim() );
+                                int typeID = Integer.parseInt( splitEquipment[2].trim() );
+                                int spawnX = Integer.parseInt( splitEquipment[3].trim() );
+                                int spawnY = Integer.parseInt( splitEquipment[4].trim() );
 
-                                if ( !createEquipmentWithParameters(equipmentID, typeID, spawnX, spawnY) ) {
-                                    return false;
+                                if ( equipmentState == 0 ) {
+                                    if ( !createEquipmentWithParameters(equipmentState, equipmentID, typeID,
+                                            spawnX, spawnY, -1) ) {
+                                        return false;
+                                    }
+                                } else {
+                                    int addedInfo = Integer.parseInt( splitEquipment[5].trim() );
+
+                                    if ( !createEquipmentWithParameters(equipmentState, equipmentID, typeID,
+                                            spawnX, spawnY, addedInfo) ) {
+                                        return false;
+                                    }
                                 }
 
                                 if ( pos == numEquipment - 1 ) {
