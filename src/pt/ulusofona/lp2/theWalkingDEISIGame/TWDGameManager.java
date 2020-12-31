@@ -1660,7 +1660,7 @@ public class TWDGameManager {
         String[] popCulture = new String[14];
 
         popCulture[0] = "Resident Evil";
-        popCulture[1] = "Ash and the Evil Dead";
+        popCulture[1] = "Ash vs Evil Dead";
         popCulture[2] = "The Night Eats the World";
         popCulture[3] = "Carriers";
         popCulture[4] = "";
