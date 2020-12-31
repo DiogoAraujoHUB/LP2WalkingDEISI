@@ -1504,12 +1504,13 @@ public class TWDGameManager {
         int numSafeHavens = 0;
 
         try {
-            BufferedReader reader = new BufferedReader(new FileReader(fich));
+            BufferedReader reader = new BufferedReader( new FileReader( fich ) );
             String lineRead = null;
 
             do {
                 try {
                     lineRead = reader.readLine();
+
                     if ( lineRead == null ) {
                         break;
                     }
