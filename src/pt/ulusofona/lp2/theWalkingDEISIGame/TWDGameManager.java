@@ -1664,15 +1664,15 @@ public class TWDGameManager {
         popCulture[2] = "The Night Eats the World";
         popCulture[3] = "Carriers";
         popCulture[4] = "";
-        popCulture[5] = "";
-        popCulture[6] = "";
-        popCulture[7] = "";
+        popCulture[5] = "World War Z";
+        popCulture[6] = " Mandalorian Crusaders";
+        popCulture[7] = "Fist of Fury";
         popCulture[8] = "";
-        popCulture[9] = "";
-        popCulture[10] = "";
-        popCulture[11] = "";
-        popCulture[12] = "";
-        popCulture[13] = "";
+        popCulture[9] = "1978";
+        popCulture[10] = "James Bond";
+        popCulture[11] = "The Walking Dead";
+        popCulture[12] = "Xoxo";
+        popCulture[13] = "Freddie Mercury";
 
         return popCulture;
     }
