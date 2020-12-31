@@ -1171,7 +1171,7 @@ public class TWDGameManager {
         gameResults.add(text);
         text = "" + numberOfTurnsTotal;
         gameResults.add(text);
-        gameResults.add("");
+        //gameResults.add("");
 
         text = "Ainda pelo bairro:";
         gameResults.add(text);
@@ -1212,7 +1212,7 @@ public class TWDGameManager {
 
         text = "Num safe haven:";
         gameResults.add(text);
-        gameResults.add("");
+        //gameResults.add("");
 
         text = "OS VIVOS";
         gameResults.add( text );
@@ -1660,7 +1660,7 @@ public class TWDGameManager {
         String[] popCulture = new String[14];
 
         popCulture[0] = "Resident Evil";
-        popCulture[1] = "Ash vs Evil Dead";
+        popCulture[1] = "Army of Darkness";
         popCulture[2] = "The Night Eats the World";
         popCulture[3] = "Carriers";
         popCulture[4] = "";
