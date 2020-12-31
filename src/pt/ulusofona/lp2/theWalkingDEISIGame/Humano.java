@@ -17,7 +17,7 @@ public abstract class Humano extends Creature {
         this.tipo = 1;
         this.insideSafeHaven = false;
         this.envenenado = false;
-        this.turnosRestantes = 4;
+        this.turnosRestantes = 3;
 
         this.equipamentoApanhado = null;
     }
@@ -106,7 +106,8 @@ public abstract class Humano extends Creature {
     //Retornar 0 quer dizer que funciona como esperado
     //Retornar -1 quer dizer que não funciona
     //Retornar 1 quer dizer que funciona mas a criatura não foi destruida
-    public int attack(Mapa map, Creature creatureAttacked, int xD, int yD) {
+    //Isto foi feito para outra versão, vou deixar se continuar a não funcionar (int)
+    public boolean attack(Mapa map, Creature creatureAttacked, int xD, int yD) {
 
         //Vamos ver se estamos a atacar com uma criança humana com uma espada
         if ( map.getPosition(x,y).getCreature() instanceof CriancaHumano ) {
@@ -115,12 +116,13 @@ public abstract class Humano extends Creature {
                     map.getPosition(xD,yD).setCreature(null);
                     move(map, xD, yD);
 
-                    return 0;
+                    return true;
                 }
 
                 //Em vez de retornar false, é suposto retornar true
                 //Só que o ataque não funciona
-                return 1;
+                //Isto foi feito para outra versão, vou deixar se continuar a não funcionar (int)
+                return false;
             }
         }
 
@@ -132,10 +134,10 @@ public abstract class Humano extends Creature {
                 map.getPosition(xD,yD).setCreature(null);
                 move(map, xD, yD);
 
-                return 0;
+                return true;
             }
 
-            return -1;
+            return false;
         }
 
         //Ver se estamos a utilizar uma pistola para atacar o zombie
@@ -143,20 +145,20 @@ public abstract class Humano extends Creature {
 
             //A pistola já não tem balas!
             if ( equipamentoApanhado.getNumUses() == 0 ) {
-                return -1;
+                return false;
             }
 
             //Reduce number of bullets by one and shoot zombie
             equipamentoApanhado.setNumUses(equipamentoApanhado.getNumUses() - 1);
             map.getPosition(xD,yD).setCreature(null);
             move(map, xD, yD);
-            return 0;
+            return true;
         }
 
         //Attack normally
         map.getPosition(xD,yD).setCreature(null);
         move(map, xD, yD);
-        return 0;
+        return false;
     }
 
     public boolean defend(Mapa map, Creature creatureAttacking) {

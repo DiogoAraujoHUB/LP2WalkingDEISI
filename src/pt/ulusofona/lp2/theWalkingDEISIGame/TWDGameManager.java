@@ -466,16 +466,10 @@ public class TWDGameManager {
 
             //Não conseguimos atacar com um equipamento defensivo, logo tem que ser ofensivo
             if ( equipamentoUtilizado instanceof Ofensivo ) {
-                int attackResult = ((Humano) creatureAttacking).attack(gameMap, creatureBeingAttacked, xD, yD);
-
                 //Kill zombie being attacked
-                if ( attackResult == 0) {
+                if ( ((Humano) creatureAttacking).attack(gameMap, creatureBeingAttacked, xD, yD) ) {
                     incrementaTempo();
                     creatureBeingAttacked.beDestroyed();
-
-                    return true;
-                } else if ( attackResult == 1 ) {
-                    incrementaTempo();
 
                     return true;
                 }
