@@ -1,7 +1,5 @@
 package pt.ulusofona.lp2.theWalkingDEISIGame;
 
-import pt.ulusofona.lp2.theWalkingDEISIGame.classesCriaturas.*;
-
 import java.util.List;
 
 public class Mapa {
@@ -9,55 +7,60 @@ public class Mapa {
     private int sizeY;
     private MapPosition[][] map;
 
-    Mapa() {
+    public Mapa() {
         this.sizeX = 0;
         this.sizeY = 0;
+
+        map = null;
     }
 
-    public void setSizeX( int sizeX ) {
-        this.sizeX = sizeX;
-    }
-
-    public int getSizeX() {
-        return this.sizeX;
-    }
-
-    public void setSizeY( int sizeY ) {
+    public void setSizeY(int sizeY) {
         this.sizeY = sizeY;
+    }
+
+    public void setSizeX(int sizeX) {
+        this.sizeX = sizeX;
     }
 
     public int getSizeY() {
         return this.sizeY;
     }
 
+    public int getSizeX() {
+        return this.sizeX;
+    }
+
     public void createMap() {
-        int tamanhoX = sizeX;
-        int tamanhoY = sizeY;
+        //System.out.println(" in create - size of map (x,y) = (" + x + ", " + y + ")");
 
-        //Make sure the map is always a square (makes it easier to run)
-        //It will appear as its chosen size in game
-        if ( tamanhoX > tamanhoY ) {
-            tamanhoY = tamanhoX;
-        } else {
-            tamanhoX = tamanhoY;
-        }
+        map = new MapPosition[sizeX][sizeY];
 
-        map = new MapPosition[tamanhoX][tamanhoY];
-
-        for ( int posX = 0; posX < tamanhoX; posX++ ) {
-            for ( int posY = 0; posY < tamanhoY; posY++ ) {
+        for (int posY = 0; posY < sizeY; posY++ ) {
+            for (int posX = 0; posX < sizeX; posX++ ) {
                 map[posX][posY] = new MapPosition();
             }
+        }
+
+        //drawMap();
+    }
+
+    public void drawMap() {
+        for (int posY = 0; posY < sizeY; posY++ ) {
+            for (int posX = 0; posX < sizeX; posX++ ) {
+                System.out.print(map[posX][posY].getTipo() + " - ");
+            }
+            System.out.println();
         }
     }
 
     public void addCreatures( List<Creature> creatures ) {
+
         for ( Creature creature: creatures ) {
             int xFound = creature.getX();
             int yFound = creature.getY();
 
             //Já está uma criatura na posicão?
-            if ( map[xFound][yFound].getTipo() == 1 ) {
+            if ( map[xFound][yFound].getTipo() != 0 ) {
                 continue;
             }
 

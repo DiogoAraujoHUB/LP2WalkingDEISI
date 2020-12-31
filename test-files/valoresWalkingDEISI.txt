@@ -3,11 +3,11 @@
 7
 1 : 6 : Freddie M. : 3 : 3
 2 : 2 : Jackie Chan : 3 : 4
-3 : 8 : Alice : 4 : 5
+3 : 8 : Alice : 5 : 3
 4 : 5 : Ash : 2 : 2
-5 : 9 : Sam : 4 : 6
+5 : 9 : Sam : 7 : 1
 6 : 1 : Paciente Zero: 0 : 1
-7 : 4 : Vampire Man : 4 : 7
+7 : 4 : Vampire Man : 6 : 0
 3
 -1 : 0 : 0 : 0
 -2 : 1 : 2 : 3

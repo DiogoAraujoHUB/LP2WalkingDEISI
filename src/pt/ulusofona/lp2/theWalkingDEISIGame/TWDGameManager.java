@@ -73,8 +73,8 @@ public class TWDGameManager {
                         case 1:
                             String[] splitNumLinesColumns = lineRead.split(" ", 2);
 
-                            gameMap.setSizeX( Integer.parseInt( splitNumLinesColumns[0].trim() ) );
-                            gameMap.setSizeY( Integer.parseInt( splitNumLinesColumns[1].trim() ) );
+                            gameMap.setSizeY( Integer.parseInt( splitNumLinesColumns[0].trim() ) );
+                            gameMap.setSizeX( Integer.parseInt( splitNumLinesColumns[1].trim() ) );
                             gameMap.createMap();
                             break;
 
@@ -344,12 +344,12 @@ public class TWDGameManager {
     //e na posição 1 o número de colunas
     public int[] getWorldSize() {
         int[] worldSize = new int[2];
-        if ( gameMap.getSizeX() == 0 || gameMap.getSizeY() == 0 ) {
+        if ( gameMap.getSizeY() == 0 || gameMap.getSizeX() == 0 ) {
             return null;
         }
 
-        worldSize[0] = gameMap.getSizeX();
-        worldSize[1] = gameMap.getSizeY();
+        worldSize[0] = gameMap.getSizeY();
+        worldSize[1] = gameMap.getSizeX();
         return worldSize;
     }
 
@@ -1435,7 +1435,7 @@ public class TWDGameManager {
             FileWriter fileWriter = new FileWriter(fich);
             writer = new BufferedWriter(fileWriter);
 
-            writer.write(gameMap.getSizeX() + " " + gameMap.getSizeY());
+            writer.write(gameMap.getSizeY() + " " + gameMap.getSizeX());
             writer.flush();
             writer.write(initialTeamId);
             writer.flush();
@@ -1519,8 +1519,8 @@ public class TWDGameManager {
                         case 1:
                             String[] splitNumLinesColumns = lineRead.split(" ", 2);
 
-                            gameMap.setSizeX( Integer.parseInt( splitNumLinesColumns[0].trim() ) );
-                            gameMap.setSizeY( Integer.parseInt( splitNumLinesColumns[1].trim() ) );
+                            gameMap.setSizeY( Integer.parseInt( splitNumLinesColumns[0].trim() ) );
+                            gameMap.setSizeX( Integer.parseInt( splitNumLinesColumns[1].trim() ) );
                             gameMap.createMap();
                             break;
 
