@@ -1520,8 +1520,8 @@ public class TWDGameManager {
                         writer.println("-1 : " + creature.getId() + " : " + creature.getTipo() + " : " + creature.getNome() +
                                 " : " + creature.getX() + " : " + creature.getY() );
                     } else if ( ((Humano) creature).getInsideSafeHaven() ) {
-                        writer.println("1 : " + creature.getId() + " : " + creature.getTipo() + " : " + creature.getNome() +
-                                " : " + creature.getX() + " : " + creature.getY() );
+                        writer.println("1 : " + creature.getId() + " : " + creature.getTipo() + " :" + creature.getNome() +
+                                ": " + creature.getX() + " : " + creature.getY() );
                     } else {
                         writer.println("0 : " + creature.getId() + " : " + creature.getTipo() + " : " + creature.getNome() +
                                 " : " + creature.getX() + " : " + creature.getY() );
@@ -1532,13 +1532,13 @@ public class TWDGameManager {
                         writer.println("-1 : " + creature.getId() + " : " + creature.getTipo() + " : " + creature.getNome() +
                                 " : " + creature.getX() + " : " + creature.getY() );
                     } else {
-                        writer.println("0 : " + creature.getId() + " : " + creature.getTipo() + " : " + creature.getNome() +
-                                " : " + creature.getX() + " : " + creature.getY() );
+                        writer.println("0 : " + creature.getId() + " : " + creature.getTipo() + " :" + creature.getNome() +
+                                ": " + creature.getX() + " : " + creature.getY() );
                     }
                 }
                 if ( creature instanceof Animal ) {
-                    writer.println("0 : " + creature.getId() + " : " + creature.getTipo() + " : " + creature.getNome() +
-                            " : " + creature.getX() + " : " + creature.getY() );
+                    writer.println("0 : " + creature.getId() + " : " + creature.getTipo() + " :" + creature.getNome() +
+                            ": " + creature.getX() + " : " + creature.getY() );
                 }
                 writer.flush();
             }
