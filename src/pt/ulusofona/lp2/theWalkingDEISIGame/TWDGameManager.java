@@ -1270,7 +1270,7 @@ public class TWDGameManager {
 
         text = "Num safe haven:";
         gameResults.add(text);
-        gameResults.add("");
+        //gameResults.add(""); (Retirei este espaço para o "getGameResults" - Teste 23
 
         text = "OS VIVOS";
         gameResults.add( text );
