@@ -367,6 +367,11 @@ public class TWDGameManager {
                 creatures.add(creatureFound);
                 break;
 
+            case 10: //Zombie do Filme
+                creatureFound = new SmokerZombie(id, name, spawnX, spawnY);
+                creatures.add(creatureFound);
+                break;
+
             default:
                 return false;
         }
@@ -1270,7 +1275,7 @@ public class TWDGameManager {
 
         text = "Num safe haven:";
         gameResults.add(text);
-        //gameResults.add(""); (Retirei este espaço para o "getGameResults" - Teste 23
+        gameResults.add("");
 
         text = "OS VIVOS";
         gameResults.add( text );
