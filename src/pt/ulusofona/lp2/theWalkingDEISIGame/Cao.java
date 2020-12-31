@@ -59,7 +59,12 @@ public class Cao extends Animal {
 
     public String toString() {
         String texto = id + " | Cão | Os Vivos |" + nome + "";
-        texto += numEquipamentos + " @ (" + x + ", " + y + ")";
+
+        if ( hasDied ) {
+            texto += numEquipamentos + " @ RIP";
+        } else {
+            texto += numEquipamentos + " @ (" + x + ", " + y + ")";
+        }
 
         return texto;
     }

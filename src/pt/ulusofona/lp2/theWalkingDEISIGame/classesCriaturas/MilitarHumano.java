@@ -16,7 +16,10 @@ public class MilitarHumano extends Humano {
 
     public String toString() {
         String texto = id + " | Militar (Vivo) | Os Vivos |" + nome + "";
-        if ( insideSafeHaven ) {
+
+        if ( hasDied ) {
+            texto += numEquipamentos + " @ RIP";
+        } else if ( insideSafeHaven ) {
             texto += numEquipamentos + " @ A salvo";
         } else {
             texto += numEquipamentos + " @ (" + x + ", " + y + ")";
