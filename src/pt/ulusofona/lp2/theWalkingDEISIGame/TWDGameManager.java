@@ -599,6 +599,13 @@ public class TWDGameManager {
     //xD, yD é o destino
     public boolean move(int xO, int yO, int xD, int yD) {
         Creature creatureFound = null;
+        //verifica se os parametros introduzidos estáo corretos para o mapa
+        if ( xD >= gameMap.getSizeX() || yD >= gameMap.getSizeY() || xD < 0 || yD < 0 ) {
+            return false;
+        }
+        if ( xO >= gameMap.getSizeX() || yO >= gameMap.getSizeY() || xO < 0 || yO < 0 ) {
+            return false;
+        }
 
         //Não conseguimos mover para (ou atacar) um cão!
         if (gameMap.getPosition(xD,yD).getCreature() instanceof Cao) {
