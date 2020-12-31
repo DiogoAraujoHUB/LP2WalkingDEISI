@@ -547,6 +547,7 @@ public class TWDGameManager {
                         }
                          */
 
+                        /*
                         //Defesa através da garrafa de lixivia
                         if (equipamentoApanhado instanceof GarrafaLixivia) {
                             if ( ((Humano) creatureBeingAttacked).defendWithAttack(gameMap, creatureAttacking, xO, yO) ) {
@@ -558,6 +559,7 @@ public class TWDGameManager {
                                 return true;
                             }
                         }
+                         */
 
                         if ( ((Humano) creatureBeingAttacked).defend(gameMap, creatureAttacking) ) {
                             incrementaTempo();
