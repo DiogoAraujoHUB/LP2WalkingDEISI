@@ -4,6 +4,7 @@ import org.junit.Test;
 import pt.ulusofona.lp2.theWalkingDEISIGame.classesCriaturas.*;
 import org.junit.jupiter.api.*;
 import java.io.File;
+import org.junit.jupiter.*;
 
 import static org.junit.Assert.assertEquals;
 
