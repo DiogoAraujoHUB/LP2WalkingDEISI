@@ -1238,6 +1238,7 @@ public class TWDGameManager {
 
         text = "Ainda pelo bairro:";
         gameResults.add(text);
+        gameResults.add("");
 
         text = "OS VIVOS";
         gameResults.add( text );
@@ -1272,6 +1273,7 @@ public class TWDGameManager {
             text = creature.getId() + " (antigamente conhecido como " + creature.getNome().trim() + ")";
             gameResults.add(text);
         }
+        gameResults.add("");
 
         text = "Num safe haven:";
         gameResults.add(text);
@@ -1291,6 +1293,7 @@ public class TWDGameManager {
 
         text = "Envenenados / Destruídos";
         gameResults.add(text);
+        gameResults.add("");
 
         text = "OS VIVOS";
         gameResults.add( text );
@@ -1330,7 +1333,7 @@ public class TWDGameManager {
                 gameResults.add(text);
             }
         }
-        //gameResults.add(""); (Retirei este espaço no teste)
+        //gameResults.add("");
 
         /*
         //Imprime o resultado
