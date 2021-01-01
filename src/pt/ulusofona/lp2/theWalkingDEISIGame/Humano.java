@@ -103,10 +103,6 @@ public abstract class Humano extends Creature {
         }
     }
 
-    //Retornar 0 quer dizer que funciona como esperado
-    //Retornar -1 quer dizer que não funciona
-    //Retornar 1 quer dizer que funciona mas a criatura não foi destruida
-    //Isto foi feito para outra versão, vou deixar se continuar a não funcionar (int)
     public boolean attack(Mapa map, Creature creatureAttacked, int xD, int yD) {
 
         //Vamos ver se estamos a atacar com uma criança humana com uma espada
@@ -119,9 +115,6 @@ public abstract class Humano extends Creature {
                     return true;
                 }
 
-                //Em vez de retornar false, é suposto retornar true
-                //Só que o ataque não funciona
-                //Isto foi feito para outra versão, vou deixar se continuar a não funcionar (int)
                 return false;
             }
         }
@@ -158,7 +151,7 @@ public abstract class Humano extends Creature {
         //Attack normally
         map.getPosition(xD,yD).setCreature(null);
         move(map, xD, yD);
-        return false;
+        return true;
     }
 
     public boolean defend(Mapa map, Creature creatureAttacking) {

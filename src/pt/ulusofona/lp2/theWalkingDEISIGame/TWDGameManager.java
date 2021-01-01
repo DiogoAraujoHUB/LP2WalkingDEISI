@@ -608,34 +608,6 @@ public class TWDGameManager {
 
                     //Como o humano tem um equipamento defensivo, vai se defender de o zombie
                     if (equipamentoApanhado instanceof Defensivo) {
-                        /*
-                        if ( equipamentoApanhado instanceof Veneno || equipamentoApanhado instanceof Antidoto ) {
-                            Creature zombieMade = ((Zombie) creatureAttacking).convert(gameMap, creatureBeingAttacked, xD, yD);
-                            removeCreature(creatureBeingAttacked);
-                            creatures.add(zombieMade);
-
-                            //Como um humano foi convertido, então o número de turnos volta a zero
-                            //Não tenho a certeza se sou suposto o numberOfTurns = 0 antes ou depois do incrementa tempo
-                            incrementaTempo();
-                            numberOfTurns = 0;
-                            return true;
-                        }
-                         */
-
-                        /*
-                        //Defesa através da garrafa de lixivia
-                        if (equipamentoApanhado instanceof GarrafaLixivia) {
-                            if ( ((Humano) creatureBeingAttacked).defendWithAttack(gameMap, creatureAttacking, xO, yO) ) {
-                                //Kill the zombie attacking
-                                gameMap.setPositionType(xO,yO,0);
-                                creatureAttacking.beDestroyed();
-
-                                incrementaTempo();
-                                return true;
-                            }
-                        }
-                         */
-
                         if ( ((Humano) creatureBeingAttacked).defend(gameMap, creatureAttacking) ) {
                             incrementaTempo();
 
@@ -1537,6 +1509,7 @@ public class TWDGameManager {
             //-1 means the creature is dead
             //0 means the creature is in play
             //1 means the creature is in the safe haven
+            //-2 means the creature has been poisoned, and will be followed up by the number of turns left
             for ( Creature creature: creatures ) {
                 if ( creature == null ) {
                     continue;
@@ -1642,6 +1615,11 @@ public class TWDGameManager {
                 writer.println(safeHaven.getX() + " : " + safeHaven.getY() );
                 writer.flush();
             }
+
+            //After writing all the save havens and creatures
+            //I will write the current number of turns passed and the number of turns total
+            writer.println(numberOfTurns + " " + numberOfTurnsTotal);
+            writer.flush();
 
             writer.close();
         } catch ( IOException e ) {
