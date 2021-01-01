@@ -1210,7 +1210,7 @@ public class TWDGameManager {
         gameResults.add(text);
         gameResults.add("");
 
-        text = "Ainda pelo bairro:";
+        text = "Ainda pelo bairo:";
         gameResults.add(text);
         gameResults.add("");
 
