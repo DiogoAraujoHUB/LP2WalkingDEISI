@@ -5,7 +5,6 @@ import pt.ulusofona.lp2.theWalkingDEISIGame.classesEquipamentos.*;
 
 import java.io.*;
 import java.util.*;
-import org.junit.*;
 
 public class TWDGameManager {
 
