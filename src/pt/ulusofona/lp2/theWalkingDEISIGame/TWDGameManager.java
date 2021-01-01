@@ -5,8 +5,7 @@ import pt.ulusofona.lp2.theWalkingDEISIGame.classesEquipamentos.*;
 
 import java.io.*;
 import java.util.*;
-import org.junit.jupiter.*;
-//Falta-me fazer com que o veneno funcione
+import org.junit.*;
 
 public class TWDGameManager {
 
