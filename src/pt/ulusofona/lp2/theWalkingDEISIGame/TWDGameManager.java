@@ -1330,7 +1330,14 @@ public class TWDGameManager {
                 gameResults.add(text);
             }
         }
-        gameResults.add("");
+        //gameResults.add(""); (Retirei este espaço no teste)
+
+        /*
+        //Imprime o resultado
+        for ( String result: gameResults ) {
+            System.out.println(result);
+        }
+         */
 
         return gameResults;
     }
