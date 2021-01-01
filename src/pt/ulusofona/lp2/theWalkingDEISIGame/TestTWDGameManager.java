@@ -1,9 +1,8 @@
 package pt.ulusofona.lp2.theWalkingDEISIGame;
 
 import org.junit.Test;
-import org.junit.jupiter.api.TestTemplate;
 import pt.ulusofona.lp2.theWalkingDEISIGame.classesCriaturas.*;
-
+import org.junit.jupiter.api.*;
 import java.io.File;
 
 import static org.junit.Assert.assertEquals;
