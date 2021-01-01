@@ -104,7 +104,6 @@ public abstract class Humano extends Creature {
     }
 
     public boolean attack(Mapa map, Creature creatureAttacked, int xD, int yD) {
-
         //Vamos ver se estamos a atacar com uma criança humana com uma espada
         if ( map.getPosition(x,y).getCreature() instanceof CriancaHumano ) {
             if (equipamentoApanhado instanceof EspadaHattoriHanzo) {
@@ -151,8 +150,7 @@ public abstract class Humano extends Creature {
         //Attack normally
         map.getPosition(xD,yD).setCreature(null);
         move(map, xD, yD);
-        return false;
-        //return true;  (Fiz isto so para ver uma coisa com os teste do DP)
+        return true;
     }
 
     public boolean defend(Mapa map, Creature creatureAttacking) {

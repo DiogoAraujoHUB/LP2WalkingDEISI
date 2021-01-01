@@ -64,6 +64,20 @@ public class Mapa {
                 continue;
             }
 
+            if ( creature.getHasDied() ) {
+                map[xFound][yFound].setTipo(0);
+                map[xFound][yFound].setCreature(null);
+                continue;
+            }
+
+            if ( creature instanceof Humano ) {
+                if ( ((Humano) creature).getInsideSafeHaven() ) {
+                    map[xFound][yFound].setTipo(0);
+                    map[xFound][yFound].setCreature(null);
+                    continue;
+                }
+            }
+
             map[xFound][yFound].setTipo(1);
             map[xFound][yFound].setCreature(creature);
         }

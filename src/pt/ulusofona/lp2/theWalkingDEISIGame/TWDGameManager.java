@@ -477,20 +477,6 @@ public class TWDGameManager {
 
             case 1:
                 Creature creature = gameMap.getPosition(x,y).getCreature();
-                if ( creature instanceof Humano ) {
-                    if ( ((Humano) creature).getInsideSafeHaven() || creature.getHasDied() ) {
-                        return 0;
-                    } else {
-                        return creature.getId();
-                    }
-                }
-                if ( creature instanceof Zombie ) {
-                    if ( creature.getHasDied() ) {
-                        return 0;
-                    } else {
-                        return creature.getId();
-                    }
-                }
                 mapId = creature.getId();
                 break;
 
@@ -646,6 +632,7 @@ public class TWDGameManager {
     //xD, yD é o destino
     public boolean move(int xO, int yO, int xD, int yD) {
         Creature creatureFound = null;
+
         //verifica se os parametros introduzidos estáo corretos para o mapa
         if ( xD >= gameMap.getSizeX() || yD >= gameMap.getSizeY() || xD < 0 || yD < 0 ) {
             return false;
@@ -663,6 +650,7 @@ public class TWDGameManager {
         if ( currentTeamId == 20 ) {
             return moveZombie(xO, yO, xD, yD);
         }
+
         //verifica se tentamos mover um zombie
         if ( gameMap.getPosition(xO,yO).getCreature() instanceof Zombie ) {
             return false;
@@ -677,6 +665,7 @@ public class TWDGameManager {
         if ( creatureFound == null ) {
             return false;
         }
+
         if ( !verificaCondicoes(xO, yO, xD, yD, creatureFound) ) {
             return false;
         }
@@ -909,6 +898,7 @@ public class TWDGameManager {
 
         for ( int pos = 1; pos < tamanhoPassagem; pos++ ) {
             if ( escolhaDirecao ) {
+
                 if ( gameMap.getPosition(xO + ( movimento * pos ), yO).getSafeHaven() != null ) {
                     return false;
                 }
@@ -1318,13 +1308,6 @@ public class TWDGameManager {
             }
         }
         //gameResults.add("");
-
-        /*
-        //Imprime o resultado
-        for ( String result: gameResults ) {
-            System.out.println(result);
-        }
-         */
 
         return gameResults;
     }
