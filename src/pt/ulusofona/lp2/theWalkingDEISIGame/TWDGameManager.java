@@ -37,6 +37,18 @@ public class TWDGameManager {
         gameMap = new Mapa();
     }
 
+    public int getNumberOfTurns() {
+        return this.numberOfTurns;
+    }
+
+    public int getNumberOfTurnsTotal() {
+        return this.numberOfTurnsTotal;
+    }
+
+    public Mapa getGameMap() {
+        return this.gameMap;
+    }
+
     //leitura do ficheiro texto
     //e carregar para a memória a informação relevante
     public boolean startGame( File ficheiroInicial ) {
