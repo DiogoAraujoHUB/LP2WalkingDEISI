@@ -525,6 +525,19 @@ public class TWDGameManager {
                 return false;
             }
 
+            //Se o equipamento for possivel de ambos, pode atacar um zombie
+            if ( equipamentoUtilizado instanceof DefensivoEOfensivo ) {
+                //Kill zombie being attacked
+                if ( ((Humano) creatureAttacking).attack(gameMap, creatureBeingAttacked, xD, yD) ) {
+                    incrementaTempo();
+                    creatureBeingAttacked.beDestroyed();
+
+                    return true;
+                }
+
+                return false;
+            }
+
             //Não conseguimos atacar com um equipamento defensivo, logo tem que ser ofensivo
             if ( equipamentoUtilizado instanceof Ofensivo ) {
                 //Kill zombie being attacked
@@ -577,7 +590,21 @@ public class TWDGameManager {
 
                 //Vamos verificar se o humano tem um equipamento equipado!
                 Equipamento equipamentoApanhado = ((Humano) creatureBeingAttacked).getEquipamentoApanhado();
+
                 if ( equipamentoApanhado != null ) {
+
+                    //Como o humano tem um equipamento defensivo e ofensivo, vai atacar o zombie para se defender
+                    if ( equipamentoApanhado instanceof DefensivoEOfensivo ) {
+                        //xO and yO are the position of the zombie attacking
+                        if ( ((Humano) creatureBeingAttacked).defendWithAttack(gameMap, creatureAttacking, xO, yO) ) {
+                            incrementaTempo();
+                            //Kill the zombie attacking
+                            gameMap.setPositionType(xO,yO,0);
+                            creatureAttacking.beDestroyed();
+
+                            return true;
+                        }
+                    }
 
                     //Como o humano tem um equipamento ofensivo, vai atacar o zombie para se defender
                     if ( equipamentoApanhado instanceof Ofensivo ) {
