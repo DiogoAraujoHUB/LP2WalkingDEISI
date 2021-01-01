@@ -1783,6 +1783,11 @@ public class TWDGameManager {
                             }
                             break;
 
+                        case 9:
+                            String[] splitNumberOfTurns = lineRead.split(" ", 2);
+                            numberOfTurns = Integer.parseInt( splitNumberOfTurns[0].trim() );
+                            numberOfTurnsTotal = Integer.parseInt( splitNumberOfTurns[1].trim() );
+                            break;
                         default:
                             return true;
                     }
