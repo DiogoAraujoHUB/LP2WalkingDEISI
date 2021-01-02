@@ -23,7 +23,7 @@ public class SmokerZombie extends Zombie {
         this.ableToMoveFreely = false;
         this.ableToMoveLinearly = true;
 
-        this.amountOfLifeLeft = 3;
+        this.amountOfLifeLeft = 2;
 
         this.currentlyAttacking = false;
         this.currentlyPulling = false;

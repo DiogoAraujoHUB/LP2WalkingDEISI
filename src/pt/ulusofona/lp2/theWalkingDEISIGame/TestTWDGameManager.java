@@ -148,6 +148,15 @@ public class TestTWDGameManager {
     }
 
     @Test
+    public void testMoveIntoSafeHavenWithZombie() {
+        TWDGameManager game = new TWDGameManager();
+
+        game.startGame( new File("./test-files/valoresWalkingDEISITestSafeHavens.txt") );
+        //Não conseguimos mover zombie para safe haven
+        assertEquals( false, game.move(2, 2, 2, 1) );   //Zombie tenta mover para safe haven
+    }
+
+    @Test
     public void testCaoMoveLinearly() {
         TWDGameManager game = new TWDGameManager();
 
@@ -334,6 +343,7 @@ public class TestTWDGameManager {
         assertEquals( 5,game.getGameMap().getPosition(0,0).getCreature().getTipo());  //Tipo 5 é criança humana
     }
 
+    @Test
     public void testHumanoUsaGarrafaLixiviaParaDefender4Vezes() {
         TWDGameManager game = new TWDGameManager();
 
@@ -346,6 +356,52 @@ public class TestTWDGameManager {
         game.move(1, 0, 0, 0);  //Zombie ataca humano (lixivia defende)
         game.move(0, 0, 0, 1); //Humano move para cima
         game.move(1, 1, 0, 1);  //Zombie ataca humano (lixivia nao defende)
-        assertEquals( 1, game.getGameMap().getPosition(0,1).getCreature().getTipo());  //Tipo 5 é criança humana
+        //Tipo 0 é criança zombie
+        assertEquals( 0, game.getGameMap().getPosition(0,1).getCreature().getTipo());
+    }
+
+    @Test
+    public void testSmokerZombiePullsHumanoAndKills() {
+        TWDGameManager game = new TWDGameManager();
+
+        game.startGame( new File("./test-files/valoresWalkingDEISITestZombieDoFilme.txt") );
+        game.move(6, 2, 6, 1);  //Humano mata zombie
+        game.move(12, 3, 3, 3); //Smoker apanha survivor (survivor é pulled - 4 3)
+        game.move(4, 0, 6, 0);  //Humano move para o lado (survivor é pulled - 5 3)
+        game.move(6, 5, 6, 4);  //Zombie move para escudo (survivor é pulled - 6 3)
+        game.move(1, 2, 3, 0);  //Humano troca de arma (survivor é pulled - 7 3)
+        game.move(10, 0, 7, 0);  //Zombie move contra humano (survivor é pulled - 8 3)
+        game.move(6, 0, 7, 0);  //Humano ataca zombie (survivor é pulled - 9 3)
+        game.move(1, 4, 1, 3);  //Zombie move para cima (survivor é pulled - 10 3)
+        game.move(7, 0, 9, 0);  //Humano move para lado (survivor é pulled - 11 3)
+        game.move(9, 4, 10, 4);  //Zombie move para lado (survivor é atacado e morre)
+        assertEquals( 0, game.getElementId(11, 3) );
+    }
+
+    @Test
+    public void testSmokerZombiePullsHumanoButGetsStoppedByHumano() {
+        TWDGameManager game = new TWDGameManager();
+
+        game.startGame( new File("./test-files/valoresWalkingDEISITestZombieDoFilme.txt") );
+        game.move(6, 2, 6, 1);  //Humano mata zombie
+        game.move(12, 3, 3, 3); //Smoker apanha survivor (survivor é pulled - 4 3)
+        game.move(4, 0, 3, 0);  //Humano apanha arma (survivor é pulled - 5 3)
+        game.move(6, 5, 6, 4);  //Zombie move para escudo (survivor é pulled - 6 3)
+        game.move(6, 1, 6, 3);  //Humano ataca survivor pulled (survivor é released)
+        assertEquals( 4, game.getElementId(6, 3) );  //Foi released, logo não foi mexido para o lado
+    }
+
+    @Test
+    public void testSmokerZombiePullsHumanoButHumanoGetsAttackedByZombieAndConverted() {
+        TWDGameManager game = new TWDGameManager();
+
+        game.startGame( new File("./test-files/valoresWalkingDEISITestZombieDoFilme.txt") );
+        game.move(6, 2, 6, 1);  //Humano mata zombie
+        game.move(12, 3, 3, 3); //Smoker apanha survivor (survivor é pulled - 4 3)
+        game.move(4, 0, 3, 0);  //Humano apanha arma (survivor é pulled - 5 3)
+        game.move(6, 5, 7, 4);  //Zombie move para preparar attack (survivor é pulled - 6 3)
+        game.move(1, 2, 1, 3);  //Humano move contra zombie (survivor é pulled - 7 3)
+        game.move(7, 4, 7, 3);  //Zombie ataca survivor (survivor para de ser pulled e é convertido)
+        assertEquals( 4, game.getElementId(7, 3) );  //Foi convertido, logo não foi mexido para o lado
     }
 }
