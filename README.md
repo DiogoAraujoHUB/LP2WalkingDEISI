@@ -7,9 +7,10 @@ https://left4dead.fandom.com/wiki/The_Smoker
 
 
 -> O Smoker, no meu programa, comporta-se muito diferentemente de um zombie normal.
+Tem um movimento baixo, conseguido só mover.se uma casa linearmente, pois, entre os Zombies Especias do Left 4 Dead 2, é um dos mais lentos.
 Para começar, o Smoker não consegue atacar nenhum humano que esteja ao seu lado. O seu unico método de ataque é a sua lingua, que ele vai usar para agarrar os Humanos e para os puxar contra ele, mas só consegue fazer isto se as criaturas que ele atacar estiverem longe dele. O Smoker não consegue atacar algo diferente de um Humano.
 Quando um humano é agarrado pela lingua do Smoker, não irá conseguir mover-se nem atacar, pois está preso pela lingua. Dessa mesma forma, quando o Smoker está a puxar um humano, não consegue mover-se nem consegue atacar.
-O humano só se consegue defender da lingua do Smoker se tiver um equipamento defensivo. Um equipamento ofensivo não consegue defender o humano, sendo a única exceção o "Beskar Helmet", que defende e ataca, e se o humano estiver envenenado.
+O humano só se consegue defender da lingua do Smoker se tiver a Espada Hattori Hanzo, ou se tiver o Beskar Helmet. Equipamentos ofensivos e defensivos em geral não conseguem defender o humano, sendo a unica exceção se o humano estiver envenenado.
 
 
 
