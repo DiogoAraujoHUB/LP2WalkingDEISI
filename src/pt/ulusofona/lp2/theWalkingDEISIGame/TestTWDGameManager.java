@@ -361,6 +361,20 @@ public class TestTWDGameManager {
     }
 
     @Test
+    public void testMapInputsCreatureWithEquipment() {
+        TWDGameManager game = new TWDGameManager();
+
+        game.startGame( new File("./test-files/valoresWalkingDEISITestZombieDoFilme.txt") );
+        Creature creatureFound = game.getGameMap().getPosition(3, 3).getCreature();
+        Equipamento equipamentFound = null;
+        if ( creatureFound instanceof Humano ) {
+            equipamentFound = ((Humano) creatureFound).getEquipamentoApanhado();
+        }
+
+        assertEquals( true, equipamentFound != null);  //O mapa põe o equipamento na criatura
+    }
+
+    @Test
     public void testSmokerZombiePullsHumanoAndKills() {
         TWDGameManager game = new TWDGameManager();
 
