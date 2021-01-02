@@ -1074,26 +1074,6 @@ public class TWDGameManager {
         return true;
     }
 
-    //Só remove humanos
-    public boolean removeHumano( Creature humanFound ) {
-        int pos = 0;
-        for (Creature creature : creatures) {
-            if (creature.getId() == humanFound.getId() ) {
-                if ( creature.getTipo() >= 5 && creature.getTipo() <= 8)
-                break;
-            }
-
-            pos++;
-        }
-
-        if (pos == creatures.size()) {
-            return false;
-        }
-
-        creatures.remove(pos);
-        return true;
-    }
-
     public boolean removeEquipment(Equipamento equipamentFound) {
         int pos = 0;
         for (Equipamento equipamento : equipment) {
