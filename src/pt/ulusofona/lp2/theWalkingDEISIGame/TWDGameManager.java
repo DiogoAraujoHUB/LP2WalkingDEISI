@@ -631,6 +631,7 @@ public class TWDGameManager {
 
                     //Se estivermos a atacar com um SmokerZombie, so se conseguem defender com um equipamento defensivo
                     if ( equipamentoApanhado != null ) {
+
                         if ( equipamentoApanhado instanceof DefensivoEOfensivo ||
                                 equipamentoApanhado instanceof Defensivo ) {
                             if ( ((Humano) creatureBeingAttacked).defend(gameMap, creatureAttacking) ) {
@@ -650,7 +651,10 @@ public class TWDGameManager {
                     return false;
                 }
 
-                if ( equipamentoApanhado != null ) {
+                //Vamos ver se o humano tem equipamento para se defender com
+                //Se o humano tiver agarrado, então não importa se tiver equipamento
+                if ( equipamentoApanhado != null &&
+                        ((Humano) creatureBeingAttacked).getCreatureThatGrabbedHuman() == null) {
 
                     //Como o humano tem um equipamento defensivo e ofensivo, vai atacar o zombie para se defender
                     if ( equipamentoApanhado instanceof DefensivoEOfensivo ) {
@@ -695,6 +699,18 @@ public class TWDGameManager {
                 if ( ((Humano) creatureBeingAttacked).getEquipamentoApanhado() != null ) {
                     removeEquipment(((Humano) creatureBeingAttacked).getEquipamentoApanhado());
                     ((Humano) creatureBeingAttacked).setEquipamentoApanhado(null);
+                }
+            }
+
+            //Se o humano estiver a ser agarrado antes de ser convertido, então temos que parar de agarrar
+            if ( creatureBeingAttacked instanceof Humano ) {
+                Creature creatureGrabbing = ((Humano) creatureBeingAttacked).getCreatureThatGrabbedHuman();
+
+                if ( creatureGrabbing != null ) {
+                    if ( creatureGrabbing instanceof SmokerZombie ) {
+                        ((SmokerZombie) creatureGrabbing).stopPulling();
+                        ((Humano) creatureBeingAttacked).stopBeingGrabbed();
+                    }
                 }
             }
 

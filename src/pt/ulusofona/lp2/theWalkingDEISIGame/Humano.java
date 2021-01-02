@@ -33,6 +33,10 @@ public abstract class Humano extends Creature {
         this.creatureThatGrabbedHuman = creatureThatGrabbedHuman;
     }
 
+    public void stopBeingGrabbed() {
+        this.creatureThatGrabbedHuman = null;
+    }
+
     public boolean getReleased(Creature creatureReleasing) {
         if ( creatureThatGrabbedHuman == null ) {
             return false;
@@ -220,6 +224,15 @@ public abstract class Humano extends Creature {
                 map.getPosition(xD, yD).setTipo(0);
 
                 move(map, xD, yD);
+            }
+
+            //If smoker is currently grabbing someone, stop grabbing them and pulling them
+            Creature creaturePulled = ((SmokerZombie) creatureAttacked).getCreatureBeingPulled();
+            if ( creaturePulled != null ) {
+                if ( creaturePulled instanceof Humano ) {
+                    ((Humano) creaturePulled).stopBeingGrabbed();
+                    ((SmokerZombie) creatureAttacked).stopPulling();
+                }
             }
 
             ((SmokerZombie) creatureAttacked).takeHit();
