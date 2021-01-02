@@ -642,7 +642,7 @@ public class TWDGameManager {
                         }
                     }
 
-                    //O humano está ao lado do zombie, logo vai ser empurrado
+                    //Se o humano estiver ao lado de o Smoker, então o Smoker não o consegue agarrar
                     if ( ((SmokerZombie) creatureAttacking).grabCreature(gameMap, creatureBeingAttacked) ) {
                         incrementaTempo();
                         return true;
