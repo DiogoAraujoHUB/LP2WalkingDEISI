@@ -632,8 +632,8 @@ public class TWDGameManager {
                     //Se estivermos a atacar com um SmokerZombie, so se conseguem defender com um equipamento defensivo
                     if ( equipamentoApanhado != null ) {
 
-                        if ( equipamentoApanhado instanceof DefensivoEOfensivo ||
-                                equipamentoApanhado instanceof Defensivo ) {
+                        if ( equipamentoApanhado instanceof BeskarHelmet ||
+                                equipamentoApanhado instanceof EspadaHattoriHanzo) {
                             if ( ((Humano) creatureBeingAttacked).defend(gameMap, creatureAttacking) ) {
                                 incrementaTempo();
 

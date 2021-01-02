@@ -18,7 +18,7 @@ public class SmokerZombie extends Zombie {
         super(id, nome, x, y);
 
         this.tipo = 10;
-        this.deslocamentoMaximo = 2;
+        this.deslocamentoMaximo = 1;
 
         this.ableToMoveFreely = false;
         this.ableToMoveLinearly = true;
