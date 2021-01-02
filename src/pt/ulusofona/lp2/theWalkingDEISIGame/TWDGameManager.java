@@ -1290,7 +1290,7 @@ public class TWDGameManager {
         }
         gameResults.add("");
 
-        text = "Envenenados / Destruídos";
+        text = "Envenenados / Destruidos";
         gameResults.add(text);
         gameResults.add("");
 
