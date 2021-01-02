@@ -11,6 +11,8 @@ public abstract class Humano extends Creature {
     protected boolean envenenado;
     protected int turnosRestantes;
 
+    private Creature creatureThatGrabbedHuman;
+
     public Humano(int id, String nome, int x, int y) {
         super(id, nome, x, y);
 
@@ -20,6 +22,53 @@ public abstract class Humano extends Creature {
         this.turnosRestantes = 3;
 
         this.equipamentoApanhado = null;
+        this.creatureThatGrabbedHuman = null;
+    }
+
+    public Creature getCreatureThatGrabbedHuman() {
+        return this.creatureThatGrabbedHuman;
+    }
+
+    public void getGrabbed(Creature creatureThatGrabbedHuman) {
+        this.creatureThatGrabbedHuman = creatureThatGrabbedHuman;
+    }
+
+    public boolean getReleased(Creature creatureReleasing) {
+        if ( creatureThatGrabbedHuman == null ) {
+            return false;
+        }
+
+        Equipamento equipmentFound = null;
+        if ( creatureReleasing instanceof Humano ) {
+            equipmentFound = ((Humano) creatureReleasing).getEquipamentoApanhado();
+        }
+
+        if ( equipmentFound == null ) {
+            return false;
+        }
+
+        if ( equipmentFound instanceof Defensivo ) {
+            return false;
+        }
+
+        if ( equipmentFound instanceof PistolaWaltherPPK ) {
+            if ( equipmentFound.getNumUses() == 0 ) {
+                return false;
+            }
+
+            equipmentFound.setNumUses( equipmentFound.getNumUses() - 1);
+            if ( creatureThatGrabbedHuman instanceof SmokerZombie ) {
+                ((SmokerZombie) creatureThatGrabbedHuman).stopPulling();
+            }
+            creatureThatGrabbedHuman = null;
+            return true;
+        }
+
+        if ( creatureThatGrabbedHuman instanceof SmokerZombie ) {
+            ((SmokerZombie) creatureThatGrabbedHuman).stopPulling();
+        }
+        creatureThatGrabbedHuman = null;
+        return true;
     }
 
     public Equipamento getEquipamentoApanhado() {
@@ -150,6 +199,32 @@ public abstract class Humano extends Creature {
         //Attack normally
         map.getPosition(xD,yD).setCreature(null);
         move(map, xD, yD);
+        return true;
+    }
+
+    public boolean attackBoss(Mapa map, Creature creatureAttacked, int xD, int yD) {
+        if ( equipamentoApanhado instanceof PistolaWaltherPPK ) {
+            //A pistola já não tem balas!
+            if ( equipamentoApanhado.getNumUses() == 0 ) {
+                return false;
+            }
+
+            //Reduce number of bullets by one and shoot zombie
+            equipamentoApanhado.setNumUses(equipamentoApanhado.getNumUses() - 1);
+        }
+
+        if ( creatureAttacked instanceof SmokerZombie ) {
+            if ( ((SmokerZombie) creatureAttacked).getAmountOfLifeLeft() == 1 ) {
+                creatureAttacked.beDestroyed();
+                map.getPosition(xD, yD).setCreature(null);
+                map.getPosition(xD, yD).setTipo(0);
+
+                move(map, xD, yD);
+            }
+
+            ((SmokerZombie) creatureAttacked).takeHit();
+        }
+
         return true;
     }
 

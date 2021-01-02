@@ -1,7 +1,8 @@
-package pt.ulusofona.lp2.theWalkingDEISIGame;
+package pt.ulusofona.lp2.theWalkingDEISIGame.classesCriaturas;
 
-import pt.ulusofona.lp2.theWalkingDEISIGame.classesCriaturas.IdosoHumano;
-import pt.ulusofona.lp2.theWalkingDEISIGame.classesEquipamentos.Antidoto;
+import pt.ulusofona.lp2.theWalkingDEISIGame.Animal;
+import pt.ulusofona.lp2.theWalkingDEISIGame.Equipamento;
+import pt.ulusofona.lp2.theWalkingDEISIGame.Mapa;
 
 public class Cao extends Animal {
 

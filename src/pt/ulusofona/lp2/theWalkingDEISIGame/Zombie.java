@@ -31,7 +31,7 @@ public abstract class Zombie extends Creature {
         y = destinoY;
     }
 
-    public Creature convert(Mapa map, Creature creatureAttacked, int xD, int yD) {
+    public Creature convert(Mapa map, Creature creatureAttacked) {
         Creature zombieMade = null;
 
         int id = creatureAttacked.getId();
@@ -53,12 +53,12 @@ public abstract class Zombie extends Creature {
         }
 
         //Primeiro retiramos o humano que estava la anteriormente
-        map.getPosition(xD,yD).setCreature(null);
-        map.setPositionType(xD,yD, 0);
+        map.getPosition(x,y).setCreature(null);
+        map.setPositionType(x,y, 0);
 
         //Depois adicionamos o zombie que o humano se tornou em
-        map.getPosition(xD,yD).setCreature(zombieMade);
-        map.setPositionType(xD,yD,1);
+        map.getPosition(x,y).setCreature(zombieMade);
+        map.setPositionType(x,y,1);
         return zombieMade;
     }
 

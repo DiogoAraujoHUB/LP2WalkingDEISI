@@ -1,5 +1,7 @@
 package pt.ulusofona.lp2.theWalkingDEISIGame;
 
+import pt.ulusofona.lp2.theWalkingDEISIGame.classesCriaturas.Cao;
+
 import java.util.List;
 
 public class Mapa {
@@ -106,7 +108,7 @@ public class Mapa {
                     ((Humano) creatureFound).setEquipamentoApanhado(equipamento);
                     creatureFound.pickEquipment();
                 }
-                if ( creatureFound instanceof Cao ) {
+                if ( creatureFound instanceof Cao) {
                     ((Cao) creatureFound).setEquipamentoApanhado(equipamento);
                     creatureFound.pickEquipment();
                 }

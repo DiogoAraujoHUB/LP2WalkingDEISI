@@ -509,6 +509,26 @@ public class TWDGameManager {
         if ( gameMap.getPosition(xD,yD).getCreature() instanceof Zombie ) {
             creatureBeingAttacked = gameMap.getPosition(xD,yD).getCreature();
         }
+
+        if ( gameMap.getPosition(xD,yD).getCreature() instanceof Humano ) {
+            Creature creatureFound = gameMap.getPosition(xD,yD).getCreature();
+
+            if ( creatureFound instanceof Humano && creatureAttacking instanceof Humano ) {
+                if ( ((Humano) creatureFound).getCreatureThatGrabbedHuman() != null ) {
+                    if ( ((Humano) creatureAttacking).getEquipamentoApanhado() instanceof Ofensivo ||
+                            ((Humano) creatureAttacking).getEquipamentoApanhado() instanceof DefensivoEOfensivo ) {
+                        if ( ((Humano) creatureFound).getReleased( creatureAttacking ) ) {
+                            incrementaTempo();
+
+                            return true;
+                        }
+                    }
+                }
+            }
+
+            return false;
+        }
+
         //Só vamos atacar um zombie, e nada mais
         if ( creatureBeingAttacked == null ) {
             return false;
@@ -538,6 +558,14 @@ public class TWDGameManager {
 
             //Não conseguimos atacar com um equipamento defensivo, logo tem que ser ofensivo
             if ( equipamentoUtilizado instanceof Ofensivo ) {
+                if ( creatureBeingAttacked instanceof SmokerZombie ) {
+                    if ( ((Humano) creatureAttacking).attackBoss(gameMap, creatureBeingAttacked, xD, yD) ) {
+                        incrementaTempo();
+
+                        return true;
+                    }
+                }
+
                 //Kill zombie being attacked
                 if ( ((Humano) creatureAttacking).attack(gameMap, creatureBeingAttacked, xD, yD) ) {
                     incrementaTempo();
@@ -580,7 +608,7 @@ public class TWDGameManager {
 
             //Vamos verificar se o humano tem algum equipamento para se defender com
             if ( creatureBeingAttacked instanceof Humano ) {
-                //Um humano envenenado defende contra tudo
+                //Um humano envenenado defende contra tudo (mesmo o smoker)
                 if ( ((Humano) creatureBeingAttacked).getEnvenenado() ) {
                     incrementaTempo();
                     return true;
@@ -588,6 +616,39 @@ public class TWDGameManager {
 
                 //Vamos verificar se o humano tem um equipamento equipado!
                 Equipamento equipamentoApanhado = ((Humano) creatureBeingAttacked).getEquipamentoApanhado();
+
+                //Vamos ver se estamos a atacar com um smoker
+                if ( creatureAttacking instanceof SmokerZombie ) {
+                    //Se ja estivermos a agarrar alguém, então não conseguimos agarrar mais ninguem
+                    if ( ((SmokerZombie) creatureAttacking).getCurrentlyPulling() ) {
+                        return false;
+                    }
+
+                    //Se a pessoa que estamos a atacar ja ter sido agarrada, então não conseguimos agarrar outra vez
+                    if ( ((Humano) creatureBeingAttacked).getCreatureThatGrabbedHuman() != null ) {
+                        return false;
+                    }
+
+                    //Se estivermos a atacar com um SmokerZombie, so se conseguem defender com um equipamento defensivo
+                    if ( equipamentoApanhado != null ) {
+                        if ( equipamentoApanhado instanceof DefensivoEOfensivo ||
+                                equipamentoApanhado instanceof Defensivo ) {
+                            if ( ((Humano) creatureBeingAttacked).defend(gameMap, creatureAttacking) ) {
+                                incrementaTempo();
+
+                                return true;
+                            }
+                        }
+                    }
+
+                    //O humano está ao lado do zombie, logo vai ser empurrado
+                    if ( ((SmokerZombie) creatureAttacking).grabCreature(gameMap, creatureBeingAttacked) ) {
+                        incrementaTempo();
+                        return true;
+                    }
+
+                    return false;
+                }
 
                 if ( equipamentoApanhado != null ) {
 
@@ -638,7 +699,7 @@ public class TWDGameManager {
             }
 
             //Vamos atacar com o zombie e converter o humano
-            Creature zombieMade = ((Zombie) creatureAttacking).convert(gameMap, creatureBeingAttacked, xD, yD);
+            Creature zombieMade = ((Zombie) creatureAttacking).convert(gameMap, creatureBeingAttacked);
             removeCreature(creatureBeingAttacked);
             creatures.add(zombieMade);
 
@@ -689,6 +750,13 @@ public class TWDGameManager {
 
         if ( creatureFound == null ) {
             return false;
+        }
+
+        //Human is currently being pulled, therefore he cannot move
+        if ( creatureFound instanceof Humano ) {
+            if ( ((Humano) creatureFound).getCreatureThatGrabbedHuman() != null ) {
+                return false;
+            }
         }
 
         if ( !verificaCondicoes(xO, yO, xD, yD, creatureFound) ) {
@@ -787,6 +855,18 @@ public class TWDGameManager {
         if ( zombieFound == null ) {
             return false;
         }
+
+        //Um smoker que está a empurrar alguém de momento não consegue mover nem atacar
+        if ( zombieFound instanceof SmokerZombie ) {
+            if ( ((SmokerZombie) zombieFound).getCurrentlyPulling() ) {
+                return false;
+            }
+
+            if ( gameMap.getMapId(xO,yO) == 1 && gameMap.getMapId(xD, yD) == 1 ) {
+                ((SmokerZombie) zombieFound).setCurrentlyAttacking(true);
+            }
+        }
+
         if ( !verificaCondicoes(xO, yO, xD, yD, zombieFound) ) {
             return false;
         }
@@ -862,6 +942,17 @@ public class TWDGameManager {
         }
 
         int deslocamento = creatureMoved.getDeslocamentoMaximo();
+        if ( creatureMoved instanceof SmokerZombie ) {
+            if ( ((SmokerZombie) creatureMoved).getCurrentlyAttacking() ) {
+                deslocamento = ((SmokerZombie) creatureMoved).calculateDistanceToPosition(xD, yD);
+
+                if ( deslocamento == 0 ) {
+                    return false;
+                }
+                ((SmokerZombie) creatureMoved).setCurrentlyAttacking(false);
+            }
+        }
+
         return verificaMovimento(deslocamento, xO, yO, xD, yD, creatureMoved);
     }
 
@@ -969,6 +1060,26 @@ public class TWDGameManager {
         int pos = 0;
         for (Creature creature : creatures) {
             if (creature.getId() == creatureFound.getId()) {
+                break;
+            }
+
+            pos++;
+        }
+
+        if (pos == creatures.size()) {
+            return false;
+        }
+
+        creatures.remove(pos);
+        return true;
+    }
+
+    //Só remove humanos
+    public boolean removeHumano( Creature humanFound ) {
+        int pos = 0;
+        for (Creature creature : creatures) {
+            if (creature.getId() == humanFound.getId() ) {
+                if ( creature.getTipo() >= 5 && creature.getTipo() <= 8)
                 break;
             }
 
@@ -1142,12 +1253,36 @@ public class TWDGameManager {
         numberOfTurns++;
         numberOfTurnsTotal++;
         incrementaTempoVeneno();
+        //If there are any humans currently being grabbed, pull them towards the smoker zombie grabbing them
+        empurraHumanoContraSmokerZombie();
 
         if ( numberOfTurnsTotal % 2 == 0 ) {
             if ( dayNightCycle == 0 ) {
                 dayNightCycle = 1;
             } else {
                 dayNightCycle = 0;
+            }
+        }
+    }
+
+    //Vamos percorrer a lista de criaturas á procura de um Smoker Zombie
+    //Se existir um smoker zombie, e ele estiver a agarrar alguém, então vamos puxar essa pessoa contra o zombie
+    public void empurraHumanoContraSmokerZombie() {
+        for (Creature creature: creatures) {
+            if ( creature instanceof SmokerZombie) {
+                if ( ((SmokerZombie) creature).getCurrentlyPulling() ) {
+                    //O humano está ao lado do zombie, e pode ser morto
+                    if ( ((SmokerZombie) creature).calculateDistanceToHumano() == 1 ) {
+                        Creature creaturePulled = ((SmokerZombie) creature).getCreatureBeingPulled();
+
+                        creaturePulled.beDestroyed();
+                        gameMap.getPosition(creaturePulled.getX(), creaturePulled.getY() ).setCreature(null);
+                        gameMap.getPosition(creaturePulled.getX(), creaturePulled.getY() ).setTipo(0);
+                        ((SmokerZombie) creature).stopPulling();
+                    } else {
+                        ((SmokerZombie) creature).useTongueToPull(gameMap);
+                    }
+                }
             }
         }
     }
