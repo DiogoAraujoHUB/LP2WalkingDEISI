@@ -2,6 +2,8 @@
 Projeto de LP2 - Walking DEISI
 
 Zombie do Filme -> Smoker (From Left 4 Dead 2)
+https://left4dead.fandom.com/wiki/The_Smoker
+
 
 
 -> O Smoker, no meu programa, comporta-se muito diferentemente de um zombie normal.
