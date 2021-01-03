@@ -1532,7 +1532,7 @@ public class TWDGameManager {
             }
         }
 
-        return 0;
+        return -1;
     }
 
     public List<Integer> getIdsInSafeHaven() {
