@@ -1,6 +1,6 @@
 # LP2WalkingDEISI-a21905661-a21902726
 Projeto de LP2 - Walking DEISI
-https://www.youtube.com/watch?v=lrgpV4VXRBE - Video
+https://www.youtube.com/watch?v=lrgpV4VXRBE (Video)
 
 
 
