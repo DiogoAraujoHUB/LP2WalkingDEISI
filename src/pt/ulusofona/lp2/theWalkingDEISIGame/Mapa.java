@@ -94,6 +94,7 @@ public class Mapa {
             if ( map[xFound][yFound].getTipo() == -1 ) {
                 continue;
             }
+
             //Já está uma creatura na posição?
             //Se ja estiver, e a criatura não for um zombie, então damos o equipamento
             if ( map[xFound][yFound].getTipo() == 1 ) {
@@ -106,11 +107,17 @@ public class Mapa {
                 //Se for um humano ou um cão, então apanha o equipamento
                 if ( creatureFound instanceof Humano ) {
                     ((Humano) creatureFound).setEquipamentoApanhado(equipamento);
-                    creatureFound.pickEquipment();
+
+                    if ( creatureFound.getNumEquipamentos() != 1 ) {
+                        creatureFound.pickEquipment();
+                    }
                 }
                 if ( creatureFound instanceof Cao) {
                     ((Cao) creatureFound).setEquipamentoApanhado(equipamento);
-                    creatureFound.pickEquipment();
+
+                    if ( creatureFound.getNumEquipamentos() != 1 ) {
+                        creatureFound.pickEquipment();
+                    }
                 }
 
                 continue;

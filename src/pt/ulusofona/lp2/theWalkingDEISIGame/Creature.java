@@ -68,6 +68,10 @@ public abstract class Creature {
         return this.numEquipamentos;
     }
 
+    public void setNumEquipamentos(int number) {
+        this.numEquipamentos = number;
+    }
+
     public void pickEquipment() {
         numEquipamentos++;
     }

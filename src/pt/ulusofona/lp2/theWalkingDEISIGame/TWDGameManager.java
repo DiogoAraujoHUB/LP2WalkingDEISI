@@ -145,7 +145,7 @@ public class TWDGameManager {
                                 int spawnY = Integer.parseInt( splitCreatures[4].trim() );
 
                                 if ( !createCreatureWithParameters(0, creatureID, typeID
-                                        , creatureName, spawnX, spawnY) ) {
+                                        , creatureName, spawnX, spawnY, 0) ) {
                                     return false;
                                 }
 
@@ -347,7 +347,8 @@ public class TWDGameManager {
     //If state == 1, então a criatura está no safe haven
     //If state == -1, então a criatura está morta
     //If state == 0, então lê-se tudo normalmente
-    public boolean createCreatureWithParameters(int state, int id, int typeID, String name, int spawnX, int spawnY) {
+    public boolean createCreatureWithParameters(int state, int id, int typeID, String name, int spawnX, int spawnY,
+                                                int numEquipment) {
         Creature creatureFound = null;
 
         //Making sure the last character in a name is a space
@@ -414,6 +415,9 @@ public class TWDGameManager {
             default:
                 return false;
         }
+
+        //Por o numero de equipamentos interagidos com
+        creatureFound.setNumEquipamentos(numEquipment);
 
         if ( state == 1 ) {
             if ( creatureFound instanceof Humano ) {
@@ -1657,7 +1661,6 @@ public class TWDGameManager {
             //-1 means the creature is dead
             //0 means the creature is in play
             //1 means the creature is in the safe haven
-            //-2 means the creature has been poisoned, and will be followed up by the number of turns left
             for ( Creature creature: creatures ) {
                 if ( creature == null ) {
                     continue;
@@ -1667,27 +1670,27 @@ public class TWDGameManager {
                 if ( creature instanceof Humano ) {
                     if ( creature.hasDied ) {
                         writer.println("-1 : " + creature.getId() + " : " + creature.getTipo() + " :" + creature.getNome() +
-                                ": " + creature.getX() + " : " + creature.getY() );
+                                ": " + creature.getX() + " : " + creature.getY() + " : " + creature.getNumEquipamentos() );
                     } else if ( ((Humano) creature).getInsideSafeHaven() ) {
                         writer.println("1 : " + creature.getId() + " : " + creature.getTipo() + " :" + creature.getNome() +
-                                ": " + creature.getX() + " : " + creature.getY() );
+                                ": " + creature.getX() + " : " + creature.getY() + " : " + creature.getNumEquipamentos() );
                     } else {
                         writer.println("0 : " + creature.getId() + " : " + creature.getTipo() + " :" + creature.getNome() +
-                                ": " + creature.getX() + " : " + creature.getY() );
+                                ": " + creature.getX() + " : " + creature.getY() + " : " + creature.getNumEquipamentos() );
                     }
                 }
                 if ( creature instanceof Zombie ) {
                     if ( creature.hasDied ) {
                         writer.println("-1 : " + creature.getId() + " : " + creature.getTipo() + " :" + creature.getNome() +
-                                ": " + creature.getX() + " : " + creature.getY() );
+                                ": " + creature.getX() + " : " + creature.getY() + " : " + creature.getNumEquipamentos() );
                     } else {
                         writer.println("0 : " + creature.getId() + " : " + creature.getTipo() + " :" + creature.getNome() +
-                                ": " + creature.getX() + " : " + creature.getY() );
+                                ": " + creature.getX() + " : " + creature.getY() + " : " + creature.getNumEquipamentos() );
                     }
                 }
                 if ( creature instanceof Animal ) {
                     writer.println("0 : " + creature.getId() + " : " + creature.getTipo() + " :" + creature.getNome() +
-                            ": " + creature.getX() + " : " + creature.getY() );
+                            ": " + creature.getX() + " : " + creature.getY() + " : " + creature.getNumEquipamentos() );
                 }
                 writer.flush();
             }
@@ -1844,9 +1847,10 @@ public class TWDGameManager {
                                 String creatureName = splitCreatures[3];
                                 int spawnX = Integer.parseInt( splitCreatures[4].trim() );
                                 int spawnY = Integer.parseInt( splitCreatures[5].trim() );
+                                int numberOfEquipment = Integer.parseInt( splitCreatures[6].trim() );
 
                                 if ( !createCreatureWithParameters(creatureState, creatureID, typeID,
-                                        creatureName, spawnX, spawnY) ) {
+                                        creatureName, spawnX, spawnY, numberOfEquipment) ) {
                                     return false;
                                 }
 
