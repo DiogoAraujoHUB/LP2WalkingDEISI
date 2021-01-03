@@ -1,5 +1,8 @@
 # LP2WalkingDEISI-a21905661-a21902726
 Projeto de LP2 - Walking DEISI
+https://www.youtube.com/watch?v=lrgpV4VXRBE - Video
+
+
 
 Zombie do Filme -> Smoker (From Left 4 Dead 2)
 https://left4dead.fandom.com/wiki/The_Smoker
