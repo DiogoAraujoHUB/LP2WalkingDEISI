@@ -418,4 +418,93 @@ public class TestTWDGameManager {
         game.move(7, 4, 7, 3);  //Zombie ataca survivor (survivor para de ser pulled e é convertido)
         assertEquals( 4, game.getElementId(7, 3) );  //Foi convertido, logo não foi mexido para o lado
     }
+
+    @Test
+    public void testSmokerZombieMovesLinearlyToValidPosition() {
+        TWDGameManager game = new TWDGameManager();
+
+        game.startGame( new File("./test-files/valoresWalkingDEISITestZombieDoFilme.txt") );
+        game.move(6, 2, 6, 1);  //Humano mata zombie
+        game.move(12, 3, 11, 3); //Smoker move para posição
+        assertEquals( 1, game.getElementId(11, 3) );  //Foi mexido
+    }
+
+    @Test
+    public void testSmokerZombieMovesLinearyToInvalidPosition() {
+        TWDGameManager game = new TWDGameManager();
+
+        game.startGame( new File("./test-files/valoresWalkingDEISITestZombieDoFilme.txt") );
+        game.move(6, 2, 6, 1);  //Humano mata zombie
+        game.move(12, 3, 10, 3); //Smoker move para posição demasiado longe
+        assertEquals( 0, game.getElementId(10, 3) );  //Não foi mexido
+    }
+
+    @Test
+    public void testSmokerZombieMovesDiagonallyToInvalidPosition() {
+        TWDGameManager game = new TWDGameManager();
+
+        game.startGame( new File("./test-files/valoresWalkingDEISITestZombieDoFilme.txt") );
+        game.move(6, 2, 6, 1);  //Humano mata zombie
+        game.move(12, 3, 11, 2); //Smoker move para diagonalmente
+        assertEquals( 0, game.getElementId(10, 3) );  //Não foi mexido
+    }
+
+    @Test
+    public void testSmokerZombieTakesHit() {
+        TWDGameManager game = new TWDGameManager();
+
+        game.startGame( new File("./test-files/valoresWalkingDEISITestZombieDoFilme.txt") );
+        Creature creatureFound = game.getGameMap().getPosition(12, 3).getCreature();
+
+        if ( creatureFound instanceof SmokerZombie ) {
+            ((SmokerZombie) creatureFound).takeHit();
+            assertEquals( 1, ((SmokerZombie) creatureFound).getAmountOfLifeLeft() );  //Perdeu vida
+        }
+    }
+
+    @Test
+    public void testSmokerZombieTakesHitAt0() {
+        TWDGameManager game = new TWDGameManager();
+
+        game.startGame( new File("./test-files/valoresWalkingDEISITestZombieDoFilme.txt") );
+        Creature creatureFound = game.getGameMap().getPosition(12, 3).getCreature();
+
+        if ( creatureFound instanceof SmokerZombie ) {
+            ((SmokerZombie) creatureFound).takeHit();
+            ((SmokerZombie) creatureFound).takeHit();
+            ((SmokerZombie) creatureFound).takeHit();
+            assertEquals( 0, ((SmokerZombie) creatureFound).getAmountOfLifeLeft() );  //não passou zero
+        }
+    }
+
+    @Test
+    public void testSmokerZombieGrabsCreature() {
+        TWDGameManager game = new TWDGameManager();
+
+        game.startGame( new File("./test-files/valoresWalkingDEISITestZombieDoFilme.txt") );
+        Creature creatureFound = game.getGameMap().getPosition(12, 3).getCreature();
+
+        if ( creatureFound instanceof SmokerZombie ) {
+            Creature creatureAttacked = game.getGameMap().getPosition(3, 3).getCreature();
+
+           ((SmokerZombie) creatureFound).grabCreature(game.getGameMap(), creatureAttacked );
+            assertEquals( true, ((SmokerZombie) creatureFound).getCurrentlyPulling() );  //não passou zero
+        }
+    }
+
+    @Test
+    public void testSmokerZombieGrabsCreatureAndThenStopsPulling() {
+        TWDGameManager game = new TWDGameManager();
+
+        game.startGame( new File("./test-files/valoresWalkingDEISITestZombieDoFilme.txt") );
+        Creature creatureFound = game.getGameMap().getPosition(12, 3).getCreature();
+
+        if ( creatureFound instanceof SmokerZombie ) {
+            Creature creatureAttacked = game.getGameMap().getPosition(3, 3).getCreature();
+
+            ((SmokerZombie) creatureFound).grabCreature(game.getGameMap(), creatureAttacked );
+            ((SmokerZombie) creatureFound).stopPulling();
+            assertEquals( false, ((SmokerZombie) creatureFound).getCurrentlyPulling() );  //não passou zero
+        }
+    }
 }
