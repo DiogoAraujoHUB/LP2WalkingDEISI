@@ -35,6 +35,20 @@ public class TWDGameManager {
         gameMap = new Mapa();
     }
 
+    public int getDayNightCycle() {
+        return this.dayNightCycle;
+    }
+
+    //Devolve o ID da equipa que vai jogar no primeiro turno
+    public int getInitialTeam() {
+        return this.initialTeamId;
+    }
+
+    //devolve o id da equipa que está ativa no turno atual
+    public int getCurrentTeamId() {
+        return this.currentTeamId;
+    }
+
     public int getNumberOfTurns() {
         return this.numberOfTurns;
     }
@@ -47,9 +61,24 @@ public class TWDGameManager {
         return this.gameMap;
     }
 
+    //Devolve uma lista com todos os objetos "Creature" no jogo
+    public List<Creature> getCreatures() {
+        return this.creatures;
+    }
+
+    //Devolve uma lista com todos os objetos "Equipamento" no jogo
+    public List<Equipamento> getEquipment() {
+        return this.equipment;
+    }
+
+    //Devolve uma lista com todos os objetos "SafeHaven" no jogo
+    public List<SafeHaven> getSafeHavens() {
+        return this.safeHavens;
+    }
+
     //leitura do ficheiro texto
     //e carregar para a memória a informação relevante
-    public boolean startGame( File ficheiroInicial ) {
+    public boolean startGame(File ficheiroInicial) {
         creatures.clear();
         equipment.clear();
         safeHavens.clear();
@@ -412,21 +441,6 @@ public class TWDGameManager {
         return worldSize;
     }
 
-    //Devolve o ID da equipa que vai jogar no primeiro turno
-    public int getInitialTeam() {
-        return this.initialTeamId;
-    }
-
-    //Devolve uma lista com todos os objetos "Creature" no jogo
-    public List<Creature> getCreatures() {
-        return this.creatures;
-    }
-
-    //Devolve uma lista com todos os objetos "SafeHaven" no jogo
-    public List<SafeHaven> getSafeHavens() {
-        return this.safeHavens;
-    }
-
     public List<String> getAuthors() {
         List<String> authors = new ArrayList<>();
 
@@ -436,11 +450,6 @@ public class TWDGameManager {
         authors.add( primeiroAutor );
         authors.add( segundoAutor );
         return authors;
-    }
-
-    //devolve o id da equipa que está ativa no turno atual
-    public int getCurrentTeamId() {
-        return this.currentTeamId;
     }
 
     //O safe haven for null indica que não é uma porta
@@ -1090,10 +1099,10 @@ public class TWDGameManager {
         return true;
     }
 
-    public boolean removeEquipment(Equipamento equipamentFound) {
+    public boolean removeEquipment(Equipamento equipmentFound) {
         int pos = 0;
         for (Equipamento equipamento : equipment) {
-            if (equipamento.getId() == equipamentFound.getId()) {
+            if (equipamento.getId() == equipmentFound.getId()) {
                 break;
             }
 
@@ -1955,16 +1964,16 @@ public class TWDGameManager {
         String[] popCulture = new String[14];
 
         popCulture[0] = "Resident Evil";
-        popCulture[1] = "Ash VS Evil Dead";
-        popCulture[2] = "The Night Eats the World";
-        popCulture[3] = "Carriers";
-        popCulture[4] = "";
+        popCulture[1] = "Evil Dead";
+        popCulture[2] = "I Am Legend";
+        popCulture[3] = "I Am Legend";
+        popCulture[4] = "Dragon Ball";
         popCulture[5] = "World War Z";
-        popCulture[6] = " Mandalorian Crusaders";
-        popCulture[7] = "Fist of Fury";
-        popCulture[8] = "";
+        popCulture[6] = "Mandalorian Crusaders";
+        popCulture[7] = "1972";
+        popCulture[8] = "Kill Bill";
         popCulture[9] = "1978";
-        popCulture[10] = "James Bond";
+        popCulture[10] = "Johny English";
         popCulture[11] = "The Walking Dead";
         popCulture[12] = "Xoxo";
         popCulture[13] = "Freddie Mercury";
