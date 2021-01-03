@@ -1961,24 +1961,24 @@ public class TWDGameManager {
     }
 
     public String[] popCultureExtravaganza() {
-        String[] popCulture = new String[14];
+        String[] popCultureAnswers = new String[14];
 
-        popCulture[0] = "Resident Evil";
-        popCulture[1] = "Evil Dead";
-        popCulture[2] = "I Am Legend";
-        popCulture[3] = "I Am Legend";
-        popCulture[4] = "Dragon Ball";
-        popCulture[5] = "World War Z";
-        popCulture[6] = "Mandalorians";
-        popCulture[7] = "1972";
-        popCulture[8] = "Kill Bill";
-        popCulture[9] = "1978";
-        popCulture[10] = "Bond, James Bond.";
-        popCulture[11] = "The Walking Dead";
-        popCulture[12] = "Xoxo";
-        popCulture[13] = "Freddie Mercury";
+        popCultureAnswers[0] = "Resident Evil";
+        popCultureAnswers[1] = "Evil Dead";
+        popCultureAnswers[2] = "I Am Legend";
+        popCultureAnswers[3] = "I Am Legend";
+        popCultureAnswers[4] = "Dragon Ball";
+        popCultureAnswers[5] = "World War Z";
+        popCultureAnswers[6] = "Mandalorians";
+        popCultureAnswers[7] = "1972";
+        popCultureAnswers[8] = "Kill Bill";
+        popCultureAnswers[9] = "1978";
+        popCultureAnswers[10] = "Bond, James Bond.";
+        popCultureAnswers[11] = "Lost";
+        popCultureAnswers[12] = "Chocho";
+        popCultureAnswers[13] = "Farrokh Bulsara";
 
-        return popCulture;
+        return popCultureAnswers;
     }
 }
 

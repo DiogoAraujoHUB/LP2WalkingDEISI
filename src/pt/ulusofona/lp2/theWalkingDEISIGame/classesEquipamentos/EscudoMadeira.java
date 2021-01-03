@@ -17,7 +17,7 @@ public class EscudoMadeira extends Defensivo {
         return this.utilizadoPorMilitar;
     }
 
-    public void setUtilizadoPorMilitar(boolean utilizadoPorMilitar) {
-        this.utilizadoPorMilitar = utilizadoPorMilitar;
+    public void setUtilizadoPorMilitar(boolean utilizado) {
+        this.utilizadoPorMilitar = utilizado;
     }
 }
