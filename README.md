@@ -26,4 +26,7 @@ A única maneira de se conseguir livrar da lingua do smoker é se outro humano a
 
 
 
+![](testesUnitariosSmoker.png?raw=true "Testes Unitarios")
+
+
 ![](diagrama.png?raw=true "Diagrama UML")
