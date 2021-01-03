@@ -1969,11 +1969,11 @@ public class TWDGameManager {
         popCulture[3] = "I Am Legend";
         popCulture[4] = "Dragon Ball";
         popCulture[5] = "World War Z";
-        popCulture[6] = "Mandalorian Crusaders";
+        popCulture[6] = "Mandalorians";
         popCulture[7] = "1972";
         popCulture[8] = "Kill Bill";
         popCulture[9] = "1978";
-        popCulture[10] = "Johny English";
+        popCulture[10] = "Bond, James Bond.";
         popCulture[11] = "The Walking Dead";
         popCulture[12] = "Xoxo";
         popCulture[13] = "Freddie Mercury";

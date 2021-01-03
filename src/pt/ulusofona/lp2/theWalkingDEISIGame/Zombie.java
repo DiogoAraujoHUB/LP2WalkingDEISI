@@ -1,10 +1,6 @@
 package pt.ulusofona.lp2.theWalkingDEISIGame;
 
 import pt.ulusofona.lp2.theWalkingDEISIGame.classesCriaturas.*;
-import pt.ulusofona.lp2.theWalkingDEISIGame.classesEquipamentos.CabecaAlho;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public abstract class Zombie extends Creature {
 

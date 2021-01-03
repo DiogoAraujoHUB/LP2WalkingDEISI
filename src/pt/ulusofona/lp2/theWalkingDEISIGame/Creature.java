@@ -1,9 +1,6 @@
 package pt.ulusofona.lp2.theWalkingDEISIGame;
 
-//Ja reparei que estas variáveis todas estavam a estragar tudo, vou ter que mudar a maneira que estou a fazer isto
-//Vou criar uma classe para cada creatura que este jogo pode ter!!!!
-//(E, devido a isso, vou retirar as variaveis boolean que antes eram usadas para mais ou menos definir essas classes)
-
+//Podia retirar as variaveis boolean se eu fizesse o move dependendo de cada Criatura individualmente
 public abstract class Creature {
     protected int id;
     protected int tipo;

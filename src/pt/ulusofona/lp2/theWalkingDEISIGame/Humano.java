@@ -101,7 +101,7 @@ public abstract class Humano extends Creature {
 
     public void beberAntidoto() {
         this.envenenado = false;
-        this.turnosRestantes = 4;
+        this.turnosRestantes = 3;
     }
 
     public int getTurnosRestantes() {

@@ -47,7 +47,5 @@ public abstract class Equipamento {
         this.numUses = numUses;
     }
 
-    public String toString() {
-        return id + " | " + tipo + " | @ (" + x + ", " + y + ")";
-    }
+    public abstract String toString();
 }
