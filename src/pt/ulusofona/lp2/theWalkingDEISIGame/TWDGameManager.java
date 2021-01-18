@@ -227,6 +227,9 @@ public class TWDGameManager {
 
                 } catch ( IOException e ) {
                     System.out.println("Erro a ler a linha do ficheiro!");
+                } catch ( InvalidTWDInitialFileException e ) {
+                    System.out.println("Erro relativamente a -> " + e.getMessage() );
+                    throw new InvalidTWDInitialFileException();
                 }
 
             } while ( lineRead != null );
