@@ -138,6 +138,7 @@ public class TWDGameManager {
                         case 4:
                             for ( int pos = 0; pos < numCreatures; pos++ ) {
                                 String[] splitCreatures = lineRead.split(":" );
+                                System.out.println("Length == " + splitCreatures.length );
 
                                 int creatureID = Integer.parseInt( splitCreatures[0].trim() );
                                 int typeID = Integer.parseInt( splitCreatures[1].trim() );
@@ -173,6 +174,8 @@ public class TWDGameManager {
 
                             for ( int pos = 0; pos < numEquipment; pos++ ) {
                                 String[] splitEquipment = lineRead.split(":", 4 );
+                                System.out.println("Length == " + splitEquipment.length );
+
                                 int equipmentID = Integer.parseInt( splitEquipment[0].trim() );
                                 int typeID = Integer.parseInt( splitEquipment[1].trim() );
                                 int spawnX = Integer.parseInt( splitEquipment[2].trim() );
@@ -204,6 +207,8 @@ public class TWDGameManager {
                         case 8:
                             for ( int pos = 0; pos < numSafeHavens; pos++ ) {
                                 String[] splitSafeHaven = lineRead.split(":" );
+                                System.out.println("Length == " + splitSafeHaven.length );
+
                                 int spawnX = Integer.parseInt( splitSafeHaven[0].trim() );
                                 int spawnY = Integer.parseInt( splitSafeHaven[1].trim() );
 
