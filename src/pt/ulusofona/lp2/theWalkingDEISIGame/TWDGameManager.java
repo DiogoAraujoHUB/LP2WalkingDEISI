@@ -79,7 +79,7 @@ public class TWDGameManager {
 
     //leitura do ficheiro texto
     //e carregar para a memória a informação relevante
-    public void startGame(File ficheiroInicial) throws InvalidTWDInitialFileException, IOException {
+    public void startGame(File ficheiroInicial) throws FileNotFoundException, InvalidTWDInitialFileException, IOException {
         creatures.clear();
         equipment.clear();
         safeHavens.clear();
