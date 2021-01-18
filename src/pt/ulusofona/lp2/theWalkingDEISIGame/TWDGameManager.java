@@ -5,6 +5,7 @@ import pt.ulusofona.lp2.theWalkingDEISIGame.classesEquipamentos.*;
 
 import java.io.*;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class TWDGameManager {
 
@@ -78,7 +79,7 @@ public class TWDGameManager {
 
     //leitura do ficheiro texto
     //e carregar para a memória a informação relevante
-    public boolean startGame(File ficheiroInicial) {
+    public void startGame(File ficheiroInicial) throws InvalidTWDInitialFileException {
         creatures.clear();
         equipment.clear();
         safeHavens.clear();
@@ -122,7 +123,7 @@ public class TWDGameManager {
                             if ( initialTeamId == 10 || initialTeamId == 20 ) {
                                 currentTeamId = initialTeamId;
                             } else {
-                                return false;
+                                throw new InvalidTWDInitialFileException();
                             }
                             break;
 
@@ -146,7 +147,7 @@ public class TWDGameManager {
 
                                 if ( !createCreatureWithParameters(0, creatureID, typeID
                                         , creatureName, spawnX, spawnY, 0) ) {
-                                    return false;
+                                    throw new InvalidTWDInitialFileException();
                                 }
 
                                 if ( pos == numCreatures - 1 ) {
@@ -154,7 +155,7 @@ public class TWDGameManager {
                                 }
                                 lineRead = reader.readLine();
                                 if ( lineRead == null ) {
-                                    return false;
+                                    throw new InvalidTWDInitialFileException();
                                 }
                             }
 
@@ -179,7 +180,7 @@ public class TWDGameManager {
 
                                 if ( !createEquipmentWithParameters(0, equipmentID, typeID,
                                         spawnX, spawnY, -1) ) {
-                                    return false;
+                                    throw new InvalidTWDInitialFileException();
                                 }
 
                                 if ( pos == numEquipment - 1 ) {
@@ -187,7 +188,7 @@ public class TWDGameManager {
                                 }
                                 lineRead = reader.readLine();
                                 if ( lineRead == null ) {
-                                    return false;
+                                    throw new InvalidTWDInitialFileException();
                                 }
                             }
                             break;
@@ -215,34 +216,65 @@ public class TWDGameManager {
 
                                 lineRead = reader.readLine();
                                 if ( lineRead == null ) {
-                                    return false;
+                                    throw new InvalidTWDInitialFileException();
                                 }
                             }
                             break;
 
                         default:
-                            return true;
                     }
                     numFileLine++;
 
                 } catch ( Exception e ) {
                     System.out.println("Error -> " + e.getMessage() );
-                    //return false;
+                    //throw new InvalidTWDInitialFileException();
                 }
 
             } while ( lineRead != null );
 
         } catch ( FileNotFoundException e ) {
             System.out.println("No file was found with that name");
-            return false;
+            throw new InvalidTWDInitialFileException();
         }
 
         //Adiciona o que fomos buscar ao ficheiro para o mapa
         gameMap.addCreatures( creatures );
         gameMap.addEquipment( equipment );
         gameMap.addSafeHavens( safeHavens );
-        return true;
     }
+
+    public Map<String, List<String>> getGameStatistics() {
+        int numZombies = 0;
+        for (Creature creature: creatures) {
+            if ( creature instanceof Zombie ) {
+                numZombies++;
+            }
+        }
+
+        Map<String, List<String>> gameStatistics = new HashMap<>();
+
+        String key3Zombies = "os3ZombiesMaisTramados";
+        List<String> zombies3 = new ArrayList<>();
+
+        if ( numZombies < 3 ) {
+            zombies3 = creatures.stream()
+                    .filter(creature -> creature instanceof Zombie)
+                    .filter((c1) -> c1.getNumCreatures() > 0 )
+                    .sorted((c1, c2) -> c1.getNumCreatures() - c2.getNumCreatures() )
+                    .limit(3)
+                    .map((c) -> c.getId() + ":" + c.getNome() + ":" + c.getNumCreatures())
+                    .collect(Collectors.toList());
+        } else {
+            zombies3 = creatures.stream()
+                    .filter(creature -> creature instanceof Zombie)
+                    .sorted((c1, c2) -> c1.getNumCreatures() - c2.getNumCreatures() )
+                    .limit(3)
+                    .map((c) -> c.getId() + ":" + c.getNome() + ":" + c.getNumCreatures())
+                    .collect(Collectors.toList());
+        }
+        return gameStatistics;
+    }
+
 
     //0 quer dizer que é um equipamento normal, sem usos definidos
     //1 quer dizer que é um equipamento com um limite de usos

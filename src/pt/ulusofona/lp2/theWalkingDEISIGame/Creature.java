@@ -6,7 +6,10 @@ public abstract class Creature {
     protected int tipo;
     protected String nome;
     protected int x, y;
+
+    protected int numCreatures;
     protected int numEquipamentos;
+
     protected int deslocamentoMaximo;
 
     protected boolean ableToMoveLinearly;
@@ -20,8 +23,13 @@ public abstract class Creature {
         this.y = y;
 
         this.numEquipamentos = 0;
+        this.numCreatures = 0;
 
         this.hasDied = false;
+    }
+
+    public int getNumCreatures() {
+        return this.numCreatures;
     }
 
     public boolean getHasDied() {

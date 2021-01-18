@@ -28,6 +28,7 @@ public abstract class Zombie extends Creature {
     }
 
     public Creature convert(Mapa map, Creature creatureAttacked) {
+        numCreatures++;
         Creature zombieMade = null;
 
         int id = creatureAttacked.getId();
