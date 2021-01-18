@@ -234,7 +234,6 @@ public class TWDGameManager {
 
         } catch ( FileNotFoundException e ) {
             System.out.println("No file was found with that name");
-            throw new InvalidTWDInitialFileException();
         }
 
         //Adiciona o que fomos buscar ao ficheiro para o mapa
