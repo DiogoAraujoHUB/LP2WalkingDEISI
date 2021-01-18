@@ -79,7 +79,7 @@ public class TWDGameManager {
 
     //leitura do ficheiro texto
     //e carregar para a memória a informação relevante
-    public void startGame(File ficheiroInicial) throws InvalidTWDInitialFileException, FileNotFoundException {
+    public void startGame(File ficheiroInicial) throws InvalidTWDInitialFileException, IOException {
         creatures.clear();
         equipment.clear();
         safeHavens.clear();
@@ -97,145 +97,133 @@ public class TWDGameManager {
         int numEquipment = 0;
         int numSafeHavens = 0;
 
-        try {
-            BufferedReader reader = new BufferedReader( new FileReader( ficheiroInicial ) );
-            String lineRead = null;
+        BufferedReader reader = new BufferedReader( new FileReader( ficheiroInicial ) );
+        String lineRead = null;
 
-            do {
-                try {
-                    lineRead = reader.readLine();
+        do {
+            lineRead = reader.readLine();
 
-                    if ( lineRead == null ) {
-                        break;
+            if ( lineRead == null ) {
+                break;
+            }
+
+            switch ( numFileLine ) {
+                case 1:
+                    String[] splitNumLinesColumns = lineRead.split(" ", 2);
+
+                    gameMap.setSizeY( Integer.parseInt( splitNumLinesColumns[0].trim() ) );
+                    gameMap.setSizeX( Integer.parseInt( splitNumLinesColumns[1].trim() ) );
+                    gameMap.createMap();
+                    break;
+
+                case 2:
+                    initialTeamId = Integer.parseInt( lineRead.trim() );
+                    if ( initialTeamId == 10 || initialTeamId == 20 ) {
+                        currentTeamId = initialTeamId;
+                    } else {
+                        throw new InvalidTWDInitialFileException();
+                    }
+                    break;
+
+                case 3:
+                    numCreatures = Integer.parseInt( lineRead.trim() );
+                    //Skip over creatures
+                    if ( numCreatures == 0 ) {
+                        numFileLine = 4;
+                    }
+                    break;
+
+                case 4:
+                    for ( int pos = 0; pos < numCreatures; pos++ ) {
+                        String[] splitCreatures = lineRead.split(":" );
+
+                        int creatureID = Integer.parseInt( splitCreatures[0].trim() );
+                        int typeID = Integer.parseInt( splitCreatures[1].trim() );
+                        String creatureName = splitCreatures[2];
+                        int spawnX = Integer.parseInt( splitCreatures[3].trim() );
+                        int spawnY = Integer.parseInt( splitCreatures[4].trim() );
+
+                        if ( !createCreatureWithParameters(0, creatureID, typeID
+                                , creatureName, spawnX, spawnY, 0) ) {
+                            throw new InvalidTWDInitialFileException();
+                        }
+
+                        if ( pos == numCreatures - 1 ) {
+                            break;
+                        }
+                        lineRead = reader.readLine();
+                        if ( lineRead == null ) {
+                            throw new InvalidTWDInitialFileException();
+                        }
                     }
 
-                    switch ( numFileLine ) {
-                        case 1:
-                            String[] splitNumLinesColumns = lineRead.split(" ", 2);
+                    break;
 
-                            gameMap.setSizeY( Integer.parseInt( splitNumLinesColumns[0].trim() ) );
-                            gameMap.setSizeX( Integer.parseInt( splitNumLinesColumns[1].trim() ) );
-                            gameMap.createMap();
-                            break;
-
-                        case 2:
-                            initialTeamId = Integer.parseInt( lineRead.trim() );
-                            if ( initialTeamId == 10 || initialTeamId == 20 ) {
-                                currentTeamId = initialTeamId;
-                            } else {
-                                throw new InvalidTWDInitialFileException();
-                            }
-                            break;
-
-                        case 3:
-                            numCreatures = Integer.parseInt( lineRead.trim() );
-                            //Skip over creatures
-                            if ( numCreatures == 0 ) {
-                                numFileLine = 4;
-                            }
-                            break;
-
-                        case 4:
-                            for ( int pos = 0; pos < numCreatures; pos++ ) {
-                                String[] splitCreatures = lineRead.split(":" );
-
-                                int creatureID = Integer.parseInt( splitCreatures[0].trim() );
-                                int typeID = Integer.parseInt( splitCreatures[1].trim() );
-                                String creatureName = splitCreatures[2];
-                                int spawnX = Integer.parseInt( splitCreatures[3].trim() );
-                                int spawnY = Integer.parseInt( splitCreatures[4].trim() );
-
-                                if ( !createCreatureWithParameters(0, creatureID, typeID
-                                        , creatureName, spawnX, spawnY, 0) ) {
-                                    throw new InvalidTWDInitialFileException();
-                                }
-
-                                if ( pos == numCreatures - 1 ) {
-                                    break;
-                                }
-                                lineRead = reader.readLine();
-                                if ( lineRead == null ) {
-                                    throw new InvalidTWDInitialFileException();
-                                }
-                            }
-
-                            break;
-
-                        case 5:
-                            numEquipment = Integer.parseInt( lineRead.trim() );
-                            //Skip over equipment
-                            if ( numEquipment == 0 ) {
-                                numFileLine = 6;
-                            }
-                            break;
-
-                        case 6:
-
-                            for ( int pos = 0; pos < numEquipment; pos++ ) {
-                                String[] splitEquipment = lineRead.split(":", 4 );
-                                int equipmentID = Integer.parseInt( splitEquipment[0].trim() );
-                                int typeID = Integer.parseInt( splitEquipment[1].trim() );
-                                int spawnX = Integer.parseInt( splitEquipment[2].trim() );
-                                int spawnY = Integer.parseInt( splitEquipment[3].trim() );
-
-                                if ( !createEquipmentWithParameters(0, equipmentID, typeID,
-                                        spawnX, spawnY, -1) ) {
-                                    throw new InvalidTWDInitialFileException();
-                                }
-
-                                if ( pos == numEquipment - 1 ) {
-                                    break;
-                                }
-                                lineRead = reader.readLine();
-                                if ( lineRead == null ) {
-                                    throw new InvalidTWDInitialFileException();
-                                }
-                            }
-                            break;
-
-                        case 7:
-                            numSafeHavens = Integer.parseInt( lineRead );
-                            //Skip over safe havens
-                            if ( numSafeHavens == 0 ) {
-                                numFileLine = 8;
-                            }
-                            break;
-
-                        case 8:
-                            for ( int pos = 0; pos < numSafeHavens; pos++ ) {
-                                String[] splitSafeHaven = lineRead.split(":" );
-                                int spawnX = Integer.parseInt( splitSafeHaven[0].trim() );
-                                int spawnY = Integer.parseInt( splitSafeHaven[1].trim() );
-
-                                SafeHaven safeHavenDoor = new SafeHaven( spawnX, spawnY );
-                                safeHavens.add( safeHavenDoor );
-
-                                if ( pos == numSafeHavens - 1 ) {
-                                    break;
-                                }
-
-                                lineRead = reader.readLine();
-                                if ( lineRead == null ) {
-                                    throw new InvalidTWDInitialFileException();
-                                }
-                            }
-                            break;
-
-                        default:
+                case 5:
+                    numEquipment = Integer.parseInt( lineRead.trim() );
+                    //Skip over equipment
+                    if ( numEquipment == 0 ) {
+                        numFileLine = 6;
                     }
-                    numFileLine++;
+                    break;
 
-                } catch ( IOException e ) {
-                    System.out.println("Erro a ler a linha do ficheiro!");
-                    throw new InvalidTWDInitialFileException();
-                }
+                case 6:
 
-            } while ( lineRead != null );
+                    for ( int pos = 0; pos < numEquipment; pos++ ) {
+                        String[] splitEquipment = lineRead.split(":", 4 );
+                        int equipmentID = Integer.parseInt( splitEquipment[0].trim() );
+                        int typeID = Integer.parseInt( splitEquipment[1].trim() );
+                        int spawnX = Integer.parseInt( splitEquipment[2].trim() );
+                        int spawnY = Integer.parseInt( splitEquipment[3].trim() );
 
-        } catch ( FileNotFoundException e ) {
-            System.out.println("File was not found");
-            throw new FileNotFoundException();
-        }
+                        if ( !createEquipmentWithParameters(0, equipmentID, typeID,
+                                spawnX, spawnY, -1) ) {
+                            throw new InvalidTWDInitialFileException();
+                        }
+
+                        if ( pos == numEquipment - 1 ) {
+                            break;
+                        }
+                        lineRead = reader.readLine();
+                        if ( lineRead == null ) {
+                            throw new InvalidTWDInitialFileException();
+                        }
+                    }
+                    break;
+
+                case 7:
+                    numSafeHavens = Integer.parseInt( lineRead );
+                    //Skip over safe havens
+                    if ( numSafeHavens == 0 ) {
+                        numFileLine = 8;
+                    }
+                    break;
+
+                case 8:
+                    for ( int pos = 0; pos < numSafeHavens; pos++ ) {
+                        String[] splitSafeHaven = lineRead.split(":" );
+                        int spawnX = Integer.parseInt( splitSafeHaven[0].trim() );
+                        int spawnY = Integer.parseInt( splitSafeHaven[1].trim() );
+
+                        SafeHaven safeHavenDoor = new SafeHaven( spawnX, spawnY );
+                        safeHavens.add( safeHavenDoor );
+
+                        if ( pos == numSafeHavens - 1 ) {
+                            break;
+                        }
+
+                        lineRead = reader.readLine();
+                        if ( lineRead == null ) {
+                            throw new InvalidTWDInitialFileException();
+                        }
+                    }
+                    break;
+
+                default:
+            }
+            numFileLine++;
+
+        } while ( lineRead != null );
 
         //Adiciona o que fomos buscar ao ficheiro para o mapa
         gameMap.addCreatures( creatures );
