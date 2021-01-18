@@ -79,7 +79,7 @@ public class TWDGameManager {
 
     //leitura do ficheiro texto
     //e carregar para a memória a informação relevante
-    public void startGame(File ficheiroInicial) throws InvalidTWDInitialFileException {
+    public void startGame(File ficheiroInicial) throws InvalidTWDInitialFileException, FileNotFoundException {
         creatures.clear();
         equipment.clear();
         safeHavens.clear();
@@ -233,6 +233,7 @@ public class TWDGameManager {
 
         } catch ( FileNotFoundException e ) {
             System.out.println("File was not found");
+            throw new FileNotFoundException();
         }
 
         //Adiciona o que fomos buscar ao ficheiro para o mapa
