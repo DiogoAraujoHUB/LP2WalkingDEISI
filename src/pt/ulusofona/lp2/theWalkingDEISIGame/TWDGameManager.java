@@ -283,6 +283,19 @@ public class TWDGameManager {
                     .map((c) -> c.getId() + ":" + c.getNome() + ":" + c.getNumCreatures())
                     .collect(Collectors.toList());
         }
+        gameStatistics.put(key3Zombies, zombies3);
+
+        String key3Vivos = "os3VivosMaisDuros";
+        List<String> vivos3 = creatures.stream()
+                                        .filter(creature -> creature instanceof Humano)
+                                        .sorted((c1, c2) -> c1.getNumCreatures() - c2.getNumCreatures())
+                                        .limit(3)
+                                        .map(c -> c.getId() + ":" + c.getNome() + ":" + c.getNumCreatures())
+                                        .collect(Collectors.toList());
+        gameStatistics.put(key3Vivos, vivos3);
+
+        String keyEquipamentoUtil = "tiposDeEquipamentoMaisUteis";
+
         return gameStatistics;
     }
 

@@ -163,6 +163,7 @@ public abstract class Humano extends Creature {
                 if (creatureAttacked instanceof CriancaZombie) {
                     map.getPosition(xD,yD).setCreature(null);
                     move(map, xD, yD);
+                    numCreatures++;
 
                     return true;
                 }
@@ -178,6 +179,7 @@ public abstract class Humano extends Creature {
             if ( equipamentoApanhado instanceof EstacaMadeira ) {
                 map.getPosition(xD,yD).setCreature(null);
                 move(map, xD, yD);
+                numCreatures++;
 
                 return true;
             }
@@ -197,12 +199,16 @@ public abstract class Humano extends Creature {
             equipamentoApanhado.setNumUses(equipamentoApanhado.getNumUses() - 1);
             map.getPosition(xD,yD).setCreature(null);
             move(map, xD, yD);
+            numCreatures++;
+
             return true;
         }
 
         //Attack normally
         map.getPosition(xD,yD).setCreature(null);
         move(map, xD, yD);
+        numCreatures++;
+
         return true;
     }
 
