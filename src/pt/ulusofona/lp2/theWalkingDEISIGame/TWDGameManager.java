@@ -267,20 +267,20 @@ public class TWDGameManager {
         String key3Zombies = "os3ZombiesMaisTramados";
         List<String> zombies3 = creatures.stream()
                     .filter(creature -> creature instanceof Zombie)
-                    .filter(c -> c.getNumCreatures() > 0)
-                    .sorted((c1, c2) -> c1.getNumCreatures() - c2.getNumCreatures() )
+                    .filter(c -> c.getInteractCreatures() > 0)
+                    .sorted((c1, c2) -> c2.getInteractCreatures() - c1.getInteractCreatures() )
                     .limit(3)
-                    .map((c) -> c.getId() + ":" + c.getNome() + ":" + c.getNumCreatures())
+                    .map((c) -> c.getId() + ":" + c.getNome() + ":" + c.getInteractCreatures())
                     .collect(Collectors.toList());
         gameStatistics.put(key3Zombies, zombies3);
 
         String key3Vivos = "os3VivosMaisDuros";
         List<String> vivos3 = creatures.stream()
                 .filter(creature -> creature instanceof Humano)
-                .filter(c -> c.getNumCreatures() > 0)
-                .sorted((c1, c2) -> c1.getNumCreatures() - c2.getNumCreatures())
+                .filter(c -> c.getInteractCreatures() > 0)
+                .sorted((c1, c2) -> c2.getInteractCreatures() - c1.getInteractCreatures())
                 .limit(3)
-                .map(c -> c.getId() + ":" + c.getNome() + ":" + c.getNumCreatures())
+                .map(c -> c.getId() + ":" + c.getNome() + ":" + c.getInteractCreatures())
                 .collect(Collectors.toList());
         gameStatistics.put(key3Vivos, vivos3);
 
@@ -940,6 +940,13 @@ public class TWDGameManager {
 
     public boolean moveZombie( int xO, int yO, int xD, int yD ) {
         Creature zombieFound = null;
+        String key = "os3ZombiesMaisTramados";
+
+        Map<String, List<String>> gameStatistics = getGameStatistics();
+        List<String> zombiesTramados = gameStatistics.get(key);
+        for ( String zombieTramado : zombiesTramados ) {
+            System.out.println(zombieTramado);
+        }
 
         //Temos que mover um zombie!
         if ( gameMap.getPosition(xO,yO).getCreature() instanceof Zombie ) {

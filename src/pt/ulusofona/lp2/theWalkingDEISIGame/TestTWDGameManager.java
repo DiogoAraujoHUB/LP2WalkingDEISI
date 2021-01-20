@@ -3,6 +3,8 @@ package pt.ulusofona.lp2.theWalkingDEISIGame;
 import org.junit.Test;
 import pt.ulusofona.lp2.theWalkingDEISIGame.classesCriaturas.*;
 import java.io.File;
+import java.util.List;
+import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
 
@@ -663,6 +665,24 @@ public class TestTWDGameManager {
                 ((SmokerZombie) creatureFound).stopPulling();
                 assertEquals(false, ((SmokerZombie) creatureFound).getCurrentlyPulling());  //não passou zero
             }
+        } catch ( Exception e ) {
+            System.out.println("File contained error -> " + e.getMessage() );
+        }
+    }
+
+    @Test
+    public void testGameStatistics3ZombiesTramados() {
+        TWDGameManager game = new TWDGameManager();
+        String key = "os3ZombiesMaisTramados";
+
+        try {
+            game.startGame(new File("./test-files/valoresWalkingDEISI.txt"));
+            game.move(2, 2, 2, 1);  //Human moves to position
+            game.move(0, 1, 2, 1);  //Zombie attacks human
+            Map<String, List<String>> gameStatistics = game.getGameStatistics();
+            List<String> zombiesTramados = gameStatistics.get(key);
+
+            assertEquals(1, zombiesTramados.size());  //Só um zombie é que matou, deve so aparecer esse zombie
         } catch ( Exception e ) {
             System.out.println("File contained error -> " + e.getMessage() );
         }

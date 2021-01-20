@@ -7,7 +7,7 @@ public abstract class Creature {
     protected String nome;
     protected int x, y;
 
-    protected int numCreatures;
+    protected int interactCreatures;
     protected int numEquipamentos;
 
     protected int deslocamentoMaximo;
@@ -23,13 +23,17 @@ public abstract class Creature {
         this.y = y;
 
         this.numEquipamentos = 0;
-        this.numCreatures = 0;
+        this.interactCreatures = 0;
 
         this.hasDied = false;
     }
 
-    public int getNumCreatures() {
-        return this.numCreatures;
+    public int getInteractCreatures() {
+        return this.interactCreatures;
+    }
+
+    public void increaseInteractCreatures() {
+        this.interactCreatures++;
     }
 
     public boolean getHasDied() {
