@@ -18,24 +18,26 @@ public class InvalidTWDInitialFileException extends Exception {
 
     //Retorna true se o ficheiro tiver pelo menos 2 creaturas
     public boolean validNrOfCreatures() {
-        if ( numCreaturesSeen < 2 ) {
-            return false;
-        }
-
-        return true;
+        return numCreaturesSeen >= 2;
     }
 
 
     public boolean validCreatureDefinition() {
-        if ( lineSeen.length != 5 ) {
-            return false;
-        }
-
-        return true;
+        return lineSeen.length == 5;
     }
 
 
     public String getErroneousLine() {
-        return "line";
+        String line = "";
+
+        for ( int pos = 0; pos < lineSeen.length; pos++ ) {
+            if ( pos == lineSeen.length - 1 ) {
+                line += lineSeen[pos];
+            } else {
+                line = lineSeen[pos] + " - ";
+            }
+        }
+
+        return line;
     }
 }

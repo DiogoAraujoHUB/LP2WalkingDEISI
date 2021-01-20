@@ -262,10 +262,12 @@ public class TWDGameManager {
         }
 
         Map<String, List<String>> gameStatistics = new HashMap<>();
+        List<String> placeHolder = new ArrayList<>();
 
         String key3Zombies = "os3ZombiesMaisTramados";
         List<String> zombies3 = creatures.stream()
                     .filter(creature -> creature instanceof Zombie)
+                    .filter(c -> c.getNumCreatures() > 0)
                     .sorted((c1, c2) -> c1.getNumCreatures() - c2.getNumCreatures() )
                     .limit(3)
                     .map((c) -> c.getId() + ":" + c.getNome() + ":" + c.getNumCreatures())
@@ -274,21 +276,31 @@ public class TWDGameManager {
 
         String key3Vivos = "os3VivosMaisDuros";
         List<String> vivos3 = creatures.stream()
-                                        .filter(creature -> creature instanceof Humano)
-                                        .sorted((c1, c2) -> c1.getNumCreatures() - c2.getNumCreatures())
-                                        .limit(3)
-                                        .map(c -> c.getId() + ":" + c.getNome() + ":" + c.getNumCreatures())
-                                        .collect(Collectors.toList());
+                .filter(creature -> creature instanceof Humano)
+                .filter(c -> c.getNumCreatures() > 0)
+                .sorted((c1, c2) -> c1.getNumCreatures() - c2.getNumCreatures())
+                .limit(3)
+                .map(c -> c.getId() + ":" + c.getNome() + ":" + c.getNumCreatures())
+                .collect(Collectors.toList());
         gameStatistics.put(key3Vivos, vivos3);
 
         String keyEquipamentoUtil = "tiposDeEquipamentoMaisUteis";
         List<String> equipamentosUteis = equipment.stream()
                 .sorted((e1, e2) -> e1.getNumTimesDefended() - e2.getNumTimesDefended() )
-                .map(e -> e.id + ":" + e.getTipo() + ":" + e.getNumTimesDefended() )
+                .map(e -> e.id + " " + e.getNumTimesDefended() )
                 .collect(Collectors.toList());
         gameStatistics.put(keyEquipamentoUtil, equipamentosUteis);
 
+        String tiposDeZombiesEquipamentosDestruidos = "tiposDeZombieESeusEquipamentosDestruidos";
+        List<String> tiposZombies = creatures.stream()
+                .filter(c -> c instanceof Zombie)
+                .map(c -> c.id + ":" + c.nome + ":" + c.getAbleToMoveFreely())
+                .collect(Collectors.toList());
+        gameStatistics.put(tiposDeZombiesEquipamentosDestruidos, placeHolder);
 
+        String criaturasEquipadas = "criaturasMaisEquipadas";
+        List<String> criaturasMaisEquipadas;
+        gameStatistics.put(criaturasEquipadas, placeHolder);
 
         return gameStatistics;
     }
