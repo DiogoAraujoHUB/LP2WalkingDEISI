@@ -129,9 +129,8 @@ public class TWDGameManager {
 
                         case 3:
                             numCreatures = Integer.parseInt( lineRead.trim() );
-                            //Skip over creatures
-                            if ( numCreatures == 0 ) {
-                                numFileLine = 4;
+                            if (numCreatures < 2) {
+                                throw new InvalidTWDInitialFileException(numCreatures);
                             }
                             break;
 
@@ -139,7 +138,7 @@ public class TWDGameManager {
                             for ( int pos = 0; pos < numCreatures; pos++ ) {
                                 String[] splitCreatures = lineRead.split(":" );
                                 if ( splitCreatures.length != 5 ) {
-                                    throw new InvalidTWDInitialFileException();
+                                    throw new InvalidTWDInitialFileException(splitCreatures);
                                 }
 
                                 int creatureID = Integer.parseInt( splitCreatures[0].trim() );
@@ -150,7 +149,7 @@ public class TWDGameManager {
 
                                 if ( !createCreatureWithParameters(0, creatureID, typeID
                                         , creatureName, spawnX, spawnY, 0) ) {
-                                    throw new InvalidTWDInitialFileException();
+                                    throw new InvalidTWDInitialFileException(splitCreatures);
                                 }
 
                                 if ( pos == numCreatures - 1 ) {
@@ -265,24 +264,12 @@ public class TWDGameManager {
         Map<String, List<String>> gameStatistics = new HashMap<>();
 
         String key3Zombies = "os3ZombiesMaisTramados";
-        List<String> zombies3 = new ArrayList<>();
-
-        if ( numZombies < 3 ) {
-            zombies3 = creatures.stream()
-                    .filter(creature -> creature instanceof Zombie)
-                    .filter((c1) -> c1.getNumCreatures() > 0 )
-                    .sorted((c1, c2) -> c1.getNumCreatures() - c2.getNumCreatures() )
-                    .limit(3)
-                    .map((c) -> c.getId() + ":" + c.getNome() + ":" + c.getNumCreatures())
-                    .collect(Collectors.toList());
-        } else {
-            zombies3 = creatures.stream()
+        List<String> zombies3 = creatures.stream()
                     .filter(creature -> creature instanceof Zombie)
                     .sorted((c1, c2) -> c1.getNumCreatures() - c2.getNumCreatures() )
                     .limit(3)
                     .map((c) -> c.getId() + ":" + c.getNome() + ":" + c.getNumCreatures())
                     .collect(Collectors.toList());
-        }
         gameStatistics.put(key3Zombies, zombies3);
 
         String key3Vivos = "os3VivosMaisDuros";
@@ -295,6 +282,13 @@ public class TWDGameManager {
         gameStatistics.put(key3Vivos, vivos3);
 
         String keyEquipamentoUtil = "tiposDeEquipamentoMaisUteis";
+        List<String> equipamentosUteis = equipment.stream()
+                .sorted((e1, e2) -> e1.getNumTimesDefended() - e2.getNumTimesDefended() )
+                .map(e -> e.id + ":" + e.getTipo() + ":" + e.getNumTimesDefended() )
+                .collect(Collectors.toList());
+        gameStatistics.put(keyEquipamentoUtil, equipamentosUteis);
+
+
 
         return gameStatistics;
     }
@@ -729,6 +723,7 @@ public class TWDGameManager {
                     if ( equipamentoApanhado instanceof DefensivoEOfensivo ) {
                         //xO and yO are the position of the zombie attacking
                         if ( ((Humano) creatureBeingAttacked).defendWithAttack(gameMap, creatureAttacking, xO, yO) ) {
+                            equipamentoApanhado.defendHuman();
                             incrementaTempo();
                             //Kill the zombie attacking
                             gameMap.setPositionType(xO,yO,0);
@@ -742,6 +737,7 @@ public class TWDGameManager {
                     if ( equipamentoApanhado instanceof Ofensivo ) {
                         //xO and yO are the position of the zombie attacking
                         if ( ((Humano) creatureBeingAttacked).defendWithAttack(gameMap, creatureAttacking, xO, yO) ) {
+                            equipamentoApanhado.defendHuman();
                             incrementaTempo();
                             //Kill the zombie attacking
                             gameMap.setPositionType(xO,yO,0);
@@ -754,6 +750,7 @@ public class TWDGameManager {
                     //Como o humano tem um equipamento defensivo, vai se defender de o zombie
                     if (equipamentoApanhado instanceof Defensivo) {
                         if ( ((Humano) creatureBeingAttacked).defend(gameMap, creatureAttacking) ) {
+                            equipamentoApanhado.defendHuman();
                             incrementaTempo();
 
                             return true;
