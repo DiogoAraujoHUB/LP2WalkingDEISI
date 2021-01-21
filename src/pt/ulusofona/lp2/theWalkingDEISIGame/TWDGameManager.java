@@ -18,6 +18,7 @@ public class TWDGameManager {
     private int currentTeamId;
     private int numberOfTurns;
     private int numberOfTurnsTotal;
+    private int numCreatures;
 
     private List<Creature> creatures;
     private List<Equipamento> equipment;
@@ -31,6 +32,8 @@ public class TWDGameManager {
         currentTeamId = 0;
         numberOfTurns = 0;
         numberOfTurnsTotal = 0;
+
+        numCreatures = 0;
 
         creatures = new ArrayList<>();
         equipment = new ArrayList<>();
@@ -95,8 +98,9 @@ public class TWDGameManager {
         numberOfTurnsTotal = 0;
         dayNightCycle = 0;
 
+
         int numFileLine = 1;
-        int numCreatures = 0;
+        numCreatures = 0;
         int numEquipment = 0;
         int numSafeHavens = 0;
 
@@ -299,7 +303,7 @@ public class TWDGameManager {
         List<String> tiposZombiesEquipamentos = creatures.stream()
                 .filter(c -> c instanceof Zombie)
                 .filter(c -> c.getNumEquipamentos() > 0)
-                .map(c -> c.nomeTipo + ":" + c.nome + ":" + c.getNumEquipamentos())
+                .map(c -> c.nomeTipo + ":" + c.getNome().trim() + ":" + c.getNumEquipamentos())
                 .collect(Collectors.toList());
         gameStatistics.put(tiposDeZombiesEquipamentosDestruidos, tiposZombiesEquipamentos);
 
@@ -307,10 +311,9 @@ public class TWDGameManager {
         List<String> criaturasMaisEquipadas = creatures.stream()
                 .filter(c -> !c.getHasDied())
                 .filter(c -> c instanceof Humano ? (((Humano) c).getInsideSafeHaven() ? false : true) : true)
-                .filter(c -> c.numEquipamentos > 0)
                 .sorted((c1, c2) -> c2.getNumEquipamentos() - c1.getNumEquipamentos() )
                 .limit(5)
-                .map(c -> c.getId() + ":" + c.getNome() + ":" + c.getNumEquipamentos())
+                .map(c -> c.getId() + ":" + c.getNome().trim() + ":" + c.getNumEquipamentos())
                 .collect(Collectors.toList());
         gameStatistics.put(criaturasEquipadas, criaturasMaisEquipadas);
 
