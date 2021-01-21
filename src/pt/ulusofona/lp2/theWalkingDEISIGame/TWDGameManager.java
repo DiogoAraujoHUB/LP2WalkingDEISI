@@ -277,7 +277,7 @@ public class TWDGameManager {
                     .filter(c -> c.getInteractCreatures() > 0)
                     .sorted((c1, c2) -> c2.getInteractCreatures() - c1.getInteractCreatures() )
                     .limit(3)
-                    .map((c) -> c.getId() + ":" + c.getNome() + ":" + c.getInteractCreatures())
+                    .map((c) -> c.getId() + ":" + c.getNome().trim() + ":" + c.getInteractCreatures())
                     .collect(Collectors.toList());
         gameStatistics.put(key3Zombies, zombies3);
 
@@ -287,7 +287,7 @@ public class TWDGameManager {
                 .filter(c -> c.getInteractCreatures() > 0)
                 .sorted((c1, c2) -> c2.getInteractCreatures() - c1.getInteractCreatures())
                 .limit(3)
-                .map(c -> c.getId() + ":" + c.getNome() + ":" + c.getInteractCreatures())
+                .map(c -> c.getId() + ":" + c.getNome().trim() + ":" + c.getInteractCreatures())
                 .collect(Collectors.toList());
         gameStatistics.put(key3Vivos, vivos3);
 
