@@ -138,8 +138,13 @@ public class TWDGameManager {
                             break;
 
                         case 4:
+                            int numCreaturesVistas = 0;
+
                             for ( int pos = 0; pos < numCreatures; pos++ ) {
                                 String[] splitCreatures = lineRead.split(":" );
+                                if ( splitCreatures.length == 1 ) {
+                                    throw new InvalidTWDInitialFileException(numCreaturesVistas, splitCreatures);
+                                }
                                 if ( splitCreatures.length != 5 ) {
                                     throw new InvalidTWDInitialFileException(numCreatures, splitCreatures);
                                 }
@@ -158,6 +163,8 @@ public class TWDGameManager {
                                 if ( pos == numCreatures - 1 ) {
                                     break;
                                 }
+
+                                numCreaturesVistas++;
                                 lineRead = reader.readLine();
                                 if ( lineRead == null ) {
                                     throw new InvalidTWDInitialFileException();
