@@ -12,8 +12,9 @@ public class Cao extends Animal {
         super(id, nome, x, y);
 
         this.tipo = 9;
-        this.deslocamentoMaximo = 2;
+        this.nomeTipo = "Cão";
 
+        this.deslocamentoMaximo = 2;
         this.ableToMoveFreely = true;
         this.ableToMoveLinearly = false;
     }

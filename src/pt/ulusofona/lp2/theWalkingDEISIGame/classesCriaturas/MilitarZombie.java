@@ -8,8 +8,9 @@ public class MilitarZombie extends Zombie {
         super(id, nome, x, y);
 
         this.tipo = 2;
-        this.deslocamentoMaximo = 3;
+        this.nomeTipo = "Militar (Zombie)";
 
+        this.deslocamentoMaximo = 3;
         this.ableToMoveFreely = true;
         this.ableToMoveLinearly = true;
     }

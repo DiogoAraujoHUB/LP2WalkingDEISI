@@ -8,8 +8,9 @@ public class AdultoHumano extends Humano {
         super(id, nome, x, y);
 
         this.tipo = 6;
-        this.deslocamentoMaximo = 2;
+        this.nomeTipo = "Adulto (Vivo)";
 
+        this.deslocamentoMaximo = 2;
         this.ableToMoveFreely = true;
         this.ableToMoveLinearly = true;
     }

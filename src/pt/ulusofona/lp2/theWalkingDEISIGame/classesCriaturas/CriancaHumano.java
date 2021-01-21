@@ -8,8 +8,9 @@ public class CriancaHumano extends Humano {
         super(id, nome, x, y);
 
         this.tipo = 5;
-        this.deslocamentoMaximo = 1;
+        this.nomeTipo = "Criança (Vivo)";
 
+        this.deslocamentoMaximo = 1;
         this.ableToMoveFreely = false;
         this.ableToMoveLinearly = true;
     }

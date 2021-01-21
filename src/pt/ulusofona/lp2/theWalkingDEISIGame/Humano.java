@@ -17,7 +17,10 @@ public abstract class Humano extends Creature {
         super(id, nome, x, y);
 
         this.tipo = 1;
+        this.nomeTipo = "Humano";
+
         this.insideSafeHaven = false;
+
         this.envenenado = false;
         this.turnosRestantes = 3;
 

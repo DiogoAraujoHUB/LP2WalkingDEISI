@@ -4,6 +4,7 @@ package pt.ulusofona.lp2.theWalkingDEISIGame;
 public abstract class Creature {
     protected int id;
     protected int tipo;
+    protected String nomeTipo;
     protected String nome;
     protected int x, y;
 
@@ -26,6 +27,10 @@ public abstract class Creature {
         this.interactCreatures = 0;
 
         this.hasDied = false;
+    }
+
+    public String getNomeTipo() {
+        return this.nomeTipo;
     }
 
     public int getInteractCreatures() {

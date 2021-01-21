@@ -8,8 +8,9 @@ public class IdosoZombie extends Zombie {
         super(id, nome, x, y);
 
         this.tipo = 3;
-        this.deslocamentoMaximo = 1;
+        this.nomeTipo = "Idoso (Zombie)";
 
+        this.deslocamentoMaximo = 1;
         this.ableToMoveFreely = false;
         this.ableToMoveLinearly = true;
     }

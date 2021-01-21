@@ -5,6 +5,9 @@ import pt.ulusofona.lp2.theWalkingDEISIGame.classesEquipamentos.*;
 
 import java.io.*;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 public class TWDGameManager {
@@ -254,13 +257,6 @@ public class TWDGameManager {
     }
 
     public Map<String, List<String>> getGameStatistics() {
-        int numZombies = 0;
-        for (Creature creature: creatures) {
-            if ( creature instanceof Zombie ) {
-                numZombies++;
-            }
-        }
-
         Map<String, List<String>> gameStatistics = new HashMap<>();
         List<String> placeHolder = new ArrayList<>();
 
@@ -287,24 +283,32 @@ public class TWDGameManager {
         String keyEquipamentoUtil = "tiposDeEquipamentoMaisUteis";
         List<String> equipamentosUteis = equipment.stream()
                 .sorted((e1, e2) -> e1.getNumTimesDefended() - e2.getNumTimesDefended() )
-                .map(e -> e.id + " " + e.getNumTimesDefended() )
+                .filter(e -> e.getNumTimesDefended() > 0)
+                .map(e -> e.tipo + " " + e.getNumTimesDefended() )
                 .collect(Collectors.toList());
         gameStatistics.put(keyEquipamentoUtil, equipamentosUteis);
 
         String tiposDeZombiesEquipamentosDestruidos = "tiposDeZombieESeusEquipamentosDestruidos";
-        List<String> tiposZombies = creatures.stream()
+        List<String> tiposZombiesEquipamentos = creatures.stream()
                 .filter(c -> c instanceof Zombie)
-                .map(c -> c.id + ":" + c.nome + ":" + c.getAbleToMoveFreely())
+                .filter(c -> c.getNumEquipamentos() > 0)
+                .map(c -> c.nomeTipo + ":" + c.nome + ":" + c.getNumEquipamentos())
                 .collect(Collectors.toList());
-        gameStatistics.put(tiposDeZombiesEquipamentosDestruidos, placeHolder);
+        gameStatistics.put(tiposDeZombiesEquipamentosDestruidos, tiposZombiesEquipamentos);
 
         String criaturasEquipadas = "criaturasMaisEquipadas";
-        List<String> criaturasMaisEquipadas;
-        gameStatistics.put(criaturasEquipadas, placeHolder);
+        List<String> criaturasMaisEquipadas = creatures.stream()
+                .filter(c -> !c.getHasDied())
+                .filter(c -> c.getX() != -1 && c.getY() != -1)
+                .filter(c -> c.numEquipamentos > 0)
+                .sorted((c1, c2) -> c2.getNumEquipamentos() - c1.getNumEquipamentos() )
+                .limit(5)
+                .map(c -> c.getId() + ":" + c.getNome() + ":" + c.getNumEquipamentos())
+                .collect(Collectors.toList());
+        gameStatistics.put(criaturasEquipadas, criaturasMaisEquipadas);
 
         return gameStatistics;
     }
-
 
     //0 quer dizer que é um equipamento normal, sem usos definidos
     //1 quer dizer que é um equipamento com um limite de usos

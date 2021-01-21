@@ -8,6 +8,7 @@ public abstract class Zombie extends Creature {
         super(id, nome, x, y);
 
         this.tipo = 1;
+        this.nomeTipo = "Zombie";
     }
 
     public void move( Mapa map, int destinoX, int destinoY ) {
