@@ -756,7 +756,7 @@ public class TestTWDGameManager {
                 System.out.println(line);
             }
 
-            assertEquals(2, criaturasEquipadas.size());  //Dois equipamentos defenderam dos zombies
+            assertEquals(4, criaturasEquipadas.size());  //Dois criaturas apanharam e duas não apanharam
         } catch ( Exception e ) {
             System.out.println("File contained error -> " + e.getMessage() );
         }

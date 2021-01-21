@@ -39,7 +39,7 @@ public class InvalidTWDInitialFileException extends Exception {
             if ( pos == lineSeen.length - 1 ) {
                 line += lineSeen[pos];
             } else {
-                line = lineSeen[pos] + " - ";
+                line = lineSeen[pos] + ":";
             }
         }
 
