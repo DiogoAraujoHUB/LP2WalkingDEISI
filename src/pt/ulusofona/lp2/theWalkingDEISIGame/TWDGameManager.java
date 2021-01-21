@@ -299,7 +299,7 @@ public class TWDGameManager {
         String criaturasEquipadas = "criaturasMaisEquipadas";
         List<String> criaturasMaisEquipadas = creatures.stream()
                 .filter(c -> !c.getHasDied())
-                .filter(c -> c.getX() != -1 && c.getY() != -1)
+                .filter(c -> c instanceof Humano ? (((Humano) c).getInsideSafeHaven() ? false : true) : true)
                 .filter(c -> c.numEquipamentos > 0)
                 .sorted((c1, c2) -> c2.getNumEquipamentos() - c1.getNumEquipamentos() )
                 .limit(5)
