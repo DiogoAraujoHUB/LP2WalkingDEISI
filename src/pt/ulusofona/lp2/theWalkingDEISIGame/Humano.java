@@ -202,16 +202,16 @@ public abstract class Humano extends Creature {
             equipamentoApanhado.setNumUses(equipamentoApanhado.getNumUses() - 1);
             map.getPosition(xD,yD).setCreature(null);
             move(map, xD, yD);
-            increaseInteractCreatures();
 
+            increaseInteractCreatures();
             return true;
         }
 
         //Attack normally
         map.getPosition(xD,yD).setCreature(null);
         move(map, xD, yD);
-        increaseInteractCreatures();
 
+        increaseInteractCreatures();
         return true;
     }
 
@@ -232,6 +232,7 @@ public abstract class Humano extends Creature {
                 map.getPosition(xD, yD).setCreature(null);
                 map.getPosition(xD, yD).setTipo(0);
 
+                increaseInteractCreatures();
                 move(map, xD, yD);
             }
 
@@ -306,6 +307,8 @@ public abstract class Humano extends Creature {
             if (equipamentoApanhado instanceof EspadaHattoriHanzo) {
                 if (creatureAttacked instanceof CriancaZombie) {
                     map.getPosition(xD,yD).setCreature(null);
+
+                    increaseInteractCreatures();
                     return true;
                 }
 
@@ -319,6 +322,8 @@ public abstract class Humano extends Creature {
             //Para matar um vampiro, necessitamos de usar uma estaca
             if ( equipamentoApanhado instanceof EstacaMadeira ) {
                 map.getPosition(xD,yD).setCreature(null);
+
+                increaseInteractCreatures();
                 return true;
             }
 
@@ -336,11 +341,15 @@ public abstract class Humano extends Creature {
             //Reduce number of bullets by one and shoot zombie
             equipamentoApanhado.setNumUses(equipamentoApanhado.getNumUses() - 1);
             map.getPosition(xD,yD).setCreature(null);
+
+            increaseInteractCreatures();
             return true;
         }
 
         //Attack normally
         map.getPosition(xD,yD).setCreature(null);
+
+        increaseInteractCreatures();
         return true;
     }
 

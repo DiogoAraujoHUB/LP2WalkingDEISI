@@ -687,4 +687,51 @@ public class TestTWDGameManager {
             System.out.println("File contained error -> " + e.getMessage() );
         }
     }
+
+    @Test
+    public void testGameStatistics3VivosDuros() {
+        TWDGameManager game = new TWDGameManager();
+        String key = "os3VivosMaisDuros";
+
+        try {
+            game.startGame(new File("./test-files/valoresWalkingDEISI.txt"));
+            game.move(2, 2, 3, 2);  //Human moves to equipment
+            game.move(0, 1, 2, 1);  //Zombie moves to position
+            game.move(3, 3, 2, 3);  //Human moves to equipment
+            game.move(2, 1, 3, 2);  //Zombie attacks human
+            game.move(6, 3, 7, 4);  //Human moves to safe haven
+            game.move(3, 4, 2, 3);  //Zombie attacks human
+            Map<String, List<String>> gameStatistics = game.getGameStatistics();
+            List<String> vivosDuros = gameStatistics.get(key);
+            for ( String line: vivosDuros ) {
+                System.out.println(line);
+            }
+
+            assertEquals(2, vivosDuros.size());  //Dois vivos mataram zombies
+        } catch ( Exception e ) {
+            System.out.println("File contained error -> " + e.getMessage() );
+        }
+    }
+
+    @Test
+    public void testGameStatisticsTiposEquipamentosMaisDuros() {
+        TWDGameManager game = new TWDGameManager();
+        String key = "tiposDeEquipamentoMaisUteis";
+
+        try {
+            game.startGame(new File("./test-files/valoresWalkingDEISI.txt"));
+            game.move(2, 2, 3, 2);  //Human moves to equipment
+            game.move(0, 1, 2, 1);  //Zombie moves to position
+            game.move(3, 3, 2, 3);  //Human moves to equipment
+            game.move(2, 1, 3, 2);  //Zombie attacks human
+            game.move(6, 3, 7, 4);  //Human moves to safe haven
+            game.move(3, 4, 2, 3);  //Zombie attacks human
+            Map<String, List<String>> gameStatistics = game.getGameStatistics();
+            List<String> equipamentosUteis = gameStatistics.get(key);
+
+            assertEquals(2, equipamentosUteis.size());  //Dois equipamentos defenderam dos zombies
+        } catch ( Exception e ) {
+            System.out.println("File contained error -> " + e.getMessage() );
+        }
+    }
 }

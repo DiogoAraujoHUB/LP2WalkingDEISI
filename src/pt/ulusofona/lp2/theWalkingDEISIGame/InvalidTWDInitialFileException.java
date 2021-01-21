@@ -16,6 +16,11 @@ public class InvalidTWDInitialFileException extends Exception {
         this.lineSeen = lineSeen;
     }
 
+    public InvalidTWDInitialFileException(int numCreaturesSeen, String[] lineSeen) {
+        this.numCreaturesSeen = numCreaturesSeen;
+        this.lineSeen = lineSeen;
+    }
+
     //Retorna true se o ficheiro tiver pelo menos 2 creaturas
     public boolean validNrOfCreatures() {
         return numCreaturesSeen >= 2;

@@ -141,7 +141,7 @@ public class TWDGameManager {
                             for ( int pos = 0; pos < numCreatures; pos++ ) {
                                 String[] splitCreatures = lineRead.split(":" );
                                 if ( splitCreatures.length != 5 ) {
-                                    throw new InvalidTWDInitialFileException(splitCreatures);
+                                    throw new InvalidTWDInitialFileException(numCreatures, splitCreatures);
                                 }
 
                                 int creatureID = Integer.parseInt( splitCreatures[0].trim() );
@@ -741,6 +741,7 @@ public class TWDGameManager {
                         if ( ((Humano) creatureBeingAttacked).defendWithAttack(gameMap, creatureAttacking, xO, yO) ) {
                             equipamentoApanhado.defendHuman();
                             incrementaTempo();
+
                             //Kill the zombie attacking
                             gameMap.setPositionType(xO,yO,0);
                             creatureAttacking.beDestroyed();
