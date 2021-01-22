@@ -26,6 +26,10 @@ public class InvalidTWDInitialFileException extends Exception {
 
 
     public boolean validCreatureDefinition() {
+        if ( arraySeen == null ) {
+            return false;
+        }
+
         return arraySeen.length == 5;
     }
 
