@@ -288,10 +288,11 @@ public class TWDGameManager {
                 .collect(Collectors.toList());
         gameStatistics.put(key3Vivos, vivos3);
 
+        //.filter(e -> e.getNumTimesDefended() > 0)
         String keyEquipamentoUtil = "tiposDeEquipamentoMaisUteis";
         List<String> equipamentosUteis = equipment.stream()
-                .sorted((e1, e2) -> e1.getNumTimesDefended() - e2.getNumTimesDefended() )
-                .map(e -> e.tipo + " " + e.getNumTimesDefended() )
+                .sorted((e1, e2) -> e2.getNumTimesDefended() - e1.getNumTimesDefended() )
+                .map(e -> e.getTipo() + " " + e.getNumTimesDefended() )
                 .collect(Collectors.toList());
         gameStatistics.put(keyEquipamentoUtil, equipamentosUteis);
 
