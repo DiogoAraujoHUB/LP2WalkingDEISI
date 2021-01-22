@@ -293,6 +293,7 @@ public class TWDGameManager {
                 .filter(e -> e.getNumTimesUsed() > 0)
                 .sorted((e1, e2) -> e2.getNumTimesUsed() - e1.getNumTimesUsed() )
                 .map(e -> "-" + e.getTipo() + ":" + e.getNumTimesUsed() )
+                //.collect( Collectors.summingInt())
                 .collect(Collectors.toList());
         gameStatistics.put(keyEquipamentoUtil, equipamentosUteis);
 
@@ -921,7 +922,7 @@ public class TWDGameManager {
                     //Se houver antidoto, ele vai beber
                     if ( ((Antidoto) antidotoVisto).getIsFull() ) {
                         ((Humano) creatureFound).beberAntidoto();
-                        //antidotoVisto.beUsed();
+                        antidotoVisto.beUsed();
 
                         ((Antidoto) gameMap.getPosition(xD,yD).getEquipamento()).esvaziarAntidoto();
                     }
@@ -947,7 +948,7 @@ public class TWDGameManager {
                     //O humano vai ficar envenenado e vai esvaziar o veneno
                     if ( ((Veneno) venenoVisto).getIsFull() ) {
                         ((Humano) creatureFound).beberVeneno();
-                        //venenoVisto.beUsed();
+                        venenoVisto.beUsed();
 
                         ((Veneno) gameMap.getPosition(xD,yD).getEquipamento()).esvaziarVeneno();
                     }
