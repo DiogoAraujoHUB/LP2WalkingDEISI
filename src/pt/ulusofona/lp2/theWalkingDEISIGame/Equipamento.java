@@ -5,7 +5,7 @@ public abstract class Equipamento {
     protected int tipo;
     protected int x, y;
     protected int numUses;
-    protected int numTimesDefended;
+    protected int numTimesUsed;
 
     public Equipamento( int id, int tipo, int x, int y) {
         this.id = id;
@@ -15,15 +15,15 @@ public abstract class Equipamento {
 
         this.numUses = -1;     //O numUses == -1 quer dizer que tem número de uses infinito
 
-        this.numTimesDefended = 0;
+        this.numTimesUsed = 0;
     }
 
-    public int getNumTimesDefended() {
-        return this.numTimesDefended;
+    public int getNumTimesUsed() {
+        return this.numTimesUsed;
     }
 
-    public void defendHuman() {
-        this.numTimesDefended++;
+    public void beUsed() {
+        this.numTimesUsed++;
     }
 
     public int getId() {

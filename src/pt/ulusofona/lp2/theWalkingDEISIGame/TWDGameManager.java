@@ -290,9 +290,9 @@ public class TWDGameManager {
 
         String keyEquipamentoUtil = "tiposDeEquipamentoMaisUteis";
         List<String> equipamentosUteis = equipment.stream()
-                .filter(e -> e.getNumTimesDefended() > 0)
-                .sorted((e1, e2) -> e2.getNumTimesDefended() - e1.getNumTimesDefended() )
-                .map(e -> e.getTipo() + " " + e.getNumTimesDefended() )
+                .filter(e -> e.getNumTimesUsed() > 0)
+                .sorted((e1, e2) -> e2.getNumTimesUsed() - e1.getNumTimesUsed() )
+                .map(e -> e.getTipo() + " " + e.getNumTimesUsed() )
                 .collect(Collectors.toList());
         gameStatistics.put(keyEquipamentoUtil, equipamentosUteis);
 
@@ -634,6 +634,7 @@ public class TWDGameManager {
                 //Kill zombie being attacked
                 if ( ((Humano) creatureAttacking).attack(gameMap, creatureBeingAttacked, xD, yD) ) {
                     incrementaTempo();
+                    equipamentoUtilizado.beUsed();
                     creatureBeingAttacked.beDestroyed();
 
                     return true;
@@ -646,6 +647,7 @@ public class TWDGameManager {
             if ( equipamentoUtilizado instanceof Ofensivo ) {
                 if ( creatureBeingAttacked instanceof SmokerZombie ) {
                     if ( ((Humano) creatureAttacking).attackBoss(gameMap, creatureBeingAttacked, xD, yD) ) {
+                        equipamentoUtilizado.beUsed();
                         incrementaTempo();
 
                         return true;
@@ -655,8 +657,9 @@ public class TWDGameManager {
                 //Kill zombie being attacked
                 if ( ((Humano) creatureAttacking).attack(gameMap, creatureBeingAttacked, xD, yD) ) {
                     incrementaTempo();
-                    creatureBeingAttacked.beDestroyed();
+                    equipamentoUtilizado.beUsed();
 
+                    creatureBeingAttacked.beDestroyed();
                     return true;
                 }
 
@@ -746,7 +749,7 @@ public class TWDGameManager {
                     if ( equipamentoApanhado instanceof DefensivoEOfensivo ) {
                         //xO and yO are the position of the zombie attacking
                         if ( ((Humano) creatureBeingAttacked).defendWithAttack(gameMap, creatureAttacking, xO, yO) ) {
-                            equipamentoApanhado.defendHuman();
+                            equipamentoApanhado.beUsed();
                             incrementaTempo();
 
                             //Kill the zombie attacking
@@ -761,7 +764,7 @@ public class TWDGameManager {
                     if ( equipamentoApanhado instanceof Ofensivo ) {
                         //xO and yO are the position of the zombie attacking
                         if ( ((Humano) creatureBeingAttacked).defendWithAttack(gameMap, creatureAttacking, xO, yO) ) {
-                            equipamentoApanhado.defendHuman();
+                            equipamentoApanhado.beUsed();
                             incrementaTempo();
                             //Kill the zombie attacking
                             gameMap.setPositionType(xO,yO,0);
@@ -774,7 +777,7 @@ public class TWDGameManager {
                     //Como o humano tem um equipamento defensivo, vai se defender de o zombie
                     if (equipamentoApanhado instanceof Defensivo) {
                         if ( ((Humano) creatureBeingAttacked).defend(gameMap, creatureAttacking) ) {
-                            equipamentoApanhado.defendHuman();
+                            equipamentoApanhado.beUsed();
                             incrementaTempo();
 
                             return true;
