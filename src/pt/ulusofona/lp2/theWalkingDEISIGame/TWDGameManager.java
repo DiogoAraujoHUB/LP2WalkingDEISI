@@ -905,6 +905,7 @@ public class TWDGameManager {
 
         if ( gameMap.getMapId(xD, yD) == -1 ) {
             if ( gameMap.getPosition(xD,yD).getEquipamento() instanceof Antidoto ) {
+                Equipamento antidotoVisto = gameMap.getPosition(xD,yD).getEquipamento();
 
                 //Se a criatura for um animal, então nao pode mover-se para o antidoto
                 if ( creatureFound instanceof Animal ) {
@@ -918,8 +919,10 @@ public class TWDGameManager {
                     }
 
                     //Se houver antidoto, ele vai beber
-                    if ( ((Antidoto) gameMap.getPosition(xD,yD).getEquipamento()).getIsFull() ) {
+                    if ( ((Antidoto) antidotoVisto).getIsFull() ) {
                         ((Humano) creatureFound).beberAntidoto();
+                        antidotoVisto.beUsed();
+
                         ((Antidoto) gameMap.getPosition(xD,yD).getEquipamento()).esvaziarAntidoto();
                     }
                 }
