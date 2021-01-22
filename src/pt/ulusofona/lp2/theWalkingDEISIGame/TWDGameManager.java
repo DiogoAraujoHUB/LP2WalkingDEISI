@@ -292,7 +292,7 @@ public class TWDGameManager {
         List<String> equipamentosUteis = equipment.stream()
                 .filter(e -> e.getNumTimesUsed() > 0)
                 .sorted((e1, e2) -> e2.getNumTimesUsed() - e1.getNumTimesUsed() )
-                .map(e -> e.getTipo() + " " + e.getNumTimesUsed() )
+                .map(e -> e.getId() + ":" + e.getNumTimesUsed() )
                 .collect(Collectors.toList());
         gameStatistics.put(keyEquipamentoUtil, equipamentosUteis);
 
@@ -725,6 +725,7 @@ public class TWDGameManager {
                                 equipamentoApanhado instanceof EspadaHattoriHanzo) {
                             if ( ((Humano) creatureBeingAttacked).defend(gameMap, creatureAttacking) ) {
                                 incrementaTempo();
+                                equipamentoApanhado.beUsed();
 
                                 return true;
                             }
@@ -926,6 +927,8 @@ public class TWDGameManager {
 
             //Vamos tentar apanhar um veneno
             if ( gameMap.getPosition(xD,yD).getEquipamento() instanceof Veneno ) {
+                Equipamento venenoVisto = gameMap.getPosition(xD,yD).getEquipamento();
+
                 //Um animal não pode apanhar o veneno
                 if ( creatureFound instanceof Animal ) {
                     return false;
@@ -939,8 +942,10 @@ public class TWDGameManager {
                     }
 
                     //O humano vai ficar envenenado e vai esvaziar o veneno
-                    if ( ((Veneno) gameMap.getPosition(xD,yD).getEquipamento()).getIsFull() ) {
+                    if ( ((Veneno) venenoVisto).getIsFull() ) {
                         ((Humano) creatureFound).beberVeneno();
+                        venenoVisto.beUsed();
+
                         ((Veneno) gameMap.getPosition(xD,yD).getEquipamento()).esvaziarVeneno();
                     }
                 }
@@ -1340,6 +1345,11 @@ public class TWDGameManager {
      */
 
     public void incrementaTempo() {
+        List<String> equipamentosUteis = getGameStatistics().get("tiposDeEquipamentoMaisUteis");
+        for ( String line: equipamentosUteis ) {
+            System.out.println(line);
+        }
+
         if ( currentTeamId == 10 ) {
             currentTeamId += 10;
         } else {
