@@ -167,6 +167,7 @@ public abstract class Humano extends Creature {
                     map.getPosition(xD,yD).setCreature(null);
                     move(map, xD, yD);
                     increaseInteractCreatures();
+                    equipamentoApanhado.beUsed();
 
                     return true;
                 }
@@ -183,6 +184,7 @@ public abstract class Humano extends Creature {
                 map.getPosition(xD,yD).setCreature(null);
                 move(map, xD, yD);
                 increaseInteractCreatures();
+                equipamentoApanhado.beUsed();
 
                 return true;
             }
@@ -204,6 +206,7 @@ public abstract class Humano extends Creature {
             move(map, xD, yD);
 
             increaseInteractCreatures();
+            equipamentoApanhado.beUsed();
             return true;
         }
 
@@ -212,6 +215,7 @@ public abstract class Humano extends Creature {
         move(map, xD, yD);
 
         increaseInteractCreatures();
+        equipamentoApanhado.beUsed();
         return true;
     }
 
@@ -231,9 +235,9 @@ public abstract class Humano extends Creature {
                 creatureAttacked.beDestroyed();
                 map.getPosition(xD, yD).setCreature(null);
                 map.getPosition(xD, yD).setTipo(0);
+                move(map, xD, yD);
 
                 increaseInteractCreatures();
-                move(map, xD, yD);
             }
 
             //If smoker is currently grabbing someone, stop grabbing them and pulling them
@@ -248,6 +252,7 @@ public abstract class Humano extends Creature {
             ((SmokerZombie) creatureAttacked).takeHit();
         }
 
+        equipamentoApanhado.beUsed();
         return true;
     }
 
@@ -255,6 +260,8 @@ public abstract class Humano extends Creature {
         //O vampiro não pode atacar alguem que tenha uma cabeca de alho
         if (equipamentoApanhado instanceof CabecaAlho) {
             if ( creatureAttacking instanceof VampiroZombie ) {
+                equipamentoApanhado.beUsed();
+
                 return true;
             }
 
@@ -263,6 +270,8 @@ public abstract class Humano extends Creature {
         //O zombie idoso não pode atacar um humano com a revista maria
         if ( equipamentoApanhado instanceof RevistaMaria ) {
             if ( creatureAttacking instanceof IdosoZombie ) {
+                equipamentoApanhado.beUsed();
+
                 return true;
             }
 
@@ -274,6 +283,7 @@ public abstract class Humano extends Creature {
             //Se quem o estiver a empunhar for um militar, então tem mais um uso
             if ( ((EscudoMadeira) equipamentoApanhado).getUtilizadoPorMilitar() &&
                     map.getPosition(x,y).getCreature() instanceof MilitarHumano) {
+                equipamentoApanhado.beUsed();
 
                 ((EscudoMadeira) equipamentoApanhado).setUtilizadoPorMilitar(false);
                 return true;
@@ -284,6 +294,7 @@ public abstract class Humano extends Creature {
             }
 
             equipamentoApanhado.setNumUses(equipamentoApanhado.getNumUses() - 1);
+            equipamentoApanhado.beUsed();
             return true;
         }
 
@@ -293,9 +304,11 @@ public abstract class Humano extends Creature {
             }
 
             equipamentoApanhado.setNumUses(equipamentoApanhado.getNumUses() - 1);
+            equipamentoApanhado.beUsed();
             return true;
         }
 
+        equipamentoApanhado.beUsed();
         return true;
     }
 
@@ -308,6 +321,7 @@ public abstract class Humano extends Creature {
                 if (creatureAttacked instanceof CriancaZombie) {
                     map.getPosition(xD,yD).setCreature(null);
 
+                    equipamentoApanhado.beUsed();
                     increaseInteractCreatures();
                     return true;
                 }
@@ -323,6 +337,7 @@ public abstract class Humano extends Creature {
             if ( equipamentoApanhado instanceof EstacaMadeira ) {
                 map.getPosition(xD,yD).setCreature(null);
 
+                equipamentoApanhado.beUsed();
                 increaseInteractCreatures();
                 return true;
             }
@@ -342,6 +357,7 @@ public abstract class Humano extends Creature {
             equipamentoApanhado.setNumUses(equipamentoApanhado.getNumUses() - 1);
             map.getPosition(xD,yD).setCreature(null);
 
+            equipamentoApanhado.beUsed();
             increaseInteractCreatures();
             return true;
         }
@@ -350,6 +366,7 @@ public abstract class Humano extends Creature {
         map.getPosition(xD,yD).setCreature(null);
 
         increaseInteractCreatures();
+        equipamentoApanhado.beUsed();
         return true;
     }
 
