@@ -3,7 +3,8 @@ package pt.ulusofona.lp2.theWalkingDEISIGame;
 public class InvalidTWDInitialFileException extends Exception {
 
     private int numCreaturesSeen;
-    private String[] lineSeen;
+    private String[] arraySeen;
+    private String lineSeen;
 
     public InvalidTWDInitialFileException() {
     }
@@ -12,12 +13,9 @@ public class InvalidTWDInitialFileException extends Exception {
         this.numCreaturesSeen = numCreaturesSeen;
     }
 
-    public InvalidTWDInitialFileException(String[] lineSeen) {
-        this.lineSeen = lineSeen;
-    }
-
-    public InvalidTWDInitialFileException(int numCreaturesSeen, String[] lineSeen) {
+    public InvalidTWDInitialFileException(int numCreaturesSeen, String[] arraySeen, String lineSeen) {
         this.numCreaturesSeen = numCreaturesSeen;
+        this.arraySeen = arraySeen;
         this.lineSeen = lineSeen;
     }
 
@@ -28,21 +26,10 @@ public class InvalidTWDInitialFileException extends Exception {
 
 
     public boolean validCreatureDefinition() {
-        return lineSeen.length == 5;
+        return arraySeen.length == 5;
     }
 
-
     public String getErroneousLine() {
-        String line = "";
-
-        for ( int pos = 0; pos < lineSeen.length; pos++ ) {
-            if ( pos == lineSeen.length - 1 ) {
-                line += lineSeen[pos];
-            } else {
-                line = lineSeen[pos] + ":";
-            }
-        }
-
-        return line;
+        return lineSeen;
     }
 }

@@ -18,7 +18,6 @@ public class TWDGameManager {
     private int currentTeamId;
     private int numberOfTurns;
     private int numberOfTurnsTotal;
-    private int numCreatures;
 
     private List<Creature> creatures;
     private List<Equipamento> equipment;
@@ -32,8 +31,6 @@ public class TWDGameManager {
         currentTeamId = 0;
         numberOfTurns = 0;
         numberOfTurnsTotal = 0;
-
-        numCreatures = 0;
 
         creatures = new ArrayList<>();
         equipment = new ArrayList<>();
@@ -100,7 +97,7 @@ public class TWDGameManager {
 
 
         int numFileLine = 1;
-        numCreatures = 0;
+        int numCreatures = 0;
         int numEquipment = 0;
         int numSafeHavens = 0;
 
@@ -147,10 +144,10 @@ public class TWDGameManager {
                             for ( int pos = 0; pos < numCreatures; pos++ ) {
                                 String[] splitCreatures = lineRead.split(":" );
                                 if ( splitCreatures.length == 1 ) {
-                                    throw new InvalidTWDInitialFileException(numCreaturesVistas, splitCreatures);
+                                    throw new InvalidTWDInitialFileException(numCreaturesVistas, splitCreatures, lineRead);
                                 }
                                 if ( splitCreatures.length != 5 ) {
-                                    throw new InvalidTWDInitialFileException(numCreatures, splitCreatures);
+                                    throw new InvalidTWDInitialFileException(numCreatures, splitCreatures, lineRead);
                                 }
 
                                 int creatureID = Integer.parseInt( splitCreatures[0].trim() );
@@ -161,7 +158,7 @@ public class TWDGameManager {
 
                                 if ( !createCreatureWithParameters(0, creatureID, typeID
                                         , creatureName, spawnX, spawnY, 0) ) {
-                                    throw new InvalidTWDInitialFileException(splitCreatures);
+                                    throw new InvalidTWDInitialFileException(numCreatures, splitCreatures, lineRead);
                                 }
 
                                 if ( pos == numCreatures - 1 ) {
