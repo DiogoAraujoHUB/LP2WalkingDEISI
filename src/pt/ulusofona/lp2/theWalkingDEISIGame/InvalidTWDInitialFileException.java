@@ -9,8 +9,9 @@ public class InvalidTWDInitialFileException extends Exception {
     public InvalidTWDInitialFileException() {
     }
 
-    public InvalidTWDInitialFileException(int numCreaturesSeen) {
+    public InvalidTWDInitialFileException(int numCreaturesSeen, String lineSeen) {
         this.numCreaturesSeen = numCreaturesSeen;
+        this.lineSeen = lineSeen;
     }
 
     public InvalidTWDInitialFileException(int numCreaturesSeen, String[] arraySeen, String lineSeen) {

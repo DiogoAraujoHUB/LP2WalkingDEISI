@@ -134,7 +134,7 @@ public class TWDGameManager {
                         case 3:
                             numCreatures = Integer.parseInt( lineRead.trim() );
                             if (numCreatures < 2) {
-                                throw new InvalidTWDInitialFileException(numCreatures);
+                                throw new InvalidTWDInitialFileException(numCreatures, lineRead);
                             }
                             break;
 
@@ -291,7 +291,6 @@ public class TWDGameManager {
         String keyEquipamentoUtil = "tiposDeEquipamentoMaisUteis";
         List<String> equipamentosUteis = equipment.stream()
                 .sorted((e1, e2) -> e1.getNumTimesDefended() - e2.getNumTimesDefended() )
-                .filter(e -> e.getNumTimesDefended() > 0)
                 .map(e -> e.tipo + " " + e.getNumTimesDefended() )
                 .collect(Collectors.toList());
         gameStatistics.put(keyEquipamentoUtil, equipamentosUteis);
