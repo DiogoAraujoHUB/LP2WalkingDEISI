@@ -1,11 +1,16 @@
 7 7
 10
-5
+10
 1 : 5 : Freddie M. : 0 : 1
 2 : 1 : Alice : 1 : 0
 3 : 1 : Ash : 2 : 0
 4 : 1 : Sam : 3 : 0
 5 : 1 : Paciente Zero : 4 : 0
+6 : 0 : Child 1 : 1 : 1
+7 : 0 : Child 2 : 2 : 2
+8 : 0 : Child 3 : 3 : 3
+9 : 0 : Child 4 : 4 : 4
+10 : 6 : Backup Human : 5 : 0
 1
 -1 : 2 : 0 : 0
 0

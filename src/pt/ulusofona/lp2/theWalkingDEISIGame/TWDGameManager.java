@@ -635,10 +635,10 @@ public class TWDGameManager {
             if ( equipamentoUtilizado instanceof DefensivoEOfensivo ) {
                 //Kill zombie being attacked
                 if ( ((Humano) creatureAttacking).attack(gameMap, creatureBeingAttacked, xD, yD) ) {
-                    incrementaTempo();
                     equipamentoUtilizado.beUsed();
-                    creatureBeingAttacked.beDestroyed();
+                    incrementaTempo();
 
+                    creatureBeingAttacked.beDestroyed();
                     return true;
                 }
 
@@ -658,8 +658,8 @@ public class TWDGameManager {
 
                 //Kill zombie being attacked
                 if ( ((Humano) creatureAttacking).attack(gameMap, creatureBeingAttacked, xD, yD) ) {
-                    incrementaTempo();
                     equipamentoUtilizado.beUsed();
+                    incrementaTempo();
 
                     creatureBeingAttacked.beDestroyed();
                     return true;
@@ -758,7 +758,6 @@ public class TWDGameManager {
                             //Kill the zombie attacking
                             gameMap.setPositionType(xO,yO,0);
                             creatureAttacking.beDestroyed();
-
                             return true;
                         }
                     }
@@ -768,11 +767,12 @@ public class TWDGameManager {
                         //xO and yO are the position of the zombie attacking
                         if ( ((Humano) creatureBeingAttacked).defendWithAttack(gameMap, creatureAttacking, xO, yO) ) {
                             equipamentoApanhado.beUsed();
+                            System.out.println("Equipamento Apanhado -> " + equipamentoApanhado.getNumTimesUsed());
                             incrementaTempo();
+
                             //Kill the zombie attacking
                             gameMap.setPositionType(xO,yO,0);
                             creatureAttacking.beDestroyed();
-
                             return true;
                         }
                     }
@@ -965,13 +965,6 @@ public class TWDGameManager {
 
     public boolean moveZombie( int xO, int yO, int xD, int yD ) {
         Creature zombieFound = null;
-        String key = "os3ZombiesMaisTramados";
-
-        Map<String, List<String>> gameStatistics = getGameStatistics();
-        List<String> zombiesTramados = gameStatistics.get(key);
-        for ( String zombieTramado : zombiesTramados ) {
-            System.out.println(zombieTramado);
-        }
 
         //Temos que mover um zombie!
         if ( gameMap.getPosition(xO,yO).getCreature() instanceof Zombie ) {
