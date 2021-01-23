@@ -779,9 +779,7 @@ public class TWDGameManager {
                 }
             }
 
-            //Se o humano tiver um equipamento que já não o protega, temos que o retirar da lista (partir)
-            //(Não sei se temos de incrementar como ele tivesse partido o equipamento)
-            //Acho que não!
+            //Se o humano tiver um equipamento que já não o protega, temos que o partir da lista
             if ( creatureBeingAttacked instanceof Humano ) {
                 if ( ((Humano) creatureBeingAttacked).getEquipamentoApanhado() != null ) {
                     removeEquipment(((Humano) creatureBeingAttacked).getEquipamentoApanhado());
@@ -1024,7 +1022,7 @@ public class TWDGameManager {
                 }
             }
 
-            //Vamos partir o equipamento
+            //Vamos partir o equipamento na posição que estamos a mover para
             removeEquipment(gameMap.getPosition(xD,yD).getEquipamento());
         }
 
@@ -1189,9 +1187,7 @@ public class TWDGameManager {
             if (equipamento.getId() == equipmentFound.getId()) {
                 equipamento.beDestroyed();
 
-                //remove equipment from map
-                gameMap.getPosition(equipamento.x, equipamento.y).setTipo(0);
-                gameMap.getPosition(equipamento.x, equipamento.y).setEquipamento(null);
+                return true;
             }
         }
 
@@ -1349,11 +1345,6 @@ public class TWDGameManager {
      */
 
     public void incrementaTempo() {
-        List<String> equipamentosUteis = getGameStatistics().get("tiposDeEquipamentoMaisUteis");
-        for ( String line: equipamentosUteis ) {
-            System.out.println(line);
-        }
-
         if ( currentTeamId == 10 ) {
             currentTeamId += 10;
         } else {

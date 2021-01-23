@@ -12,11 +12,11 @@ public abstract class Zombie extends Creature {
     }
 
     public void move( Mapa map, int destinoX, int destinoY ) {
-        //parte o equipamento na posição que move para
-        //Será que tamos a retirar o equipamento da lista de equipamentos quando partimos? Tenho que testar
+        //Partimos o equipamento na posição que vamos para
         if ( map.getMapId(destinoX, destinoY)  == -1 ) {
             pickEquipment();
             map.getPosition( destinoX, destinoY ).setEquipamento(null);
+            map.getPosition(destinoX, destinoY).setTipo(0);
         }
 
         //move normalmente
