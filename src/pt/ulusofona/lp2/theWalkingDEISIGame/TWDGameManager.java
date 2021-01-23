@@ -293,7 +293,7 @@ public class TWDGameManager {
         List<String> equipamentosUteis = equipment.stream()
                 .filter(e -> e.getNumTimesUsed() > 0)
                 .sorted((e1, e2) -> e2.getNumTimesUsed() - e1.getNumTimesUsed() )
-                .map(e -> "-" + e.getId() + ":" + e.getNumTimesUsed() )
+                .map(e -> e.getId() + ":" + e.getNumTimesUsed() )
                 .collect(Collectors.toList());
         gameStatistics.put(keyEquipamentoUtil, equipamentosUteis);
 
