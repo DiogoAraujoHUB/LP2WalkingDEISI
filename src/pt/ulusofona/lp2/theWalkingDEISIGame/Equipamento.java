@@ -6,6 +6,7 @@ public abstract class Equipamento {
     protected int x, y;
     protected int numUses;
     protected int numTimesUsed;
+    protected boolean destroyed;
 
     public Equipamento( int id, int tipo, int x, int y) {
         this.id = id;
@@ -16,6 +17,15 @@ public abstract class Equipamento {
         this.numUses = -1;     //O numUses == -1 quer dizer que tem número de uses infinito
 
         this.numTimesUsed = 0;
+        this.destroyed = false;
+    }
+
+    public boolean getDestroyed() {
+        return this.destroyed;
+    }
+
+    public void beDestroyed() {
+        this.destroyed = true;
     }
 
     public int getNumTimesUsed() {

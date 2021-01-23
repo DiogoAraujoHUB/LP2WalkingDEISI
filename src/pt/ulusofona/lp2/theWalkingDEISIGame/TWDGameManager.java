@@ -781,6 +781,7 @@ public class TWDGameManager {
 
             //Se o humano tiver um equipamento que já não o protega, temos que o retirar da lista (partir)
             //(Não sei se temos de incrementar como ele tivesse partido o equipamento)
+            //Acho que não!
             if ( creatureBeingAttacked instanceof Humano ) {
                 if ( ((Humano) creatureBeingAttacked).getEquipamentoApanhado() != null ) {
                     removeEquipment(((Humano) creatureBeingAttacked).getEquipamentoApanhado());
@@ -1023,7 +1024,7 @@ public class TWDGameManager {
                 }
             }
 
-            //Vamos retirar o equipamento da lista
+            //Vamos partir o equipamento
             removeEquipment(gameMap.getPosition(xD,yD).getEquipamento());
         }
 
@@ -1184,13 +1185,27 @@ public class TWDGameManager {
     }
 
     public boolean removeEquipment(Equipamento equipmentFound) {
+        for (Equipamento equipamento : equipment) {
+            if (equipamento.getId() == equipmentFound.getId()) {
+                equipamento.beDestroyed();
+
+                //remove equipment from map
+                gameMap.getPosition(equipamento.x, equipamento.y).setTipo(0);
+                gameMap.getPosition(equipamento.x, equipamento.y).setEquipamento(null);
+            }
+        }
+
+        return false;
+    }
+
+    /*
+    //Maneira do remove antiga (retira da lista)
+    public boolean removeEquipment(Equipamento equipmentFound) {
         int pos = 0;
         for (Equipamento equipamento : equipment) {
             if (equipamento.getId() == equipmentFound.getId()) {
                 break;
             }
-
-            pos++;
         }
 
         if (pos == equipment.size()) {
@@ -1200,6 +1215,7 @@ public class TWDGameManager {
         equipment.remove(pos);
         return true;
     }
+    */
 
     /*
     //este movimento é automático e feito para o zombie
