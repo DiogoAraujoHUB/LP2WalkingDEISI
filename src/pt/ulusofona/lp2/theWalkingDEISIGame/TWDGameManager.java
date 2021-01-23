@@ -288,6 +288,7 @@ public class TWDGameManager {
                 .collect(Collectors.toList());
         gameStatistics.put(key3Vivos, vivos3);
 
+        //Mudei o "getTipo" para "getId"
         String keyEquipamentoUtil = "tiposDeEquipamentoMaisUteis";
         List<String> equipamentosUteis = equipment.stream()
                 .filter(e -> e.getNumTimesUsed() > 0)
