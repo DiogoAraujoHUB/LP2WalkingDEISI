@@ -5,9 +5,6 @@ import pt.ulusofona.lp2.theWalkingDEISIGame.classesEquipamentos.*;
 
 import java.io.*;
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.function.Function;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 public class TWDGameManager {
@@ -25,12 +22,38 @@ public class TWDGameManager {
 
     private Mapa gameMap;
 
+    private int numEquipmentChildren;
+    private int numChildren;
+
+    private int numEquipmentAdults;
+    private int numAdults;
+
+    private int numEquipmentOldPeople;
+    private int numOldPeople;
+
+    private int numEquipmentMilitary;
+    private int numMilitary;
+
+    private int numEquipmentVampires;
+    private int numVampires;
+
     public TWDGameManager() {
         dayNightCycle = 0;
         initialTeamId = 0;
         currentTeamId = 0;
         numberOfTurns = 0;
         numberOfTurnsTotal = 0;
+
+        numEquipmentChildren = 0;
+        numChildren = 0;
+        numEquipmentAdults = 0;
+        numAdults = 0;
+        numEquipmentOldPeople = 0;
+        numOldPeople = 0;
+        numEquipmentMilitary = 0;
+        numMilitary = 0;
+        numEquipmentVampires = 0;
+        numVampires = 0;
 
         creatures = new ArrayList<>();
         equipment = new ArrayList<>();
@@ -88,6 +111,18 @@ public class TWDGameManager {
         safeHavens.clear();
 
         gameMap = new Mapa();
+
+        //Added for gameStatistic
+        numEquipmentChildren = 0;
+        numChildren = 0;
+        numEquipmentAdults = 0;
+        numAdults = 0;
+        numEquipmentOldPeople = 0;
+        numOldPeople = 0;
+        numEquipmentMilitary = 0;
+        numMilitary = 0;
+        numEquipmentVampires = 0;
+        numVampires = 0;
 
         initialTeamId = 0;
         currentTeamId = 0;
@@ -263,11 +298,24 @@ public class TWDGameManager {
         gameMap.addSafeHavens( safeHavens );
     }
 
-    int numChildren = 0;
-    int numAdults = 0;
-    int numOldPeople = 0;
-    int numMilitary = 0;
-    int numVampires = 0;
+    public void addEquipmentTowardsType(Creature creature) {
+        if ( creature.getTipo() == 0 ) {
+            //Zombie is child
+            numEquipmentChildren++;
+        } else if ( creature.getTipo() == 1 ) {
+            //Zombie is adult
+            numEquipmentAdults++;
+        } else if ( creature.getTipo() == 2 ) {
+            //Zombie is military
+            numEquipmentMilitary++;
+        } else if ( creature.getTipo() == 3 ) {
+            //Zombie is old
+            numEquipmentOldPeople++;
+        } else {
+            //Zombie is vampire
+            numEquipmentVampires++;
+        }
+    }
 
     //Vamos utilizar variáveis globais para contar todas as variáveis que temos deste tipo
     public String countEquipmentTowardsType(Creature creature) {
@@ -275,73 +323,22 @@ public class TWDGameManager {
 
         if ( creature.getTipo() == 0 ) {
             //Zombie is child
-            numChildren += creature.getNumEquipamentos();
-            text = creature.getNomeTipo() + ":" + creature.getTipo() + ":" + numChildren;
+            text = creature.getNomeTipo() + ":" + numChildren + ":" + numEquipmentChildren;
         } else if ( creature.getTipo() == 1 ) {
             //Zombie is adult
-            numAdults += creature.getNumEquipamentos();
-            text = creature.getNomeTipo() + ":" + creature.getTipo() + ":" + numAdults;
+            text = creature.getNomeTipo() + ":" + numAdults + ":" + numEquipmentAdults;
         } else if ( creature.getTipo() == 2 ) {
             //Zombie is military
-            numMilitary += creature.getNumEquipamentos();
-            text = creature.getNomeTipo() + ":" + creature.getTipo() + ":" + numMilitary;
+            text = creature.getNomeTipo() + ":" + numMilitary + ":" + numEquipmentMilitary;
         } else if ( creature.getTipo() == 3 ) {
             //Zombie is old
-            numOldPeople += creature.getNumEquipamentos();
-            text = creature.getNomeTipo() + ":" + creature.getTipo() + ":" + numOldPeople;
+            text = creature.getNomeTipo() + ":" + numOldPeople + ":" + numEquipmentOldPeople;
         } else {
             //Zombie is vampire
-            numVampires += creature.getNumEquipamentos();
-            text = creature.getNomeTipo() + ":" + creature.getTipo() + ":" + numVampires;
+            text = creature.getNomeTipo() + ":" + numVampires + ":" + numEquipmentVampires;
         }
 
         return text;
-    }
-
-    //Vamos ver qual das creaturas é a que queremos!
-    public boolean catchCorrectType(String creature) {
-        String[] splitCreature =  creature.split(":");
-
-        //String typeName = splitCreature[0];
-        int type = Integer.parseInt(splitCreature[1].trim());
-        int numEquipments = Integer.parseInt(splitCreature[2].trim());
-
-        if (type == 0) {
-            //Zombie is child
-            if (numEquipments == numChildren) {
-                return true;
-            }
-
-            return false;
-        } else if (type == 1) {
-            //Zombie is adult
-            if (numEquipments == numAdults) {
-                return true;
-            }
-
-            return false;
-        } else if (type == 2) {
-            //Zombie is military
-            if (numEquipments == numMilitary) {
-                return true;
-            }
-
-            return false;
-        } else if (type == 3) {
-            //Zombie is old
-            if (numEquipments == numOldPeople) {
-                return true;
-            }
-
-            return false;
-        }
-
-        //Zombie is vampire
-        if (numEquipments == numVampires) {
-            return true;
-        }
-
-        return false;
     }
 
     public Map<String, List<String>> getGameStatistics() {
@@ -382,17 +379,10 @@ public class TWDGameManager {
         List<String> tiposZombiesEquipamentos = creatures.stream()
                 .filter(c -> c instanceof Zombie)
                 .map(c -> countEquipmentTowardsType(c))
-                .filter(c -> catchCorrectType(c))
                 .distinct()
                 .collect(Collectors.toList());
-        System.out.println("Size == " + tiposZombiesEquipamentos.size());
+        //System.out.println("Size == " + tiposZombiesEquipamentos.size());
         gameStatistics.put(tiposDeZombiesEquipamentosDestruidos, tiposZombiesEquipamentos);
-
-        numChildren = 0;
-        numAdults = 0;
-        numMilitary = 0;
-        numOldPeople = 0;
-        numVampires = 0;
 
         String criaturasEquipadas = "criaturasMaisEquipadas";
         List<String> criaturasMaisEquipadas = creatures.stream()
@@ -521,26 +511,31 @@ public class TWDGameManager {
 
         switch ( typeID ) {
             case 0: //Criança Zombie
+                numChildren++;
                 creatureFound = new CriancaZombie(id, name, spawnX, spawnY);
                 creatures.add(creatureFound);
                 break;
 
             case 1: //Adulto Zombie
+                numAdults++;
                 creatureFound = new AdultoZombie(id, name, spawnX, spawnY);
                 creatures.add(creatureFound);
                 break;
 
             case 2: //Militar Zombie
+                numMilitary++;
                 creatureFound = new MilitarZombie(id, name, spawnX, spawnY);
                 creatures.add(creatureFound);
                 break;
 
             case 3: //Idoso Zombie
+                numOldPeople++;
                 creatureFound = new IdosoZombie(id, name, spawnX, spawnY);
                 creatures.add(creatureFound);
                 break;
 
             case 4: //Zombie Vampiro
+                numVampires++;
                 creatureFound = new VampiroZombie(id, name, spawnX, spawnY);
                 creatures.add(creatureFound);
                 break;
@@ -1114,6 +1109,7 @@ public class TWDGameManager {
 
             //Vamos partir o equipamento na posição que estamos a mover para
             removeEquipment(gameMap.getPosition(xD,yD).getEquipamento());
+            addEquipmentTowardsType(gameMap.getPosition(xO,yO).getCreature());
         }
 
         gameMap.getPosition(xO, yO).getCreature().move( gameMap, xD, yD );
@@ -1437,9 +1433,11 @@ public class TWDGameManager {
     public void incrementaTempo() {
         String key = "tiposDeZombieESeusEquipamentosDestruidos";
         List<String> gameStat = getGameStatistics().get(key);
+        System.out.println("------------");
         for (String stat: gameStat) {
             System.out.println(stat);
         }
+        System.out.println("------------");
 
         if ( currentTeamId == 10 ) {
             currentTeamId += 10;
@@ -1975,6 +1973,17 @@ public class TWDGameManager {
         safeHavens.clear();
 
         gameMap = new Mapa();
+
+        numEquipmentChildren = 0;
+        numChildren = 0;
+        numEquipmentAdults = 0;
+        numAdults = 0;
+        numEquipmentOldPeople = 0;
+        numOldPeople = 0;
+        numEquipmentMilitary = 0;
+        numMilitary = 0;
+        numEquipmentVampires = 0;
+        numVampires = 0;
 
         initialTeamId = 0;
         currentTeamId = 0;

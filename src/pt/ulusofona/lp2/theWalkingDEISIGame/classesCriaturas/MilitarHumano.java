@@ -8,7 +8,7 @@ public class MilitarHumano extends Humano {
         super(id, nome, x, y);
 
         this.tipo = 7;
-        this.nomeTipo = "Militar (Vivo)";
+        this.nomeTipo = "Militar";
 
         this.deslocamentoMaximo = 3;
         this.ableToMoveFreely = true;
