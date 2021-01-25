@@ -288,11 +288,11 @@ public class TWDGameManager {
                 .collect(Collectors.toList());
         gameStatistics.put(key3Vivos, vivos3);
 
-        //Mudei o "getTipo" para "getId"
+        //Mudei o sorted para ser do menor para o maior
         String keyEquipamentoUtil = "tiposDeEquipamentoMaisUteis";
         List<String> equipamentosUteis = equipment.stream()
                 .filter(e -> e.getNumTimesUsed() > 0)
-                .sorted((e1, e2) -> e2.getNumTimesUsed() - e1.getNumTimesUsed() )
+                .sorted((e1, e2) -> e1.getNumTimesUsed() - e2.getNumTimesUsed() )
                 .map(e -> e.getId() + ":" + e.getNumTimesUsed() )
                 .collect(Collectors.toList());
         gameStatistics.put(keyEquipamentoUtil, equipamentosUteis);
@@ -1346,6 +1346,12 @@ public class TWDGameManager {
      */
 
     public void incrementaTempo() {
+        String key = "tiposDeEquipamentoMaisUteis";
+        List<String> gameStat = getGameStatistics().get(key);
+        for (String stat: gameStat) {
+            System.out.println(stat);
+        }
+
         if ( currentTeamId == 10 ) {
             currentTeamId += 10;
         } else {
