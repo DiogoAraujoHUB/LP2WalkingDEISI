@@ -383,6 +383,7 @@ public class TWDGameManager {
                 .filter(c -> c instanceof Zombie)
                 .map(c -> countEquipmentTowardsType(c))
                 .filter(c -> catchCorrectType(c))
+                .distinct()
                 .collect(Collectors.toList());
         System.out.println("Size == " + tiposZombiesEquipamentos.size());
         gameStatistics.put(tiposDeZombiesEquipamentosDestruidos, tiposZombiesEquipamentos);
