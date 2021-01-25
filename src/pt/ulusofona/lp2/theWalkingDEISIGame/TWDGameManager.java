@@ -1431,6 +1431,7 @@ public class TWDGameManager {
      */
 
     public void incrementaTempo() {
+        /*
         String key = "tiposDeZombieESeusEquipamentosDestruidos";
         List<String> gameStat = getGameStatistics().get(key);
         System.out.println("------------");
@@ -1438,6 +1439,7 @@ public class TWDGameManager {
             System.out.println(stat);
         }
         System.out.println("------------");
+        */
 
         if ( currentTeamId == 10 ) {
             currentTeamId += 10;
