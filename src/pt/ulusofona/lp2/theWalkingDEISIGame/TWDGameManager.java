@@ -270,9 +270,6 @@ public class TWDGameManager {
     int numVampires = 0;
 
     //Vamos utilizar variáveis globais para contar todas as variáveis que temos deste tipo
-    //Primeiro, vamos escrever para o núm de equipamentos para uma variável global, que irá guardar
-    //Depois, iremos ver qual das strings têm o núm igual à variavel global, e só ficamos com esse
-    //Depois escrevemos esse!
     public String countEquipmentTowardsType(Creature creature) {
         String text;
 
@@ -301,10 +298,11 @@ public class TWDGameManager {
         return text;
     }
 
+    //Vamos ver qual das creaturas é a que queremos!
     public boolean catchCorrectType(String creature) {
         String[] splitCreature =  creature.split(":");
 
-        String typeName = splitCreature[0];
+        //String typeName = splitCreature[0];
         int type = Integer.parseInt(splitCreature[1].trim());
         int numEquipments = Integer.parseInt(splitCreature[2].trim());
 
@@ -379,10 +377,10 @@ public class TWDGameManager {
                 .collect(Collectors.toList());
         gameStatistics.put(keyEquipamentoUtil, equipamentosUteis);
 
+        //Retirei .filter(c -> c.getNumEquipamentos() > 0), depois do primeiro filter
         String tiposDeZombiesEquipamentosDestruidos = "tiposDeZombieESeusEquipamentosDestruidos";
         List<String> tiposZombiesEquipamentos = creatures.stream()
                 .filter(c -> c instanceof Zombie)
-                .filter(c -> c.getNumEquipamentos() > 0)
                 .map(c -> countEquipmentTowardsType(c))
                 .filter(c -> catchCorrectType(c))
                 .collect(Collectors.toList());
