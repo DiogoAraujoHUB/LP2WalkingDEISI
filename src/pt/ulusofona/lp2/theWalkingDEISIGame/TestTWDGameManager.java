@@ -738,6 +738,29 @@ public class TestTWDGameManager {
     }
 
     @Test
+    public void testGameStatisticstiposDeZombieESeusEquipamentosDestruidos() {
+        TWDGameManager game = new TWDGameManager();
+        String key = "tiposDeZombieESeusEquipamentosDestruidos";
+
+        try {
+            game.startGame(new File("./test-files/valoresWalkingDEISI.txt"));
+            game.move(2, 2, 2, 1);  //Human moves
+            game.move(3, 4, 2, 3);  //Zombie moves to equipment
+            game.move(3, 3, 4, 3);  //Human moves
+            game.move(2, 3, 3, 2);  //Zombie moves to equipment
+            Map<String, List<String>> gameStatistics = game.getGameStatistics();
+            List<String> zombiesEquipamentos = gameStatistics.get(key);
+            for ( String line: zombiesEquipamentos ) {
+                System.out.println(line);
+            }
+
+            assertEquals(3, zombiesEquipamentos.size());  //Dois criaturas apanharam e duas não apanharam
+        } catch ( Exception e ) {
+            System.out.println("File contained error -> " + e.getMessage() );
+        }
+    }
+
+    @Test
     public void testGameStatisticsCriaturasMaisEquipadas() {
         TWDGameManager game = new TWDGameManager();
         String key = "criaturasMaisEquipadas";

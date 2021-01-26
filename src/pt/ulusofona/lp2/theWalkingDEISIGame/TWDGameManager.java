@@ -22,18 +22,15 @@ public class TWDGameManager {
 
     private Mapa gameMap;
 
+    //Added for "getGameStatistics"
     private int numEquipmentChildren;
     private int numChildren;
-
     private int numEquipmentAdults;
     private int numAdults;
-
     private int numEquipmentOldPeople;
     private int numOldPeople;
-
     private int numEquipmentMilitary;
     private int numMilitary;
-
     private int numEquipmentVampires;
     private int numVampires;
 
@@ -298,6 +295,8 @@ public class TWDGameManager {
         gameMap.addSafeHavens( safeHavens );
     }
 
+    //Dependendo do tipo do zombie introduzido, vamos incrementar o num de equipamento
+    //Para funcionar no "getGameStatistics"
     public void addEquipmentTowardsType(Creature creature) {
         if ( creature.getTipo() == 0 ) {
             //Zombie is child
@@ -321,6 +320,7 @@ public class TWDGameManager {
     public String countEquipmentTowardsType(Creature creature) {
         String text;
 
+        //Deve haver uma melhor maneira de fazer isto, mas por agora funciona
         if ( creature.getTipo() == 0 ) {
             //Zombie is child
             text = creature.getNomeTipo() + ":" + numChildren + ":" + numEquipmentChildren;
