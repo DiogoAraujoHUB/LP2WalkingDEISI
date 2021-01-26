@@ -317,7 +317,7 @@ public class TWDGameManager {
     }
 
     //Vamos utilizar variáveis globais para contar todas as variáveis que temos deste tipo
-    public String countEquipmentTowardsType(Creature creature) {
+    public String createZombieTowardsType(Creature creature) {
         String text;
 
         //Deve haver uma melhor maneira de fazer isto, mas por agora funciona
@@ -378,7 +378,7 @@ public class TWDGameManager {
         String tiposDeZombiesEquipamentosDestruidos = "tiposDeZombieESeusEquipamentosDestruidos";
         List<String> tiposZombiesEquipamentos = creatures.stream()
                 .filter(c -> c instanceof Zombie)
-                .map(c -> countEquipmentTowardsType(c))
+                .map(c -> createZombieTowardsType(c))
                 .distinct()
                 .collect(Collectors.toList());
         //System.out.println("Size == " + tiposZombiesEquipamentos.size());
